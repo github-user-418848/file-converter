@@ -11,10 +11,6 @@
 <template>
   <div class="content">
     <h1>Convert to DAT File</h1>
-    <!-- <div class="nav-links">
-      <router-link to="/">MAP</router-link>
-      <router-link to="/qap">QAP</router-link>
-    </div> -->
     <select name="route" id="route" v-on:change="changeRoute($event)">
       <option value="" selected>MAP</option>
       <option value="qap">QAP</option>
