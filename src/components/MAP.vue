@@ -95,7 +95,6 @@
 <template>
     <div class="page">
         <DropZone @drop.prevent="drop" @change="selectedFile"/>
-        <span class="file-info" v-if="dropzoneFile.name">File: {{ dropzoneFile.name }}</span><br>
         <!-- <div v-if="dropzoneFile.name" class="table-container">
             <table class="table" cellspacing="0">
                 <tr class="table-head">
@@ -120,11 +119,25 @@
                 </tr>
             </table>
         </div> -->
-        <button v-if="dropzoneFile.name" class="btn" @click="downloadFile">Download</button>
+        <div class="card">
+            <span class="file-info" v-if="dropzoneFile.name">File: {{ dropzoneFile.name }}</span>
+            <button v-if="dropzoneFile.name" class="btn" @click="downloadFile">Download</button>
+        </div>
     </div>
 </template>
 
 <style>
+    .card {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 1rem;
+        width: clamp(12.5rem, 12.5rem + 26.0417vw, 43.75rem);
+        margin: 0 auto;
+        justify-content: space-between;
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.123);
+    }
     .table-container {
         max-height: 562px;
         overflow-x: auto;
@@ -157,7 +170,7 @@
         padding: clamp(0.5rem, 0.2rem + 1.5vw, 2rem);
     }
     .btn {
-        margin: 1rem auto;
+        /* margin: 1rem auto; */
         padding: 8px 12px;
         color: white;
         background-color: var(--primary);
