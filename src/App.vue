@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <h1>Xml Converter</h1>
+    <h1>Convert to DAT File</h1>
     <div class="nav-links">
       <router-link to="/">MAP</router-link>
       <router-link to="/qap">QAP</router-link>
