@@ -120,7 +120,7 @@
             </table>
         </div> -->
         <div class="card">
-            <span class="file-info" v-if="dropzoneFile.name">File: {{ dropzoneFile.name }}</span>
+            <span class="file-info" v-if="dropzoneFile.name">{{ dropzoneFile.name }}</span>
             <button v-if="dropzoneFile.name" class="btn" @click="downloadFile">Download</button>
         </div>
     </div>
