@@ -1,11 +1,9 @@
 <script>
     import DropZone from '../components/DropZone.vue';
     import { ref, computed } from 'vue';
+    import moment from 'moment';
 
-    const MAPHeader = 'Mustard Seed System Corp. MAP Report';
-    const MAPFooter = 'End of report - created by Valeed';
-    const MAPDetails = ref('');
-    let dropzoneFile = ref("");
+    let MAPDetails = ref(""), MAPContent = ref(""), dropzoneFile = ref("");
 
     export default {
         name: "Map",
@@ -14,40 +12,14 @@
         },
         setup() {
 
-            const drop = (e) => {
-
-                dropzoneFile.value = e.dataTransfer.files[0];
-
-                // Read File
-                var reader = new FileReader();
-                waitForTextReadComplete(reader);
-                reader.readAsText(dropzoneFile.value);
+            function convertToReadableDateFormat(date) {
+                return moment(date).format('DDMMYYYY');
             }
-
-
-            const selectedFile = () => {
-
-                dropzoneFile.value = document.querySelector('.dropzoneFile').files[0];
-
-                // Read File
-                var reader = new FileReader();
-                waitForTextReadComplete(reader);
-                reader.readAsText(dropzoneFile.value);
-
-            }
-            
-            return { dropzoneFile, drop, selectedFile, MAPDetails };
-
-            
 
             function convertMAPXMLtoJSON(xml) {
-                let arr = [];
-
-                // console.log(xml.getElementsByTagName('Section'));
-                let counter = 0;
+                let arr = [], counter = 0;
                 const _arryOfHtml = xml.getElementsByTagName('Section');
                 for (const item of _arryOfHtml) {
-                    // console.log(_arryOfHtml.length);
                     if (counter != 0 && counter != _arryOfHtml.length - 1) {
                         const _item = {
                             record_num: item.children[0].children[1].innerHTML,
@@ -66,30 +38,20 @@
                 return arr;
             }
 
-
             function createMAPDetails(arrObjects) {
                 let htmlDetails = '';
                 arrObjects.forEach((item) => {
-                    htmlDetails  += `${item.record_num}\n${item.tin}\n${item.wt_code}`;
+                    htmlDetails  += `${item.record_num},${item.tin},${item.wt_code},${item.wt_name},${item.rate},${item.vendor_name},${item.sum_of_tax_amount},${item.sum_of_taxable_amount}\n`;
                 });
-                console.log(htmlDetails);
+                MAPContent.value = htmlDetails;
             }
 
             function parseTextAsXml(text) {
                 var parser = new DOMParser(),
                     xmlDom = parser.parseFromString(text, 'text/xml');
-
-
-                // data = convertMAPXMLtoJSON(xmlDom);
-
-                // console.log(convertMAPXMLtoJSON(xmlDom));
-
                 const arrObjects = convertMAPXMLtoJSON(xmlDom);
-                // data = arrObjects;
+                MAPDetails.value = arrObjects;
                 createMAPDetails(arrObjects);
-
-
-                //now, extract items from xmlDom and assign to appropriate text input fields
             }
 
             function waitForTextReadComplete(reader) {
@@ -98,7 +60,32 @@
                     parseTextAsXml(text);
                 };
             }
+            
+            function drop(e) {
+                dropzoneFile.value = e.dataTransfer.files[0];
+                var reader = new FileReader();
+                waitForTextReadComplete(reader);
+                reader.readAsText(dropzoneFile.value);
+            }
+            
+            function selectedFile() {
+                dropzoneFile.value = document.querySelector('.dropzoneFile').files[0];
+                var reader = new FileReader();
+                waitForTextReadComplete(reader);
+                reader.readAsText(dropzoneFile.value);
+            }
 
+            function downloadFile() {
+                const link = document.createElement('a');
+                const file = new Blob([MAPContent.value], { type: 'text/plain' });
+                link.href = URL.createObjectURL(file);
+                const dateNow = convertToReadableDateFormat(new Date());
+                link.download = 'maprpt' + dateNow + '.dat';
+                link.click();
+                URL.revokeObjectURL(link.href);
+            };
+
+            return { dropzoneFile, MAPDetails, MAPContent, drop, selectedFile, downloadFile};
 
         },
     };
@@ -107,7 +94,74 @@
 
 <template>
     <div class="page">
-        <DropZone  @drop.prevent="drop" @change="selectedFile"/>
-        <span class="file-info" v-if="dropzoneFile.name">File: {{ dropzoneFile.name }}</span>
+        <DropZone @drop.prevent="drop" @change="selectedFile"/>
+        <span class="file-info" v-if="dropzoneFile.name">File: {{ dropzoneFile.name }}</span><br>
+        <!-- <div v-if="dropzoneFile.name" class="table-container">
+            <table class="table" cellspacing="0">
+                <tr class="table-head">
+                    <th>#</th>
+                    <th>TIN</th>
+                    <th>WT CODE</th>
+                    <th>WT NAME</th>
+                    <th>RATE</th>
+                    <th>VENDOR NAME</th>
+                    <th>SUM OF TAX AMOUNT</th>
+                    <th>SUM OF TAXABLE AMOUNT</th>
+                </tr>
+                <tr v-for="item in MAPDetails">
+                    <td>{{ item.record_num }}</td>
+                    <td>{{ item.tin }}</td>
+                    <td>{{ item.wt_code }}</td>
+                    <td>{{ item.wt_name }}</td>
+                    <td>{{ item.rate }}</td>
+                    <td>{{ item.vendor_name }}</td>
+                    <td>{{ item.sum_of_tax_amount }}</td>
+                    <td>{{ item.sum_of_taxable_amount }}</td>
+                </tr>
+            </table>
+        </div> -->
+        <button v-if="dropzoneFile.name" class="btn" @click="downloadFile">Download</button>
     </div>
 </template>
+
+<style>
+    .table-container {
+        max-height: 562px;
+        overflow-x: auto;
+        border: 1.5px solid rgb(163, 163, 163);
+        border-radius: 10px;
+        box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.7);
+        -webkit-box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.7);
+        -moz-box-shadow: 0px 0px 8px 0px rgba(0,0,0,0.7);
+        max-width: 80%;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .table {
+        position: sticky;
+        width: 100%;
+        white-space: nowrap;
+    }
+    .table .table-head {
+        position: sticky;
+        background: var(--primary);
+        top: 0;
+    }
+    .table th {
+        border-bottom: 1.5px solid rgb(233, 233, 233);
+    }
+
+    .table td, .table th {
+        text-align: center;
+        padding: clamp(0.5rem, 0.2rem + 1.5vw, 2rem);
+    }
+    .btn {
+        margin: 1rem auto;
+        padding: 8px 12px;
+        color: white;
+        background-color: var(--primary);
+        transition: .3s ease all;
+        cursor: pointer;
+    }
+</style>
