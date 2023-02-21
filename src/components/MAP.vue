@@ -119,9 +119,9 @@
                 </tr>
             </table>
         </div> -->
-        <div class="card">
-            <span class="file-info" v-if="dropzoneFile.name">{{ dropzoneFile.name }}</span>
-            <button v-if="dropzoneFile.name" class="btn" @click="downloadFile">Download</button>
+        <div class="card" v-if="dropzoneFile.name">
+            <span class="file-info">{{ dropzoneFile.name }}</span>
+            <button class="btn" @click="downloadFile">Download</button>
         </div>
     </div>
 </template>
