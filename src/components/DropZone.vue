@@ -16,7 +16,14 @@
 </script>
 
 <template>
-    <div @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent :class="{ 'active-dropzone': active }" class="dropzone">
+    <div 
+        @dragenter.prevent="toggleActive" 
+        @dragleave.prevent="toggleActive" 
+        @dragover.prevent
+        @drop.prevent="toggleActive"
+        :class="{ 'active-dropzone': active }"
+        class="dropzone"
+    >
         <span>Drag or Drop</span>
         <span>OR</span>
         <label class="btn" for="dropzoneFile">Select File</label>
@@ -32,7 +39,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin: 0 auto;
+        margin: 1rem auto;
         row-gap: 1rem;
         border: 2px dashed var(--primary);
         transition: .3s ease all;
