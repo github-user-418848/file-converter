@@ -12,6 +12,10 @@
         },
         setup() {
 
+            function extractDigits(str) {
+                return str.match(/\d+/g).join("");
+            }
+
             function normalizeStrAsRegex(regex, string) {
                 return regex.exec(string);
             }
@@ -45,7 +49,7 @@
             function createMAPDetails(arrObjects) {
                 let htmlDetails = '';
                 arrObjects.forEach((item) => {
-                    htmlDetails  += `${item.record_num},${item.tin},${item.wt_code},${normalizeStrAsRegex(/([a-zA-Z0-9]{0,8} - )(.*)/g, item.wt_name)[2]},${item.rate},${item.vendor_name},${item.sum_of_tax_amount},${item.sum_of_taxable_amount}\n`;
+                    htmlDetails  += `${item.record_num},${extractDigits(item.tin)},${item.wt_code},${normalizeStrAsRegex(/([a-zA-Z0-9]{0,8} - )(.*)/g, item.wt_name)[2]},${item.rate},${item.vendor_name},${item.sum_of_tax_amount},${item.sum_of_taxable_amount}\n`;
                 });
                 MAPContent.value = htmlDetails;
             }
