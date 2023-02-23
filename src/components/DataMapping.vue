@@ -1,5 +1,6 @@
 <script>
     import DropZone from './DropZone.vue';
+    import Toast from './Toast.vue';
     import { ref, computed } from 'vue';
     import moment from 'moment';
 
@@ -9,12 +10,25 @@
         name: "Map",
         components: {
             DropZone,
+            Toast,
         },
         setup() {
+
+            function validateFile(file) {
+                const fileSize = file.size;
+                const fileName = file.name;
+                const fileExtension = fileName.split('.').pop();
+
+                if (fileSize > 1000000 || fileName.length > 50 || fileExtension !== 'xml') {
+                    showToast = true;
+                    return;
+                }
+            }
 
             function drop(e) {
                 dropzoneFile.value = e.dataTransfer.files[0];
                 var reader = new FileReader();
+                validateFile(dropzoneFile.value);
                 waitForTextReadComplete(reader);
                 reader.readAsText(dropzoneFile.value);
             }
@@ -102,6 +116,7 @@
 
 <template>
     <div class="page">
+        <Toast v-if="showToast" />
         <DropZone @drop.prevent="drop" @change="selectedFile"/>
         <div class="card" v-if="dropzoneFile.name">
             <span class="file-info">{{ dropzoneFile.name }}</span>
