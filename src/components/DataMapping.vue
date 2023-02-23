@@ -12,16 +12,33 @@
         },
         setup() {
 
-            function extractDigits(str) {
-                return str.match(/\d+/g).join("");
+            function drop(e) {
+                dropzoneFile.value = e.dataTransfer.files[0];
+                var reader = new FileReader();
+                waitForTextReadComplete(reader);
+                reader.readAsText(dropzoneFile.value);
+            }
+            
+            function selectedFile() {
+                dropzoneFile.value = document.querySelector('.dropzoneFile').files[0];
+                var reader = new FileReader();
+                waitForTextReadComplete(reader);
+                reader.readAsText(dropzoneFile.value);
+            }
+            
+            function waitForTextReadComplete(reader) {
+                reader.onloadend = function (event) {
+                    var text = event.target.result;
+                    parseTextAsXml(text);
+                };
             }
 
-            function normalizeStrAsRegex(regex, string) {
-                return regex.exec(string);
-            }
-
-            function convertToReadableDateFormat(date) {
-                return moment(date).format('DDMMYYYY');
+            function parseTextAsXml(text) {
+                var parser = new DOMParser(),
+                    xmlDom = parser.parseFromString(text, 'text/xml');
+                const arrObjects = convertMAPXMLtoJSON(xmlDom);
+                MAPDetails.value = arrObjects;
+                createMAPDetails(arrObjects);
             }
 
             function convertMAPXMLtoJSON(xml) {
@@ -54,33 +71,16 @@
                 MAPContent.value = htmlDetails;
             }
 
-            function parseTextAsXml(text) {
-                var parser = new DOMParser(),
-                    xmlDom = parser.parseFromString(text, 'text/xml');
-                const arrObjects = convertMAPXMLtoJSON(xmlDom);
-                MAPDetails.value = arrObjects;
-                createMAPDetails(arrObjects);
+            function extractDigits(str) {
+                return str.match(/\d+/g).join("");
             }
 
-            function waitForTextReadComplete(reader) {
-                reader.onloadend = function (event) {
-                    var text = event.target.result;
-                    parseTextAsXml(text);
-                };
+            function normalizeStrAsRegex(regex, string) {
+                return regex.exec(string);
             }
-            
-            function drop(e) {
-                dropzoneFile.value = e.dataTransfer.files[0];
-                var reader = new FileReader();
-                waitForTextReadComplete(reader);
-                reader.readAsText(dropzoneFile.value);
-            }
-            
-            function selectedFile() {
-                dropzoneFile.value = document.querySelector('.dropzoneFile').files[0];
-                var reader = new FileReader();
-                waitForTextReadComplete(reader);
-                reader.readAsText(dropzoneFile.value);
+
+            function convertToReadableDateFormat(date) {
+                return moment(date).format('DDMMYYYY');
             }
 
             function downloadFile() {
