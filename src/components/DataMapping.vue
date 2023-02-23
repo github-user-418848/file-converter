@@ -103,30 +103,6 @@
 <template>
     <div class="page">
         <DropZone @drop.prevent="drop" @change="selectedFile"/>
-        <!-- <div v-if="dropzoneFile.name" class="table-container">
-            <table class="table" cellspacing="0">
-                <tr class="table-head">
-                    <th>#</th>
-                    <th>TIN</th>
-                    <th>WT CODE</th>
-                    <th>WT NAME</th>
-                    <th>RATE</th>
-                    <th>VENDOR NAME</th>
-                    <th>SUM OF TAX AMOUNT</th>
-                    <th>SUM OF TAXABLE AMOUNT</th>
-                </tr>
-                <tr v-for="item in MAPDetails">
-                    <td>{{ item.record_num }}</td>
-                    <td>{{ item.tin }}</td>
-                    <td>{{ item.wt_code }}</td>
-                    <td>{{ item.wt_name }}</td>
-                    <td>{{ item.rate }}</td>
-                    <td>{{ item.vendor_name }}</td>
-                    <td>{{ item.sum_of_tax_amount }}</td>
-                    <td>{{ item.sum_of_taxable_amount }}</td>
-                </tr>
-            </table>
-        </div> -->
         <div class="card" v-if="dropzoneFile.name">
             <span class="file-info">{{ dropzoneFile.name }}</span>
             <button class="btn" @click="downloadFile">Download</button>
