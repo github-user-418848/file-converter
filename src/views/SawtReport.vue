@@ -1,4 +1,5 @@
 <template>
+    <h1>Sawt Report</h1>
     <DropZone @drop.prevent="drop" @change="selectedFile"/>
     <Card fileName="true" :downloadFile="download"/>
 </template>

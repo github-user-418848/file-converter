@@ -1,4 +1,5 @@
 <template>
+    <h1>Qap Report</h1>
     <DropZone @drop.prevent="drop" @change="selectedFile"/>
     <Card fileName="true" :downloadFile="download"/>
 </template>
