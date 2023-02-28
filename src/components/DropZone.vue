@@ -24,7 +24,7 @@
         :class="{ 'active-dropzone': active }"
         class="dropzone"
     >
-        <span>Drag or Drop</span>
+        <span>Drag and Drop</span>
         <span>OR</span>
         <label class="btn" for="dropzoneFile">Select File</label>
         <input type="file" name="dropzoneFile" id="dropzoneFile" class="dropzoneFile">
