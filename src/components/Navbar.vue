@@ -6,4 +6,4 @@
       <router-link to="/sales-report">Sales Report</router-link>
       <router-link to="/sales-report">Purchase Report</router-link>
     </div>
-</template>  
+</template>
