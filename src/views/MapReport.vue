@@ -1,5 +1,5 @@
 <template>
-
+    <DropZone @drop.prevent="drop" @change="selectedFile"/>
     <Card fileName="true" :downloadFile="download"/>
 </template>
 
