@@ -42,6 +42,7 @@
         margin: 1rem auto;
         row-gap: 1rem;
         border: 2px dashed var(--primary);
+        color: #242424;
         transition: .3s ease all;
     }
     .active-dropzone {
