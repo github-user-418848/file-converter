@@ -1,20 +1,10 @@
 <script>
-  export default {
-    methods: {
-      changeRoute(e) {
-        this.$router.push("/" + e.target.value);
-      },
-    },
-  }
+
 </script>
 
 <template>
   <div class="content">
     <h1>Convert to DAT File</h1>
-    <!-- <select name="route" id="route" v-on:change="changeRoute($event)">
-      <option value="" selected>MAP</option>
-      <option value="qap">QAP</option>
-    </select> -->
     <router-view v-slot="{ Component }">
       <transition name="fade" mode="out-in">
         <component :is="Component"/>
