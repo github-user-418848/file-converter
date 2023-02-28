@@ -3,17 +3,12 @@
 <template>
   <div class="content">
     <Navbar />
-    <h1>Convert to DAT File</h1>
-    <router-view v-slot="{ Component }">
-      <transition name="fade" mode="out-in">
-        <component :is="Component"/>
-      </transition>
-    </router-view>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue';
+import Navbar from './components/Navbar.vue';
 
 export default {
   name: "App",
