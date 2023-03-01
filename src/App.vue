@@ -2,6 +2,7 @@
 
 <template>
   <div class="content">
+    <h1>Generate DAT File</h1>
     <Navbar />
     <router-view></router-view>
   </div>
