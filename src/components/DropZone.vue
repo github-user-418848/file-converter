@@ -33,8 +33,9 @@
 
 <style scoped>
     .dropzone {
-        width: clamp(12.5rem, 12.5rem + 26.0417vw, 43.75rem);;
-        height: clamp(12.5rem, 12.5rem + 10.4167vw, 25rem);;
+        max-width: clamp(12.5rem, 12.5rem + 26.0417vw, 43.75rem);
+        width: 100%;
+        height: clamp(12.5rem, 12.5rem + 10.4167vw, 25rem);
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -56,6 +57,7 @@
     }
     .btn {
         padding: 8px 12px;
+        border-radius: 8px;
         color: white;
         background-color: var(--primary);
         transition: .3s ease all;
