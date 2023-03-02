@@ -1,18 +1,18 @@
 <template>
     <!-- {{ $route.params.id }} -->
     <DropZone @drop.prevent="drop" @change="selectedFile"/>
-    <Card fileName="true" :downloadFile="download"/>
+    <DownloadCard fileName="true" :downloadFile="download"/>
 </template>
 
 <script>
 
-    import Card from '../components/Card.vue';
+    import DownloadCard from '../components/DownloadCard.vue';
     import DropZone from '../components/DropZone.vue';
 
     export default {
         name: "GenReport",
         components: {
-            Card,
+            DownloadCard,
             DropZone,
         },
         methods: {
