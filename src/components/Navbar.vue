@@ -46,12 +46,12 @@
     list-style-type: none;
   }
   nav ul li a {
+    color: var(--primary);
     padding: clamp(0.2rem, 0.2rem + 0.25vw, 0.5rem);
     border-radius: 8px;
     transition: 0.3s;
   }
   nav ul li a:hover {
-    
     background-color: var(--primary);
     color: white;
   }
