@@ -57,15 +57,16 @@
     }
     .btn {
         padding: 8px 12px;
-        border-radius: 8px;
-        color: white;
-        background-color: var(--primary);
+        border-radius: 0px;
+        background-color: white;
+        border: 1.5px solid var(--primary);
+        color: var(--primary);
         transition: .3s ease all;
         cursor: pointer;
     }
     .btn:hover {
-        background-color: white;
-        color: var(--primary);
+        color: white;
+        background-color: var(--primary);
     }
     input {
         display: none;
