@@ -6,12 +6,14 @@
 
 <script>
 
-    import DropZone from '../components/DropZone.vue';
+    import DropZone from '../components/DropZone.vue'
+    import DownloadCard from '../components/DownloadCard.vue'
 
     export default {
         name: "GenReport",
         components: {
             DropZone,
+            DownloadCard,
         },
         methods: {
             download() {
