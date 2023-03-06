@@ -1,12 +1,15 @@
 <template>
-    <!-- {{ $route.params.id }} -->
+    <!-- Display records array -->
     {{ records }}
+
+    <!-- DropZone component to select XML file -->
     <DropZone @drop.prevent="drop" @change="selectedFile" />
+
+    <!-- DownloadCard component to download transformed file -->
     <DownloadCard fileName="true" :downloadFile="download" />
 </template>
 
 <script>
-
 import DropZone from '../components/DropZone.vue'
 import DownloadCard from '../components/DownloadCard.vue'
 import { readXMLFile } from '../utils/helpers.js'
@@ -21,23 +24,35 @@ export default {
         DownloadCard,
     },
     methods: {
+        // Method called when a file is dropped onto the DropZone component
         drop(e) {
+            // Set the file reference to the first dropped file
             file.value = e.dataTransfer.files[0]
+
+            // Call the mapXmlData method to parse the XML data
             this.mapXmlData(file.value)
-            console.log(records.value);
         },
+
+        // Method called when a file is selected using the file input
         selectedFile() {
+            // Set the file reference to the selected file
             file.value = document.querySelector('.dropzoneFile').files[0]
+
+            // Call the mapXmlData method to parse the XML data
             this.mapXmlData(file.value)
-            console.log(records.value);
         },
+
+        // Method to parse XML data and return an array of objects
         mapXmlData(file) {
             if (file) {
+                // Call readXMLFile helper method to read the XML data
                 readXMLFile(file)
                     .then((xmlDoc) => {
                         let records = [], counter = 0
+
                         // Get All Section Tag
                         const _arryOfXML = xmlDoc.getElementsByTagName('Section');
+
                         // Loop Through The Section Tag
                         for (const item of _arryOfXML) {
                             // Exclude The First & Last Occurence of Section Tag
@@ -57,19 +72,24 @@ export default {
                             }
                             counter++;
                         }
-                        return this.records = records; // Set records as data property
+
+                        // Set records as data property
+                        return this.records = records;
                     })
                     .catch((error) => {
                         console.log(error);
                     });
             }
         },
+
+        // Method to be called when the download button is clicked
         download() {
             alert("Downloaded");
         },
     },
     data() {
         return {
+            // Initialize records array
             records: [],
         }
     },
