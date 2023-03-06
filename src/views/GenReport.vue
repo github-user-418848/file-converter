@@ -1,6 +1,6 @@
 <template>
     <!-- Display records array -->
-    {{ records }}
+    <!-- {{ records }} -->
 
     <!-- DropZone component to select XML file -->
     <DropZone @drop.prevent="drop" @change="selectedFile" />
@@ -12,7 +12,7 @@
 <script>
 import DropZone from '../components/DropZone.vue'
 import DownloadCard from '../components/DownloadCard.vue'
-import { readXMLFile } from '../utils/helpers.js'
+import { readXMLFile, reportTypeFieldName } from '../utils/helpers.js'
 import { ref } from 'vue'
 
 let file = ref({}), records = ref(""), datContentOutput = ref("")
@@ -58,11 +58,20 @@ export default {
                                 const _item = {};
                                 for (const child of item.children) {
                                     const fieldName = child.getAttribute('Name');
+                                    // console.log(child);
                                     if (fieldName) {
-                                        const formattedValueElem = child.querySelector('FormattedValue');
-                                        if (formattedValueElem) {
-                                            _item[fieldName] = formattedValueElem.textContent;
+                                        try {
+                                            const formattedValue = child.querySelector('FormattedValue');
+                                            const textValue = child.querySelector('TextValue');
+                                            if (formattedValue) {
+                                                _item[fieldName] = formattedValue.textContent;
+                                            } else if (textValue) {
+                                                _item[fieldName] = textValue.textContent;
+                                            }
+                                        } catch (error) {
+                                            console.error('Error: ', error);
                                         }
+
                                     }
                                 }
                                 // Append All Through records Array Object
@@ -82,9 +91,18 @@ export default {
         },
 
         createMAPDetails(records) {
-            let recordCollection = '';
+            let fieldNames = reportTypeFieldName(this.$route.params.id)
+            let recordCollection = ''
             records.forEach((record) => {
-                recordCollection += `${record["RecordNumber2"]},${record["tin2"]},${record["wtCode"]},${record["WTName2"]},${record["Rate2"]},${record["vendname3"]},${record["Sumoftaxamt2"]},${record["Sumoftaxableamt2"]},\n`
+                let recordRow = '';
+                fieldNames.forEach((fieldName) => {
+                    if (fieldName && fieldName.trim() && record.hasOwnProperty(fieldName)) {
+                        if (record[fieldName]) {
+                            recordRow += `${record[fieldName]},`;   
+                        }
+                    }
+                });
+                recordCollection += `${recordRow}\n`;
             });
             datContentOutput.value = recordCollection;
             console.log(datContentOutput.value);
