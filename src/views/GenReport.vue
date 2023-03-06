@@ -80,8 +80,9 @@ export default {
                             counter++;
                         }
 
-                        // Set records as data property
                         this.createMAPDetails(records)
+
+                        // Set records as data property
                         return this.records = records;
                     })
                     .catch((error) => {
@@ -91,15 +92,19 @@ export default {
         },
 
         createMAPDetails(records) {
-            let fieldNames = reportTypeFieldName(this.$route.params.id)
-            let recordCollection = ''
+            let fieldNames = reportTypeFieldName(this.$route.params.id);
+            let recordCollection = '';
             records.forEach((record) => {
                 let recordRow = '';
-                fieldNames.forEach((fieldName) => {
+                fieldNames.forEach((fieldName, index) => {
                     if (fieldName && fieldName.trim() && record.hasOwnProperty(fieldName)) {
                         if (record[fieldName]) {
-                            recordRow += `${record[fieldName]},`;   
+                            recordRow += `${record[fieldName]}`;
                         }
+                    }
+                    // Add a comma after each value except for the last one
+                    if (index !== fieldNames.length - 1) {
+                    recordRow += ',';
                     }
                 });
                 recordCollection += `${recordRow}\n`;
