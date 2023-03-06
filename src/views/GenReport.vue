@@ -6,7 +6,7 @@
     <DropZone @drop.prevent="drop" @change="selectedFile" />
 
     <!-- DownloadCard component to download transformed file -->
-    <DownloadCard fileName="temp" :downloadFile="download" />
+    <DownloadCard :fileName="file?.name" :downloadFile="download" />
 </template>
 
 <script>
@@ -15,7 +15,7 @@ import DownloadCard from '../components/DownloadCard.vue'
 import { readXMLFile, reportTypeFieldName } from '../utils/helpers.js'
 import { ref } from 'vue'
 
-let file = ref({}), records = ref(""), datContentOutput = ref("")
+let file = ref(""), records = ref(""), textData = ref("")
 
 export default {
     name: "GenReport",
@@ -58,7 +58,6 @@ export default {
                                 const _item = {};
                                 for (const child of item.children) {
                                     const fieldName = child.getAttribute('Name');
-                                    // console.log(child);
                                     if (fieldName) {
                                         try {
                                             const formattedValue = child.querySelector('FormattedValue');
@@ -80,7 +79,7 @@ export default {
                             counter++;
                         }
 
-                        this.createMAPDetails(records)
+                        this.createTextData(records)
 
                         // Set records as data property
                         return this.records = records;
@@ -91,7 +90,8 @@ export default {
             }
         },
 
-        createMAPDetails(records) {
+        // Method to create text data from the records array
+        createTextData(records) {
             let fieldNames = reportTypeFieldName(this.$route.params.id);
             let recordCollection = '';
             records.forEach((record) => {
@@ -104,13 +104,13 @@ export default {
                     }
                     // Add a comma after each value except for the last one
                     if (index !== fieldNames.length - 1) {
-                    recordRow += ',';
+                        recordRow += ',';
                     }
                 });
                 recordCollection += `${recordRow}\n`;
             });
-            datContentOutput.value = recordCollection;
-            console.log(datContentOutput.value);
+            textData.value = recordCollection;
+            console.log(textData.value);
         },
 
         // Method to be called when the download button is clicked
@@ -123,6 +123,7 @@ export default {
             // Initialize file & records array
             file: {},
             records: [],
+            datContentOutput: [],
         }
     },
 }
