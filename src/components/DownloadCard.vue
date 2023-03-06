@@ -5,7 +5,7 @@
         </div>
         <div class="col-2">
             <input type="text" name="rdo_code" id="rdo_code" placeholder="RDO Code:">
-            <button class="btn" @click="downloadFile()">Download</button>
+            <button class="btn" @click="downloadFile()">Generate</button>
         </div>
     </div>
 </template>
