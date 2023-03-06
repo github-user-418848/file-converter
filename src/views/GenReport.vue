@@ -6,7 +6,7 @@
     <DropZone @drop.prevent="drop" @change="selectedFile" />
 
     <!-- DownloadCard component to download transformed file -->
-    <DownloadCard fileName="true" :downloadFile="download" />
+    <DownloadCard fileName="temp" :downloadFile="download" />
 </template>
 
 <script>
@@ -15,7 +15,7 @@ import DownloadCard from '../components/DownloadCard.vue'
 import { readXMLFile } from '../utils/helpers.js'
 import { ref } from 'vue'
 
-let file = ref(""), records = ref("")
+let file = ref({}), records = ref(""), datContentOutput = ref("")
 
 export default {
     name: "GenReport",
@@ -31,14 +31,12 @@ export default {
 
             // Call the mapXmlData method to parse the XML data
             this.mapXmlData(file.value)
+            console.log(file.value.name)
         },
 
         // Method called when a file is selected using the file input
         selectedFile() {
-            // Set the file reference to the selected file
             file.value = document.querySelector('.dropzoneFile').files[0]
-
-            // Call the mapXmlData method to parse the XML data
             this.mapXmlData(file.value)
         },
 
@@ -74,12 +72,22 @@ export default {
                         }
 
                         // Set records as data property
+                        this.createMAPDetails(records)
                         return this.records = records;
                     })
                     .catch((error) => {
                         console.log(error);
                     });
             }
+        },
+
+        createMAPDetails(records) {
+            let recordCollection = '';
+            records.forEach((record) => {
+                recordCollection += `${record["RecordNumber2"]},${record["tin2"]},${record["wtCode"]},${record["WTName2"]},${record["Rate2"]},${record["vendname3"]},${record["Sumoftaxamt2"]},${record["Sumoftaxableamt2"]},\n`
+            });
+            datContentOutput.value = recordCollection;
+            console.log(datContentOutput.value);
         },
 
         // Method to be called when the download button is clicked
@@ -89,7 +97,8 @@ export default {
     },
     data() {
         return {
-            // Initialize records array
+            // Initialize file & records array
+            file: {},
             records: [],
         }
     },
