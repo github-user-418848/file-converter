@@ -1,5 +1,5 @@
 <template>
-  Select a filetype to convert with:
+  Select a type of report to convert with:
   <nav>
     <ul>
       <li v-for="report in reports" :key="report.id">
