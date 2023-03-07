@@ -58,20 +58,7 @@ export default {
                                 const _item = {};
                                 for (const child of item.children) {
                                     const fieldName = child.getAttribute('Name');
-                                    if (fieldName) {
-                                        try {
-                                            const formattedValue = child.querySelector('FormattedValue');
-                                            const textValue = child.querySelector('TextValue');
-                                            if (formattedValue) {
-                                                _item[fieldName] = formattedValue.textContent;
-                                            } else if (textValue) {
-                                                _item[fieldName] = textValue.textContent;
-                                            }
-                                        } catch (error) {
-                                            console.error('Error: ', error);
-                                        }
-
-                                    }
+                                    _item[fieldName] = child.children[0].textContent;
                                 }
                                 // Append All Through records Array Object
                                 records.push(_item);
@@ -97,7 +84,7 @@ export default {
             records.forEach((record) => {
                 let recordRow = '';
                 fieldNames.forEach((fieldName, index) => {
-                    if (fieldName && fieldName.trim() && record.hasOwnProperty(fieldName)) {
+                    if (fieldName.trim() && record.hasOwnProperty(fieldName)) {
                         if (record[fieldName]) {
                             recordRow += `${record[fieldName]}`;
                         }
