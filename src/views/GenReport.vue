@@ -6,7 +6,7 @@
     <DropZone @drop.prevent="drop" @change="selectedFile" />
 
     <!-- DownloadCard component to download transformed file -->
-    <DownloadCard :fileName="file?.name" :downloadFile="download" />
+    <DownloadCard :fileName="file.name" :downloadFile="download" />
 </template>
 
 <script>
@@ -38,6 +38,7 @@ export default {
         selectedFile() {
             file.value = document.querySelector('.dropzoneFile').files[0]
             this.mapXmlData(file.value)
+            console.log(file.value.name)
         },
 
         // Method to parse XML data and return an array of objects
@@ -109,10 +110,10 @@ export default {
     },
     data() {
         return {
-            // Initialize file & records array
-            file: {},
-            records: [],
-            datContentOutput: [],
+            // Data to be rendered for template
+            file,
+            records,
+            textData,
         }
     },
 }
