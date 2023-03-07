@@ -4,7 +4,6 @@
             <span class="file-info">{{ fileName }}</span>
         </div>
         <div class="col-2">
-            <input type="text" name="rdo_code" id="rdo_code" placeholder="RDO Code:">
             <button class="btn" @click="downloadFile(textData)">Generate</button>
         </div>
     </div>
@@ -63,14 +62,6 @@ export default {
 .col-1,
 .col-2 {
     width: 100%;
-}
-
-input {
-    background-color: white;
-    color: black;
-    outline: none;
-    border: 1px solid lightgray;
-    padding: 10px;
 }
 
 @media screen and (min-width: 920px) {
