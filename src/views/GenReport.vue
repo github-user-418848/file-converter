@@ -5,6 +5,9 @@
     <!-- DropZone component to select XML file -->
     <DropZone @drop.prevent="dropFile" @change="selectedFile" />
 
+    <!-- RdoInputCard component for formatting of the DAT output -->
+    <RdoInputCard />
+
     <!-- DownloadCard component to download transformed file -->
     <DownloadCard :fileName="file.name" :textData="textData" />
 </template>
@@ -12,6 +15,7 @@
 <script>
 import DropZone from '../components/DropZone.vue'
 import DownloadCard from '../components/DownloadCard.vue'
+import RdoInputCard from '../components/RdoInputCard.vue';
 import { readXMLFile, reportTypeFieldName } from '../utils/helpers.js'
 import { ref } from 'vue'
 
@@ -22,6 +26,7 @@ export default {
     components: {
         DropZone,
         DownloadCard,
+        RdoInputCard,
     },
     methods: {
         // Method called when a file is dropped onto the DropZone component
