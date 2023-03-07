@@ -6,7 +6,7 @@
     <DropZone @drop.prevent="dropFile" @change="selectedFile" />
 
     <!-- DownloadCard component to download transformed file -->
-    <DownloadCard :fileName="file.name" :downloadFile="download" />
+    <DownloadCard :fileName="file.name" :textData="textData" />
 </template>
 
 <script>
