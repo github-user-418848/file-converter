@@ -1,7 +1,7 @@
 <template>
     <div class="card" v-if="fileName">
         <div class="col-1">
-            <span class="file-info">{{ fileName }}</span>
+            <span class="file-info">Filename: {{ fileName }}</span>
         </div>
         <div class="col-2">
             <button class="btn" @click="downloadFile(textData)">Generate</button>
