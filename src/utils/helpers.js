@@ -23,7 +23,7 @@ export function reportTypeFieldName(route) {
     switch (route) {
         case '1':
             fieldNames = [
-                "RecordNumber2", "tin2", "wtCode", "WTName2",
+                "RecordNumber2", "tin2", "wtcode2", "WTName2",
                 "Rate2", "vendname3", "Sumoftaxamt2", "Sumoftaxableamt2"
             ];
             break;
