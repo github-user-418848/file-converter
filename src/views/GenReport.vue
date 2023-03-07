@@ -58,6 +58,8 @@ export default {
                                 const _item = {};
                                 for (const child of item.children) {
                                     const fieldName = child.getAttribute('Name');
+                                    // child.children[0].textContent = <FormattedValue> or <TextValue> (Recommended)
+                                    // child.children[1].textContent = <Value> (Could possibly throw an error if the tag is a <Text>)
                                     _item[fieldName] = child.children[0].textContent;
                                 }
                                 // Append All Through records Array Object
