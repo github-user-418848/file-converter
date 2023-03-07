@@ -5,7 +5,7 @@
         </div>
         <div class="col-2">
             <input type="text" name="rdo_code" id="rdo_code" placeholder="RDO Code:">
-            <button class="btn" @click="downloadFile()">Generate</button>
+            <button class="btn" @click="downloadFile(textData)">Generate</button>
         </div>
     </div>
 </template>
@@ -16,19 +16,18 @@ export default {
     name: "Card",
     props: {
         fileName: String,
-        downloadFile: Function,
+        textData: String,
     },
-    // methods: {
-    //     downloadFile() {
-    //         const link = document.createElement('a');
-    //         const file = new Blob([MAPContent.value], { type: 'text/plain' });
-    //         link.href = URL.createObjectURL(file);
-    //         const dateNow = convertToReadableDateFormat(new Date());
-    //         link.download = 'maprpt' + dateNow + '.dat';
-    //         link.click();
-    //         URL.revokeObjectURL(link.href);
-    //     }
-    // }
+    methods: {
+        downloadFile(blobText) {
+            const link = document.createElement('a');
+            const file = new Blob([blobText], { type: 'text/plain' });
+            link.href = URL.createObjectURL(file);
+            link.download = 'file.dat';
+            link.click();
+            URL.revokeObjectURL(link.href);
+        }
+    }
 }
 
 </script>
