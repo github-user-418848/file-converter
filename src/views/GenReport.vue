@@ -3,7 +3,7 @@
     <!-- {{ records }} -->
 
     <!-- DropZone component to select XML file -->
-    <DropZone @drop.prevent="drop" @change="selectedFile" />
+    <DropZone @drop.prevent="dropFile" @change="selectedFile" />
 
     <!-- DownloadCard component to download transformed file -->
     <DownloadCard :fileName="file.name" :downloadFile="download" />
@@ -25,7 +25,7 @@ export default {
     },
     methods: {
         // Method called when a file is dropped onto the DropZone component
-        drop(e) {
+        dropFile(e) {
             // Set the file reference to the first dropped file
             file.value = e.dataTransfer.files[0]
 
