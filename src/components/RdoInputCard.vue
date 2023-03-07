@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <label for="rdo_code">RDO Code: </label>
-        <input type="text" name="rdo_code" id="rdo_code" placeholder="RDO Code:">
+        <input type="text" name="rdo_code" id="rdo_code">
     </div>
 </template>
 
@@ -30,7 +30,8 @@ input {
     background-color: white;
     color: black;
     outline: none;
-    border: 1px solid lightgray;
+    border: 1px solid rgb(124, 124, 124);
     padding: 10px;
+    width: 65%;
 }
 </style>
