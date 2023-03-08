@@ -20,19 +20,48 @@ export function createTextDataHeader(record, route) {
     let textDataHeader = ''
     switch (route) {
         case '1':
-            textDataHeader += `HMAP,H1600VT,${formatTIN(record[0][0])},${record[0][1]},${record[0][2]}`
+            textDataHeader += 'HMAP,H1600VT'
+            break;
+        case '2':
+            textDataHeader += 'HMAP,H1600VT'
+            break;
+        case '3':
+            textDataHeader += 'HMAP,H1600VT'
             break;
     }
-    return textDataHeader;
+    return `${textDataHeader},${formatTIN(record[0][0])},${record[0][1]},${formatAgentName(record[0][2])}`;
 }
 
-function formatTIN(string) {
-    const tinRegex = /TIN:\s*(\d{3})-(\d{3})-(\d{3})-(\d{4})/;
-    const tinMatch = string.match(tinRegex);
-    let outputString = ''
-    
-    if (tinMatch) {
-        outputString = tinMatch[1] + tinMatch[2] + tinMatch[3] + ',' + tinMatch[4];
+export function createTextDataDetails(records, route) {
+    let textDataDetails = ''
+    for (let row = 1; row < records.length - 1; row++) {
+        textDataDetails += `\n${records[row][0]},${formatTIN(records[row][1])}`
+        // for (let col = 0; col < records[row].length; col++) {
+
+        //     textDataDetails += `${records[row][col]}`
+        //     if (col < records[row].length - 1) {
+        //         textDataDetails += '>>'
+        //     }
+        // }
     }
-    return outputString
+    return textDataDetails
+}
+
+function formatTIN(tin) {
+    const match = regexMatched(/(\d{3})-(\d{3})-(\d{3})-(\d{1,4})$|^(\d*)$/, tin)
+    return match ? match[5] ? match[5] : match[1] + match[2] + match[3] + ',' + match[4] : 'undefined'
+}
+
+function formatDate(date) {
+    const match = regexMatched(/MONTH\s+OF\s+([A-Za-z]*)\s+(\d*)/, date);
+    return match ? ('0' + (new Date(match[2], getMonthIndex(match[1]), 1)).getMonth() + 1).slice(-2) + '/' + match[2] : 'undefined';
+}
+
+function formatAgentName(agentName) {
+    const match = regexMatched(/WITHHOLDING AGENT'S NAME:\s*(.*)/, agentName)
+    return match ? match[1] : 'undefined'
+}
+
+function regexMatched(regexPattern, string) {
+    return string.match(regexPattern)
 }
