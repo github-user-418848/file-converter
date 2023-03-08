@@ -52,27 +52,19 @@ export default {
                 // Call readXMLFile helper method to read the XML data
                 readXMLFile(file)
                     .then((xmlDoc) => {
-                        let records = [], counter = 0
 
-                        // Get All Section Tag
+                        // Get all the XML nodes with tag name "Section"
                         const _arryOfXML = xmlDoc.getElementsByTagName('Section');
 
-                        // Loop Through The Section Tag
-                        for (const item of _arryOfXML) {
-                            // Exclude The First & Last Occurence of Section Tag
-                            if (counter != 0 && counter != _arryOfXML.length - 1) {
-                                const _item = {};
-                                for (const child of item.children) {
-                                    const fieldName = child.getAttribute('Name');
-                                    // child.children[0].textContent = <FormattedValue> or <TextValue> (Recommended)
-                                    // child.children[1].textContent = <Value> (Could possibly throw an error if the tag is a <Text>)
-                                    _item[fieldName] = child.children[0].textContent;
-                                }
-                                // Append All Through records Array Object
-                                records.push(_item);
+                        // Extract the data from the child elements of each XML node and create a new array "records"
+                        const records = _arryOfXML.slice(1, -1).map(item => { // Exclude the first and last occurrence of the "Section" tag
+                            const _item = {}; // Create a new object for each XML node
+                            for (const child of item.children) { // Loop through the child elements of each XML node
+                                const fieldName = child.getAttribute('Name'); // Get the value of the "Name" attribute
+                                _item[fieldName] = child.children[0].textContent; // Get the value of the first child element (assuming it is either a "FormattedValue" or "TextValue") and add it to the object with the field name as the key
                             }
-                            counter++;
-                        }
+                            return _item; // Return the object for each XML node
+                        });
 
                         this.createTextData(records)
 
