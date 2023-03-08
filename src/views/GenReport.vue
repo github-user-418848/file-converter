@@ -16,7 +16,7 @@
 import DropZone from '../components/DropZone.vue'
 import DownloadCard from '../components/DownloadCard.vue'
 import RdoInputCard from '../components/RdoInputCard.vue';
-import { readXMLFile, reportTypeFieldName } from '../utils/helpers.js'
+import { readXMLFile, createTextDataHeader } from '../utils/helpers.js'
 import { ref } from 'vue'
 
 let file = ref(""), records = ref(""), textData = ref("")
@@ -58,7 +58,8 @@ export default {
                         const _arryOfXML = [...xmlDoc.getElementsByTagName('Section')];
 
                         // Exclude the first and last occurrence of the "Section" tag
-                        const records = _arryOfXML.slice(1, -1).map(item => {
+                        // _arryOfXML.slice(1, -1).map(....)
+                        const records = _arryOfXML.map(item => {
                             const values = [];
                             for (const child of item.children) {
                                 // Get the value of the first child element (assuming it is either a "FormattedValue" or "TextValue") and add it to the object with the field name as the key
@@ -67,7 +68,7 @@ export default {
                             return values;
                         });
 
-                        // this.createTextData(records)
+                        this.createTextData(records)
 
                         // Set records as data property
                         return this.records = records;
@@ -80,25 +81,20 @@ export default {
 
         // Method to create text data from the records array
         createTextData(records) {
-            let fieldNames = reportTypeFieldName(this.$route.params.id);
-            let recordCollection = '';
-            records.forEach((record) => {
-                let recordRow = '';
-                fieldNames.forEach((fieldName, index) => {
-                    if (fieldName.trim() && record.hasOwnProperty(fieldName)) {
-                        if (record[fieldName]) {
-                            recordRow += `${record[fieldName]}`;
-                        }
-                    }
-                    // Add a comma after each value except for the last one
-                    if (index !== fieldNames.length - 1) {
-                        recordRow += ',';
-                    }
-                });
-                recordCollection += `${recordRow}\n`;
-            });
-            textData.value = recordCollection;
-            console.log(textData.value);
+
+            let a = ''
+            a += createTextDataHeader(records, '1')
+
+
+            for (let row = 0; row < records.length; row++) {
+                for (let col = 0; col < records[row].length; col++) {
+
+                }
+            }
+
+            console.log(a)
+
+            // textData.value = a
         },
     },
     data() {
