@@ -54,20 +54,20 @@ export default {
                     .then((xmlDoc) => {
 
                         // Get all the XML nodes with tag name "Section"
-                        const _arryOfXML = xmlDoc.getElementsByTagName('Section');
+                        // Spread operator (...) to convert the HTMLCollection object returned by getElementsByTagName into an array
+                        const _arryOfXML = [...xmlDoc.getElementsByTagName('Section')];
 
-                        // Extract the data from the child elements of each XML node and create a new array "records"
-                        const records = _arryOfXML.slice(1, -1).map(item => { // Exclude the first and last occurrence of the "Section" tag
-                            const _item = {};
+                        // Exclude the first and last occurrence of the "Section" tag
+                        const records = _arryOfXML.slice(1, -1).map(item => {
+                            const values = [];
                             for (const child of item.children) {
-                                const fieldName = child.getAttribute('Name');
-                                 // Get the value of the first child element (assuming it is either a "FormattedValue" or "TextValue") and add it to the object with the field name as the key
-                                _item[fieldName] = child.children[0].textContent;
+                                // Get the value of the first child element (assuming it is either a "FormattedValue" or "TextValue") and add it to the object with the field name as the key
+                                values.push(child.children[0].textContent);
                             }
-                            return _item;
+                            return values;
                         });
 
-                        this.createTextData(records)
+                        // this.createTextData(records)
 
                         // Set records as data property
                         return this.records = records;
