@@ -15,8 +15,9 @@
 <script>
 import DropZone from '../components/DropZone.vue'
 import DownloadCard from '../components/DownloadCard.vue'
-import RdoInputCard from '../components/RdoInputCard.vue';
-import { readXMLFile, createTextDataHeader, createTextDataDetails } from '../utils/helpers.js'
+import RdoInputCard from '../components/RdoInputCard.vue'
+import { readXMLFile } from '../utils/helpers.js'
+import { createTextDataHeader, createTextDataDetails } from '../utils/textDataFormatter.js'
 import { ref } from 'vue'
 
 let file = ref(""), records = ref(""), textData = ref("")
