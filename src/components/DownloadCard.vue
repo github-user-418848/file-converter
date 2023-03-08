@@ -66,12 +66,12 @@ export default {
 
 @media screen and (min-width: 920px) {
     .col-1 {
-        width: 25%;
+        width: 50%;
         text-align: left;
     }
 
     .col-2 {
-        width: 75%;
+        width: 50%;
         text-align: right;
     }
 }
