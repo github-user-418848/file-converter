@@ -1,6 +1,6 @@
 import { formatTIN, formatDate, formatAgentName } from './helpers.js';
 
-export function createTextDataHeader(record, route) {
+export function formatTextDataHeader(record, route) {
     let textDataHeader = ''
     switch (route) {
         case '1':
@@ -16,7 +16,7 @@ export function createTextDataHeader(record, route) {
     return `${textDataHeader},${formatTIN(record[0][0])},${formatDate(record[0][1])},${formatAgentName(record[0][2])}`;
 }
 
-export function createTextDataDetails(records, route) {
+export function formatTextDataDetails(records, route) {
     let textDataDetails = ''
     for (let row = 1; row < records.length - 1; row++) {
         textDataDetails += `\n${records[row][0]},${formatTIN(records[row][1])}`
