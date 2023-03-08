@@ -29,7 +29,7 @@ export function createTextDataHeader(record, route) {
             textDataHeader += 'HMAP,H1600VT'
             break;
     }
-    return `${textDataHeader},${formatTIN(record[0][0])},${record[0][1]},${formatAgentName(record[0][2])}`;
+    return `${textDataHeader},${formatTIN(record[0][0])},${formatDate(record[0][1])},${formatAgentName(record[0][2])}`;
 }
 
 export function createTextDataDetails(records, route) {
@@ -60,6 +60,11 @@ function formatDate(date) {
 function formatAgentName(agentName) {
     const match = regexMatched(/WITHHOLDING AGENT'S NAME:\s*(.*)/, agentName)
     return match ? match[1] : 'undefined'
+}
+
+function getMonthIndex(monthName) {
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return months.indexOf(monthName.charAt(0).toUpperCase() + monthName.slice(1).toLowerCase());
 }
 
 function regexMatched(regexPattern, string) {
