@@ -107,11 +107,6 @@ export default {
             textData.value = recordCollection;
             console.log(textData.value);
         },
-
-        // Method to be called when the download button is clicked
-        download() {
-            alert("Downloaded");
-        },
     },
     data() {
         return {
