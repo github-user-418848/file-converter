@@ -85,8 +85,8 @@ export default {
 
             let textDataOutput = ''
 
-            textDataOutput += formatTextDataHeader(records, '1')
-            textDataOutput += formatTextDataDetails(records, '1')
+            textDataOutput += formatTextDataHeader(records, this.$route.params.id)
+            textDataOutput += formatTextDataDetails(records, this.$route.params.id)
 
             console.log(textDataOutput)
 
