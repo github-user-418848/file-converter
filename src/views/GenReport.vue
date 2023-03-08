@@ -90,7 +90,7 @@ export default {
 
             console.log(textDataOutput)
 
-            // textData.value = textDataOutput
+            textData.value = textDataOutput
         },
     },
     data() {
