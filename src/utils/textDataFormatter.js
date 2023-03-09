@@ -43,6 +43,8 @@ export function formatTextDataControls(record, route) {
             textDataControls += 'CMAP,C1600VT,' // 1600VT or C1600PT
             textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             textDataControls += `${formatAgentName(record[0][2])}\n` // Return Period
+            textDataControls += `${record[record.length - 1][4]},` // Total Amount of Income Payment 
+            textDataControls += `${record[record.length - 1][5]}` // Total Amount of Tax Withheld
             break;
     }
     return textDataControls
