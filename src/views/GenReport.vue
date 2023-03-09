@@ -34,20 +34,20 @@ export default {
         dropFile(e) {
             // Set the file reference to the first dropped file
             file.value = e.dataTransfer.files[0]
-            // Call the mapXmlData method to parse the XML data
-            this.mapXmlData(file.value)
+            // Call the parseXmlFile method to parse the XML data
+            this.parseXmlFile(file.value)
             console.log(file.value.name)
         },
 
         // Method called when a file is selected using the file input
         selectedFile() {
             file.value = document.querySelector('.dropzoneFile').files[0]
-            this.mapXmlData(file.value)
+            this.parseXmlFile(file.value)
             console.log(file.value.name)
         },
 
         // Method to parse XML data and return an array of objects
-        mapXmlData(file) {
+        parseXmlFile(file) {
             if (file) {
                 // Call readXMLFile helper method to read the XML data
                 readXMLFile(file)
