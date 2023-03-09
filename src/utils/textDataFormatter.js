@@ -6,8 +6,8 @@ export function formatTextDataHeader(record, route) {
         case '1':
             textDataHeader += 'HMAP,H1600VT,' // Alpha List and Type Code
             textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
-            textDataHeader += `${formatDate(record[0][1])},` // WA Registered Name
-            textDataHeader += `${formatAgentName(record[0][2])}\n` // Return Period
+            textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
+            textDataHeader += `${formatDate(record[0][1])}\n` // Return Period
             break;
     }
     return textDataHeader;
