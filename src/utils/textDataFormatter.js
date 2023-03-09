@@ -49,3 +49,15 @@ export function formatTextDataControls(record, route) {
     }
     return textDataControls
 }
+
+export function fileName(record, route) {
+    // <TIN><BC><RETURN PERIOD><FORM TYPE>.DAT
+    let filename = ''
+    switch (route) {
+        case '1':
+            filename += `${formatTIN(record[0][0])}` // WA Tin together w/ the Branch Code
+            filename += `${formatDate(record[0][1]).replace("/", "")}` // Return Period
+    }
+    filename += '.dat'
+    return filename
+}
