@@ -4,7 +4,7 @@ export function textDataHeader(record, route) {
     let textDataHeader = ''
     switch (route) {
         case '1':
-            textDataHeader += 'HMAP,H1600VT,' // Alpha List and Type Code
+            textDataHeader += 'HMAP,H1600,' // Alpha List and Type Code
             textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
             textDataHeader += `${formatDate(record[0][1])}\n` // Return Period
