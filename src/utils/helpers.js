@@ -31,6 +31,10 @@ export function formatAgentName(agentName) {
     return match ? match[1] : 'undefined'
 }
 
+export function formatDigit(digit) {
+    return digit.replaceAll(",", "")
+}
+
 export function getMonthIndex(monthName) {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return months.indexOf(monthName.charAt(0).toUpperCase() + monthName.slice(1).toLowerCase());

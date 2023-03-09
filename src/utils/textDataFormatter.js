@@ -1,4 +1,4 @@
-import { formatTIN, formatDate, formatAgentName } from './helpers.js';
+import { formatTIN, formatDate, formatAgentName, formatDigit } from './helpers.js';
 
 export function textDataHeader(record, route) {
     let textDataHeader = ''
@@ -24,10 +24,10 @@ export function textDataDetails(records, route) {
                 textDataDetails += `${records[row][5]},` // Corporation (Registered Name)
                 textDataDetails += `${formatDate(records[0][1])},` // Return Period
                 textDataDetails += `${records[row][2]},` // ATC Code
-                textDataDetails += `${records[row][3]},` // Nature of Income
-                textDataDetails += `${records[row][4]},` // Tax Rate
-                textDataDetails += `${records[row][7]},` // Amount of Income Payment
-                textDataDetails += `${records[row][6]}` // Amount of Tax WithHeld
+                textDataDetails += `${formatDigit(records[row][3])},` // Nature of Income
+                textDataDetails += `${formatDigit(records[row][4])},` // Tax Rate
+                textDataDetails += `${formatDigit(records[row][7])},` // Amount of Income Payment
+                textDataDetails += `${formatDigit(records[row][6])}` // Amount of Tax WithHeld
                 break;
         }
 
@@ -43,8 +43,8 @@ export function textDataControls(record, route) {
             textDataControls += 'CMAP,C1600VT,' // 1600VT or C1600PT
             textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             textDataControls += `${formatDate(record[0][1])},` // Return Period
-            textDataControls += `${record[record.length - 1][4]},` // Total Amount of Income Payment 
-            textDataControls += `${record[record.length - 1][5]}` // Total Amount of Tax Withheld
+            textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
+            textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
             break;
     }
     return textDataControls
