@@ -17,8 +17,8 @@ export function readXMLFile(file) {
 }
 
 export function formatTIN(tin) {
-    const match = regexMatched(/(\d{3})-(\d{3})-(\d{3})-(\d{1,4})$|^(\d*)$/, tin)
-    return match ? match[5] ? match[5] : match[1] + match[2] + match[3] + ',' + match[4] : 'undefined'
+    const match = regexMatched(/(\d{3})-(\d{3})-(\d{3})-(\d{1,4})$|^(\d{9})(\d*)$/, tin)
+    return match ? match[5] && match[6] ? match[5] + ',' + match[6] : match[1] + match[2] + match[3] + ',' + match[4] : 'undefined'
 }
 
 export function formatDate(date) {
