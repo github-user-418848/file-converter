@@ -22,16 +22,18 @@ export function formatTextDataDetails(records, route) {
         switch (route) {
             case '1':
                 textDataDetails += 'DMAP,D1600VT,'
+                textDataDetails += `${records[row][0]},` // Sequence Number
+                textDataDetails += `${formatTIN(records[row][1])},` // TIN Number
+                textDataDetails += `${records[row][2]},` // ATC Code
+                textDataDetails += `${records[row][3]},` // Nature of Income
+                textDataDetails += `${records[row][4]},` // Tax Rate
+                textDataDetails += `${records[row][5]},` // Corporation (Registered Name)
+                textDataDetails += `${records[row][6]},` // Amount of Tax WithHeld
+                textDataDetails += `${records[row][7]},` // Amount of Income Payment
                 break;
         }
-        textDataDetails += `${records[row][0]},${formatTIN(records[row][1])}\n`
-        // for (let col = 0; col < records[row].length; col++) {
 
-        //     textDataDetails += `${records[row][col]}`
-        //     if (col < records[row].length - 1) {
-        //         textDataDetails += '>>'
-        //     }
-        // }
+        textDataDetails += `\n`
     }
     return textDataDetails
 }
