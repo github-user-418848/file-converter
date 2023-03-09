@@ -18,8 +18,8 @@ export function formatTextDataDetails(records, route) {
     for (let row = 1; row < records.length - 1; row++) {
         switch (route) {
             case '1':
-                textDataDetails += 'DMAP,D1600VT,'
-                textDataDetails += `${records[row][0]},` // Sequence Number
+                textDataDetails += 'DMAP,D1600VT,' // Alpha List and Type Code
+                textDataDetails += `${records[row][0]},` // Sequence Number together w/ the Branch Code
                 textDataDetails += `${formatTIN(records[row][1])},` // TIN Number
                 textDataDetails += `${records[row][5]},` // Corporation (Registered Name)
                 textDataDetails += `${formatDate(records[0][1])},` // Return Period
@@ -27,7 +27,7 @@ export function formatTextDataDetails(records, route) {
                 textDataDetails += `${records[row][3]},` // Nature of Income
                 textDataDetails += `${records[row][4]},` // Tax Rate
                 textDataDetails += `${records[row][7]},` // Amount of Income Payment
-                textDataDetails += `${records[row][6]},` // Amount of Tax WithHeld
+                textDataDetails += `${records[row][6]}` // Amount of Tax WithHeld
                 break;
         }
 
