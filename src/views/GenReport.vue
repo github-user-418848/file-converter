@@ -20,8 +20,6 @@ import { readXMLFile } from '../utils/helpers.js'
 import { textDataHeader, textDataDetails, textDataControls, fileName } from '../utils/textDataFormatter.js'
 import { ref } from 'vue'
 
-let file = ref(""), records = ref(""), textData = ref(""), generatedFileName = ref("")
-
 export default {
     name: "GenReport",
     components: {
@@ -29,21 +27,30 @@ export default {
         DownloadCard,
         RdoInputCard,
     },
+    data() {
+        return {
+            // Data to be rendered for template
+            file: ref(""),
+            records: ref(""),
+            textData: ref(""),
+            generatedFileName: ref(""),
+        }
+    },
     methods: {
         // Method called when a file is dropped onto the DropZone component
         dropFile(e) {
             // Set the file reference to the first dropped file
-            file.value = e.dataTransfer.files[0]
+            this.file = e.dataTransfer.files[0]
             // Call the parseXmlFile method to parse the XML data
-            this.parseXmlFile(file.value)
-            console.log(file.value.name)
+            this.parseXmlFile(this.file)
+            console.log(this.file.name)
         },
 
         // Method called when a file is selected using the file input
         selectedFile() {
-            file.value = document.querySelector('.dropzoneFile').files[0]
-            this.parseXmlFile(file.value)
-            console.log(file.value.name)
+            this.file = document.querySelector('.dropzoneFile').files[0]
+            this.parseXmlFile(this.file)
+            console.log(this.file.name)
         },
 
         // Method to parse XML data and return an array of objects
@@ -54,7 +61,7 @@ export default {
                     .then((xmlDoc) => {
                         this.createTextData(this.retrieveRecords(xmlDoc))
                         // Set records as data property
-                        return this.records = records;
+                        // return this.records = records;
                     })
                     .catch((error) => {
                         console.log(error);
@@ -84,18 +91,9 @@ export default {
             textDataOutput += textDataDetails(records, this.$route.params.id)
             textDataOutput += textDataControls(records, this.$route.params.id)
             console.log(textDataOutput)
-            textData.value = textDataOutput
-            generatedFileName.value = fileName(records, this.$route.params.id)
+            this.textData = textDataOutput
+            this.generatedFileName = fileName(records, this.$route.params.id)
         },
-    },
-    data() {
-        return {
-            // Data to be rendered for template
-            file,
-            records,
-            textData,
-            generatedFileName
-        }
     },
 }
 </script>
