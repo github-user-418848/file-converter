@@ -45,4 +45,5 @@ export function formatTextDataControls(record, route) {
             textDataControls += `${formatAgentName(record[0][2])}\n` // Return Period
             break;
     }
+    return textDataControls
 }
