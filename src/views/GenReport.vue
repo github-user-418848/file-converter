@@ -9,7 +9,7 @@
     <RdoInputCard />
 
     <!-- DownloadCard component to download transformed file -->
-    <DownloadCard :fileName="file.name" :textData="textData" />
+    <DownloadCard :fileName="file.name" :textData="textData" :generatedFileName="generatedFileName" />
 </template>
 
 <script>
@@ -17,10 +17,10 @@ import DropZone from '../components/DropZone.vue'
 import DownloadCard from '../components/DownloadCard.vue'
 import RdoInputCard from '../components/RdoInputCard.vue'
 import { readXMLFile } from '../utils/helpers.js'
-import { formatTextDataHeader, formatTextDataDetails, formatTextDataControls } from '../utils/textDataFormatter.js'
+import { formatTextDataHeader, formatTextDataDetails, formatTextDataControls, fileName } from '../utils/textDataFormatter.js'
 import { ref } from 'vue'
 
-let file = ref(""), records = ref(""), textData = ref("")
+let file = ref(""), records = ref(""), textData = ref(""), generatedFileName = ref("")
 
 export default {
     name: "GenReport",
@@ -70,6 +70,7 @@ export default {
                         });
 
                         this.createTextData(records)
+                        generatedFileName.value = fileName(records, this.$route.params.id)
 
                         // Set records as data property
                         return this.records = records;
@@ -82,15 +83,11 @@ export default {
 
         // Method to create text data from the records array
         createTextData(records) {
-
             let textDataOutput = ''
-
             textDataOutput += formatTextDataHeader(records, this.$route.params.id)
             textDataOutput += formatTextDataDetails(records, this.$route.params.id)
             textDataOutput += formatTextDataControls(records, this.$route.params.id)
-
             console.log(textDataOutput)
-
             textData.value = textDataOutput
         },
     },
@@ -100,6 +97,7 @@ export default {
             file,
             records,
             textData,
+            generatedFileName
         }
     },
 }
