@@ -17,7 +17,7 @@ import DropZone from '../components/DropZone.vue'
 import DownloadCard from '../components/DownloadCard.vue'
 import RdoInputCard from '../components/RdoInputCard.vue'
 import { readXMLFile } from '../utils/helpers.js'
-import { formatTextDataHeader, formatTextDataDetails } from '../utils/textDataFormatter.js'
+import { formatTextDataHeader, formatTextDataDetails, formatTextDataControls } from '../utils/textDataFormatter.js'
 import { ref } from 'vue'
 
 let file = ref(""), records = ref(""), textData = ref("")
@@ -87,6 +87,7 @@ export default {
 
             textDataOutput += formatTextDataHeader(records, this.$route.params.id)
             textDataOutput += formatTextDataDetails(records, this.$route.params.id)
+            textDataOutput += formatTextDataControls(records, this.$route.params.id)
 
             console.log(textDataOutput)
 
