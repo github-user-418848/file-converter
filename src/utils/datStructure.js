@@ -1,6 +1,6 @@
 import { formatTIN, formatDate, formatAgentName, formatDigit } from './helpers.js';
 
-export function textDataHeader(record, route) {
+export function header(record, route) {
     let textDataHeader = ''
     switch (route) {
         case '1':
@@ -13,7 +13,7 @@ export function textDataHeader(record, route) {
     return textDataHeader;
 }
 
-export function textDataDetails(records, route) {
+export function details(records, route) {
     let textDataDetails = ''
     for (let row = 1; row < records.length - 1; row++) {
         switch (route) {
@@ -36,7 +36,7 @@ export function textDataDetails(records, route) {
     return textDataDetails
 }
 
-export function textDataControls(record, route) {
+export function controls(record, route) {
     let textDataControls = ''
     switch (route) {
         case '1':
@@ -50,7 +50,7 @@ export function textDataControls(record, route) {
     return textDataControls
 }
 
-export function fileName(record, route) {
+export function filename(record, route) {
     // <TIN><BC><RETURN PERIOD><FORM TYPE>.DAT
     let filename = ''
     switch (route) {
