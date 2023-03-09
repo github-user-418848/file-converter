@@ -4,7 +4,7 @@ export function formatTextDataHeader(record, route) {
     let textDataHeader = ''
     switch (route) {
         case '1':
-            textDataHeader += 'HMAP,H1600VT' // Alpha List and Type Code
+            textDataHeader += 'HMAP,H1600VT,' // Alpha List and Type Code
             textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             textDataHeader += `${formatDate(record[0][1])},` // WA Registered Name
             textDataHeader += `${formatAgentName(record[0][2])}\n` // Return Period
@@ -34,4 +34,15 @@ export function formatTextDataDetails(records, route) {
         textDataDetails += `\n`
     }
     return textDataDetails
+}
+
+export function formatTextDataControls(record, route) {
+    let textDataControls = ''
+    switch (route) {
+        case '1':
+            textDataControls += 'CMAP,C1600VT,' // 1600VT or C1600PT
+            textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
+            textDataHeader += `${formatAgentName(record[0][2])}\n` // Return Period
+            break;
+    }
 }
