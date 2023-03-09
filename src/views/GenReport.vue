@@ -50,13 +50,13 @@ export default {
 
         async parseXmlFile(file) {
             if (file) {
-                readXMLFile(file)
-                .then((xmlDoc) => {
-                    this.createTextData(this.retrieveRecords(xmlDoc))
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+                try {
+                    const xmlDoc = await readXMLFile(file)
+                    const records = this.retrieveRecords(xmlDoc)
+                    this.createTextData(records)
+                } catch (error) {
+                    console.log(error)
+                }
             }
         },
 

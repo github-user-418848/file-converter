@@ -1,4 +1,4 @@
-export function readXMLFile(file) {
+export async function readXMLFile(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
