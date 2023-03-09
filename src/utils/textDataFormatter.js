@@ -41,8 +41,8 @@ export function formatTextDataControls(record, route) {
     switch (route) {
         case '1':
             textDataControls += 'CMAP,C1600VT,' // 1600VT or C1600PT
-            textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
-            textDataHeader += `${formatAgentName(record[0][2])}\n` // Return Period
+            textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
+            textDataControls += `${formatAgentName(record[0][2])}\n` // Return Period
             break;
     }
 }
