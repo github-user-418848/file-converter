@@ -4,7 +4,7 @@
             <span class="file-info">Filename: {{ fileName }}</span>
         </div>
         <div class="col-2">
-            <button class="btn" @click="downloadFile(textData)">Generate</button>
+            <button class="btn" @click="downloadFile()">Generate</button>
         </div>
     </div>
 </template>
@@ -16,13 +16,14 @@ export default {
     props: {
         fileName: String,
         textData: String,
+        generatedFileName: String,
     },
     methods: {
-        downloadFile(blobText) {
+        downloadFile() {
             const link = document.createElement('a');
-            const file = new Blob([blobText], { type: 'text/plain' });
+            const file = new Blob([this.textData], { type: 'text/plain' });
             link.href = URL.createObjectURL(file);
-            link.download = 'file.dat';
+            link.download = this.generatedFileName;
             link.click();
             URL.revokeObjectURL(link.href);
         }
