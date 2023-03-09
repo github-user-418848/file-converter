@@ -29,7 +29,6 @@ export default {
     },
     data() {
         return {
-            // Data to be rendered for template
             file: ref(""),
             records: ref(""),
             textData: ref(""),
@@ -37,40 +36,31 @@ export default {
         }
     },
     methods: {
-        // Method called when a file is dropped onto the DropZone component
         dropFile(e) {
-            // Set the file reference to the first dropped file
             this.file = e.dataTransfer.files[0]
-            // Call the parseXmlFile method to parse the XML data
             this.parseXmlFile(this.file)
             console.log(this.file.name)
         },
 
-        // Method called when a file is selected using the file input
         selectedFile() {
             this.file = document.querySelector('.dropzoneFile').files[0]
             this.parseXmlFile(this.file)
             console.log(this.file.name)
         },
 
-        // Method to parse XML data and return an array of objects
         parseXmlFile(file) {
             if (file) {
-                // Call readXMLFile helper method to read the XML data
                 readXMLFile(file)
-                    .then((xmlDoc) => {
-                        this.createTextData(this.retrieveRecords(xmlDoc))
-                        // Set records as data property
-                        // return this.records = records;
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                .then((xmlDoc) => {
+                    this.createTextData(this.retrieveRecords(xmlDoc))
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
             }
         },
 
         retrieveRecords(xmlDoc) {
-            // Get all the XML nodes with tag name "Section"
             // Spread operator (...) to convert the HTMLCollection object returned by getElementsByTagName into an array
             const _arryOfXML = [...xmlDoc.getElementsByTagName('Section')];
             const records = _arryOfXML.map(item => {
@@ -84,7 +74,6 @@ export default {
             return records
         },
 
-        // Method to create text data from the records array
         createTextData(records) {
             let textDataOutput = ''
             textDataOutput += textDataHeader(records, this.$route.params.id)
