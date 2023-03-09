@@ -57,6 +57,7 @@ export function fileName(record, route) {
         case '1':
             filename += `${formatTIN(record[0][0]).replace(",", "")}` // WA Tin together w/ the Branch Code
             filename += `${formatDate(record[0][1]).replace("/", "")}` // Return Period
+            filename += '1600' // Form Type
     }
     filename += '.dat'
     return filename
