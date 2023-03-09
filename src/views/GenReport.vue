@@ -34,7 +34,6 @@ export default {
         dropFile(e) {
             // Set the file reference to the first dropped file
             file.value = e.dataTransfer.files[0]
-
             // Call the mapXmlData method to parse the XML data
             this.mapXmlData(file.value)
             console.log(file.value.name)
@@ -53,25 +52,7 @@ export default {
                 // Call readXMLFile helper method to read the XML data
                 readXMLFile(file)
                     .then((xmlDoc) => {
-
-                        // Get all the XML nodes with tag name "Section"
-                        // Spread operator (...) to convert the HTMLCollection object returned by getElementsByTagName into an array
-                        const _arryOfXML = [...xmlDoc.getElementsByTagName('Section')];
-
-                        // Exclude the first and last occurrence of the "Section" tag
-                        // _arryOfXML.slice(1, -1).map(....)
-                        const records = _arryOfXML.map(item => {
-                            const values = [];
-                            for (const child of item.children) {
-                                // Get the value of the first child element (assuming it is either a "FormattedValue" or "TextValue") and add it to the object with the field name as the key
-                                values.push(child.children[0].textContent);
-                            }
-                            return values;
-                        });
-
-                        this.createTextData(records)
-                        generatedFileName.value = fileName(records, this.$route.params.id)
-
+                        this.createTextData(this.retrieveRecords(xmlDoc))
                         // Set records as data property
                         return this.records = records;
                     })
@@ -79,6 +60,21 @@ export default {
                         console.log(error);
                     });
             }
+        },
+
+        retrieveRecords(xmlDoc) {
+            // Get all the XML nodes with tag name "Section"
+            // Spread operator (...) to convert the HTMLCollection object returned by getElementsByTagName into an array
+            const _arryOfXML = [...xmlDoc.getElementsByTagName('Section')];
+            const records = _arryOfXML.map(item => {
+                const values = [];
+                for (const child of item.children) {
+                    // Get the value of the first child element (assuming it is either a "FormattedValue" or "TextValue") and add it to the object with the field name as the key
+                    values.push(child.children[0].textContent)
+                }
+                return values
+            });
+            return records
         },
 
         // Method to create text data from the records array
@@ -89,6 +85,7 @@ export default {
             textDataOutput += textDataControls(records, this.$route.params.id)
             console.log(textDataOutput)
             textData.value = textDataOutput
+            generatedFileName.value = fileName(records, this.$route.params.id)
         },
     },
     data() {
