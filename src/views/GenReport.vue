@@ -36,19 +36,19 @@ export default {
         }
     },
     methods: {
-        dropFile(e) {
+        async dropFile(e) {
             this.file = e.dataTransfer.files[0]
-            this.parseXmlFile(this.file)
+            await this.parseXmlFile(this.file)
             console.log(this.file.name)
         },
 
-        selectedFile() {
+        async selectedFile() {
             this.file = document.querySelector('.dropzoneFile').files[0]
-            this.parseXmlFile(this.file)
+            await this.parseXmlFile(this.file)
             console.log(this.file.name)
         },
 
-        parseXmlFile(file) {
+        async parseXmlFile(file) {
             if (file) {
                 readXMLFile(file)
                 .then((xmlDoc) => {
