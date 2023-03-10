@@ -67,9 +67,4 @@ svg {
   padding: 10px;
 }
 
-a:hover svg {
-  color: red;
-}
-
-
 </style>
