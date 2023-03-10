@@ -34,6 +34,19 @@ export function details(records, route) {
                 textDataDetails += `${formatDigit(records[row][7])},` // Amount of Income Payment
                 textDataDetails += `${formatDigit(records[row][6])}` // Amount of Tax WithHeld
                 break;
+            case '2':
+                // "15,210.92", "1.00", "152.11", "ACCUSOURCE VENTURES CORP.", "WC158", "WC158 - 1% top 10,000 P.Corp supplier of goods", "242-804-444-000", "1"
+                textDataDetails += 'D1,1601EQ,' // Alpha List and Type Code
+                textDataDetails += `${records[row][7]},` // Sequence Number together w/ the Branch Code
+                textDataDetails += `${formatTIN(records[row][6])},` // TIN Number
+                textDataDetails += `${records[row][4]},` // Corporation (Registered Name)
+                // textDataDetails += `${formatDate(records[0][1])},` // Return Period
+                textDataDetails += `${records[row][5]},` // ATC Code
+                // textDataDetails += `${formatDigit(records[row][6])},` // Nature of Income
+                textDataDetails += `${formatDigit(records[row][1])},` // Tax Rate
+                textDataDetails += `${formatDigit(records[row][0])},` // Amount of Income Payment
+                textDataDetails += `${formatDigit(records[row][2])}` // Amount of Tax WithHeld
+                break;
         }
 
         textDataDetails += `\n`
