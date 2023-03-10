@@ -75,8 +75,8 @@ export default {
 
         retrieveRecords(xmlDoc) {
             // Spread operator (...) to convert the HTMLCollection object returned by getElementsByTagName into an array
-            const _arryOfXML = [...xmlDoc.getElementsByTagName('Section')];
-            const records = _arryOfXML.map(item => {
+            const xmlSection = [...xmlDoc.getElementsByTagName('Section')];
+            const records = xmlSection.map(item => {
                 const values = [];
                 for (const child of item.children) {
                     // Get the value of the first child element (assuming it is either a "FormattedValue" or "TextValue") and add it to the object with the field name as the key
