@@ -61,15 +61,15 @@ export default {
             if (file) {
                 try {
                     const xmlDoc = await readXMLFile(file)
-                    const records = this.retrieveRecords(xmlDoc)
-                    this.createTextData(records)
+                    const records = await this.retrieveRecords(xmlDoc)
+                    await this.createTextData(records)
                 } catch (error) {
                     console.log(error)
                 }
             }
         },
 
-        retrieveRecords(xmlDoc) {
+        async retrieveRecords(xmlDoc) {
             // Spread operator (...) to convert the HTMLCollection object returned by getElementsByTagName into an array
             const xmlSection = [...xmlDoc.getElementsByTagName('Section')];
             const records = xmlSection.map(item => {
@@ -84,7 +84,7 @@ export default {
             return records
         },
 
-        createTextData(records) {
+        async createTextData(records) {
             let textDataOutput = `${header(records, this.$route.params.id)}${details(records, this.$route.params.id)}${controls(records, this.$route.params.id)}`
             console.log(textDataOutput)
             this.textData = textDataOutput
