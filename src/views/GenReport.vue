@@ -89,10 +89,7 @@ export default {
         },
 
         createTextData(records) {
-            let textDataOutput = ''
-            textDataOutput += header(records, this.$route.params.id)
-            textDataOutput += details(records, this.$route.params.id)
-            textDataOutput += controls(records, this.$route.params.id)
+            let textDataOutput = `${header(records, this.$route.params.id)}${details(records, this.$route.params.id)}${controls(records, this.$route.params.id)}`
             console.log(textDataOutput)
             this.textData = textDataOutput
             this.generatedFileName = filename(records, this.$route.params.id)
