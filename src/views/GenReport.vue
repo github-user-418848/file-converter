@@ -9,7 +9,10 @@
     <RdoInputCard />
 
     <!-- DownloadCard component to download transformed file -->
-    <DownloadCard :fileName="file.name" :textData="textData" :generatedFileName="generatedFileName" />
+
+    <div v-for="(file, index) in fileDataCollection.originalFileName" :key="index">
+        <DownloadCard :fileName="file" :textData="fileDataCollection.textContent[index]" :generatedFileName="fileDataCollection.generatedFileName[index]" />
+    </div>
 </template>
 
 <script>
@@ -18,6 +21,7 @@ import DownloadCard from '../components/DownloadCard.vue'
 import RdoInputCard from '../components/RdoInputCard.vue'
 import { readXMLFile } from '../utils/helpers.js'
 import { header, details, controls, filename } from '../utils/datStructure.js'
+import { fileData } from '../utils/globals.js'
 import { ref } from 'vue'
 
 export default {
@@ -33,17 +37,20 @@ export default {
             records: ref(""),
             textData: ref(""),
             generatedFileName: ref(""),
+            fileDataCollection: fileData,
         }
     },
     methods: {
         async dropFile(e) {
             this.file = e.dataTransfer.files[0]
+            this.fileDataCollection.originalFileName.push(this.file.name)
             await this.parseXmlFile(this.file)
             console.log(this.file.name)
         },
 
         async selectedFile() {
             this.file = document.querySelector('.dropzoneFile').files[0]
+            this.fileDataCollection.originalFileName.push(this.file.name)
             await this.parseXmlFile(this.file)
             console.log(this.file.name)
         },
@@ -82,6 +89,9 @@ export default {
             console.log(textDataOutput)
             this.textData = textDataOutput
             this.generatedFileName = filename(records, this.$route.params.id)
+
+            this.fileDataCollection.textContent.push(this.textData)
+            this.fileDataCollection.generatedFileName.push(this.generatedFileName)
         },
     },
 }
