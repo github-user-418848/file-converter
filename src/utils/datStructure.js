@@ -9,6 +9,11 @@ export function header(record, route) {
             textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
             textDataHeader += `${formatDate(record[0][1])}\n` // Return Period
             break;
+        case '2':
+            // TIN, BRANCH CODE, REGISTERED NAME, RETURN PERIOD, RDO CODE
+            textDataHeader += 'HQAP,1601EQ,'
+            textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
+            textDataHeader += `${formatAgentName(record[0][2])}\n` // WA's Registered Name
     }
     return textDataHeader;
 }
