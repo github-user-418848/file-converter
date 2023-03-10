@@ -64,6 +64,11 @@ export function controls(record, route) {
             textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
             textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
             break;
+        case '2':
+            textDataControls += 'C1,1601EQ,'
+            textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
+            textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
+            textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
     }
     return textDataControls
 }
