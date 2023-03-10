@@ -13,7 +13,8 @@
     <!-- DownloadCard component to download transformed file -->
 
     <div v-for="(file, index) in fileDataCollection.originalFileName" :key="index">
-        <DownloadCard :fileName="file" :textData="fileDataCollection.textContent[index]" :generatedFileName="fileDataCollection.generatedFileName[index]" />
+        <DownloadCard :fileName="file" :textData="fileDataCollection.textContent[index]"
+            :generatedFileName="fileDataCollection.generatedFileName[index]" />
     </div>
 </template>
 
@@ -47,14 +48,12 @@ export default {
             this.file = e.dataTransfer.files[0]
             await this.parseXmlFile(this.file)
             console.log(this.file.name)
-            await this.pushIntoFileData()
         },
 
         async selectedFile() {
             this.file = document.querySelector('.dropzoneFile').files[0]
             await this.parseXmlFile(this.file)
             console.log(this.file.name)
-            await this.pushIntoFileData()
         },
 
         async parseXmlFile(file) {
@@ -63,6 +62,7 @@ export default {
                     const xmlDoc = await readXMLFile(file)
                     const records = await this.retrieveRecords(xmlDoc)
                     await this.createTextData(records)
+                    await this.pushIntoFileData()
                 } catch (error) {
                     console.log(error)
                 }
