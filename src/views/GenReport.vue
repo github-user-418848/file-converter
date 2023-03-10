@@ -1,8 +1,8 @@
 <template>
     <!-- Display records array -->
-    <!-- <div v-for="(record, index) in records" :key="index">
+    <div v-for="(record, index) in records" :key="index">
         <p>{{ index }} - {{ record }}</p>
-    </div> -->
+    </div>
 
     <!-- DropZone component to select XML file -->
     <DropZone @drop.prevent="dropFile" @change="selectedFile" />
