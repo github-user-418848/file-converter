@@ -43,16 +43,20 @@ export default {
     methods: {
         async dropFile(e) {
             this.file = e.dataTransfer.files[0]
-            this.fileDataCollection.originalFileName.push(this.file.name)
             await this.parseXmlFile(this.file)
             console.log(this.file.name)
+            this.fileDataCollection.originalFileName.push(this.file.name)
+            this.fileDataCollection.textContent.push(this.textData)
+            this.fileDataCollection.generatedFileName.push(this.generatedFileName)
         },
 
         async selectedFile() {
             this.file = document.querySelector('.dropzoneFile').files[0]
-            this.fileDataCollection.originalFileName.push(this.file.name)
             await this.parseXmlFile(this.file)
             console.log(this.file.name)
+            this.fileDataCollection.originalFileName.push(this.file.name)
+            this.fileDataCollection.textContent.push(this.textData)
+            this.fileDataCollection.generatedFileName.push(this.generatedFileName)
         },
 
         async parseXmlFile(file) {
@@ -90,8 +94,6 @@ export default {
             this.textData = textDataOutput
             this.generatedFileName = filename(records, this.$route.params.id)
 
-            this.fileDataCollection.textContent.push(this.textData)
-            this.fileDataCollection.generatedFileName.push(this.generatedFileName)
         },
     },
 }
