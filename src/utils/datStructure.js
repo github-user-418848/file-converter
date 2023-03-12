@@ -1,4 +1,4 @@
-import { formatTIN, formatDate, formatAgentName, formatDigit } from './helpers.js';
+import { formatTIN, formatDate, formatAgentName, formatDigit, formatCorpName } from './helpers.js';
 
 export function header(record, route) {
     let textDataHeader = ''
@@ -28,7 +28,7 @@ export function details(records, route) {
                 textDataDetails += 'DMAP,D1600VT,' // Alpha List and Type Code
                 textDataDetails += `${records[row][0]},` // Sequence Number together w/ the Branch Code
                 textDataDetails += `${formatTIN(records[row][1])},` // TIN Number
-                textDataDetails += `${records[row][5]},` // Corporation (Registered Name)
+                textDataDetails += `${formatCorpName(records[row][5])},` // Corporation (Registered Name)
                 textDataDetails += `${formatDate(records[0][1])},` // Return Period
                 textDataDetails += `${records[row][2]},` // ATC Code
                 // textDataDetails += `${formatDigit(records[row][3])},` // Nature of Income
@@ -40,7 +40,7 @@ export function details(records, route) {
                 textDataDetails += 'D1,1601EQ,' // Alpha List and Type Code
                 textDataDetails += `${records[row][7]},` // Sequence Number together w/ the Branch Code
                 textDataDetails += `${formatTIN(records[row][6])},` // TIN Number
-                textDataDetails += `${records[row][4]},` // Corporation (Registered Name)
+                textDataDetails += `${formatCorpName(records[row][4])},` // Corporation (Registered Name)
                 // RETURN PERIOD HERE
                 textDataDetails += `${records[row][5]},` // ATC Code
                 // textDataDetails += `${formatDigit(records[row][6])},` // Nature of Income
