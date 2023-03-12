@@ -32,7 +32,7 @@ export function formatCorpName(corpName) {
 
 export function formatAgentName(agentName) {
     const match = regexMatched(/WITHHOLDING AGENT'S NAME:\s*(.*)/, agentName)
-    return match ? match[1] : 'undefined'
+    return match ? `"${match[1]}"` : 'undefined'
 }
 
 export function formatDigit(digit) {
