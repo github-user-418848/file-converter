@@ -26,6 +26,10 @@ export function formatDate(date) {
     return match ? ('0' + (new Date(match[2], getMonthIndex(match[1]), 1)).getMonth() + 1).slice(-2) + '/' + match[2] : 'undefined';
 }
 
+export function formatCorpName(corpName) {
+    return `"${corpName}"`
+}
+
 export function formatAgentName(agentName) {
     const match = regexMatched(/WITHHOLDING AGENT'S NAME:\s*(.*)/, agentName)
     return match ? match[1] : 'undefined'
