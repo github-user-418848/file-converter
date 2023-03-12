@@ -11,7 +11,7 @@ export function formatDate(date) {
 }
 
 export function formatCorpName(corpName) {
-    return `"${corpName}"`
+    return `"${corpName.toUpperCase()}"`
 }
 
 export function formatAgentName(agentName) {
