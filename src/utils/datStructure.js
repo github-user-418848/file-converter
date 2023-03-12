@@ -1,4 +1,4 @@
-import { formatTIN, formatDate, formatAgentName, formatDigit, formatCorpName } from './helpers.js';
+import { formatTIN, formatDate, formatAgentName, formatDigit, formatCorpName } from './formatter.js';
 
 export function header(record, route) {
     let textDataHeader = ''
