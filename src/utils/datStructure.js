@@ -16,8 +16,13 @@ export function header(record, route) {
             // RETURN PERIOD HERE
             // RDO CODE
             break;
+        case '3':
+            textDataHeader += 'HSAWT,H1700,' // Alpha List and Type Code
+            textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
+            textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
+            textDataHeader += `${formatDate(record[0][1])}${document.getElementById('rdo_code').value ? ',' + document.getElementById('rdo_code').value : ''}\n` // Return Period
     }
-    return textDataHeader;
+    return textDataHeader
 }
 
 export function details(records, route) {
@@ -35,7 +40,7 @@ export function details(records, route) {
                 textDataDetails += `${formatDigit(records[row][4])},` // Tax Rate
                 textDataDetails += `${formatDigit(records[row][7])},` // Amount of Income Payment
                 textDataDetails += `${formatDigit(records[row][6])}` // Amount of Tax WithHeld
-                break;
+                break
             case '2':
                 textDataDetails += 'D1,1601EQ,' // Alpha List and Type Code
                 textDataDetails += `${records[row][7]},` // Sequence Number together w/ the Branch Code
@@ -47,7 +52,19 @@ export function details(records, route) {
                 textDataDetails += `${formatDigit(records[row][1])},` // Tax Rate
                 textDataDetails += `${formatDigit(records[row][0])},` // Amount of Income Payment
                 textDataDetails += `${formatDigit(records[row][2])}` // Amount of Tax WithHeld
-                break;
+                break
+            case '3':
+                textDataDetails += 'DSAWT,D1700,' // Alpha List and Type Code
+                textDataDetails += `${records[row][7]},` // Sequence Number
+                textDataDetails += `${formatTIN(records[row][0])},` // TIN Number
+                textDataDetails += `${formatCorpName(records[row][4])},` // Corporation (Registered Name)
+                textDataDetails += `${formatDate(records[0][1])},` // Return Period
+                // textDataDetails += `${formatDigit(records[row][2])},` // Nature of Income
+                textDataDetails += `${records[row][1]},` // ATC Code
+                textDataDetails += `${formatDigit(records[row][3])},` // Tax Rate
+                textDataDetails += `${formatDigit(records[row][6])},` // Amount of Income Payment
+                textDataDetails += `${formatDigit(records[row][5])}` // Amount of Tax WithHeld
+                break
         }
 
         textDataDetails += `\n`
@@ -64,14 +81,21 @@ export function controls(record, route) {
             textDataControls += `${formatDate(record[0][1])},` // Return Period
             textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
             textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
-            break;
+            break
         case '2':
             textDataControls += 'C1,1601EQ,'
             textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             // RETURN PERIOD HERE
             textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
             textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
-            break;
+            break
+        case '3':
+            textDataControls += 'CSAWT,C1700,'
+            textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
+            // RETURN PERIOD HERE
+            textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
+            textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
+            break
     }
     return textDataControls
 }
@@ -88,6 +112,11 @@ export function filename(record, route) {
         case '2':
             filename += `${formatTIN(record[0][0]).replace(",", "")}` // WA Tin together w/ the Branch Code
             filename += '1601EQ'
+            break
+        case '3':
+            filename += `${formatTIN(record[0][0]).replace(",", "")}` // WA Tin together w/ the Branch Code
+            filename += `${formatDate(record[0][1]).replace("/", "")}` // Return Period
+            filename += '1700' // Form Type
             break
     }
     filename += '.dat'
