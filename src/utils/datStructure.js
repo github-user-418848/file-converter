@@ -31,7 +31,7 @@ export function details(records, route) {
                 textDataDetails += `${records[row][5]},` // Corporation (Registered Name)
                 textDataDetails += `${formatDate(records[0][1])},` // Return Period
                 textDataDetails += `${records[row][2]},` // ATC Code
-                textDataDetails += `${formatDigit(records[row][3])},` // Nature of Income
+                // textDataDetails += `${formatDigit(records[row][3])},` // Nature of Income
                 textDataDetails += `${formatDigit(records[row][4])},` // Tax Rate
                 textDataDetails += `${formatDigit(records[row][7])},` // Amount of Income Payment
                 textDataDetails += `${formatDigit(records[row][6])}` // Amount of Tax WithHeld
