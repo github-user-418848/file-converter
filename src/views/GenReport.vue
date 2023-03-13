@@ -1,4 +1,10 @@
 <template>
+
+    <!-- {{ errorMessage }} -->
+
+    <!-- <div v-for="ero/"></div> -->
+    <Toast :errorMessage="errorMessage"/>
+
     <!-- Display records array -->
     <div v-for="(record, index) in records" :key="index">
         <p>{{ index }} - {{ record }}</p>
@@ -22,6 +28,8 @@
 import DropZone from '../components/DropZone.vue'
 import DownloadCard from '../components/DownloadCard.vue'
 import RdoInputCard from '../components/RdoInputCard.vue'
+import Toast from '../components/Toast.vue'
+
 import { readXMLFile } from '../utils/helpers.js'
 import { header, details, controls, filename } from '../utils/datStructure.js'
 import { fileData } from '../utils/globals.js'
@@ -34,6 +42,7 @@ export default {
         DropZone,
         DownloadCard,
         RdoInputCard,
+        Toast,
     },
     data() {
         return {
@@ -42,6 +51,7 @@ export default {
             textData: ref(""),
             generatedFileName: ref(""),
             fileDataCollection: fileData,
+            errorMessage: ref(""),
         }
     },
     methods: {
@@ -65,7 +75,7 @@ export default {
                 await this.createTextData(records)
                 await this.pushIntoFileData()
             } catch (error) {
-                console.log(error)
+                this.errorMessage = error
             }
         },
 
