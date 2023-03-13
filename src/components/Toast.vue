@@ -1,9 +1,11 @@
 <template>
-    <div class="toast-wrapper" v-if="errorMessage">
-        <div class="toast">
-            {{ errorMessage }}
+    <transition name="toast">
+        <div class="toast-wrapper" v-if="errorMessage">
+            <div class="toast">
+                {{ errorMessage }}
+            </div>
         </div>
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -36,5 +38,16 @@ export default {
     max-width: 100%;
     width: 100%;
     margin: 0 auto;
+}
+.toast-enter-from {
+    opacity: 0;
+    transform: translateY(-60px)
+}
+.toast-enter-to {
+    opacity: 1;
+    transform: translateY(0px)
+}
+.toast-enter-active {
+    transition: all 0.3s ease;
 }
 </style>
