@@ -1,10 +1,20 @@
 <template>
-    <div class="toast-wrapper">
+    <div class="toast-wrapper" v-if="errorMessage">
         <div class="toast">
-            An error occurred
+            {{ errorMessage }}
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    name: 'Toast',
+    props: {
+        errorMessage: String,
+    }
+}
+
+</script>
 
 <style>
 .toast-wrapper {
