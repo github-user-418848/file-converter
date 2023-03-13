@@ -13,7 +13,7 @@ export default {
     name: 'Toast',
     props: {
         errorMessage: String,
-    }
+    },
 }
 
 </script>
@@ -41,13 +41,26 @@ export default {
 }
 .toast-enter-from {
     opacity: 0;
-    transform: translateY(-60px)
+    transform: translateY(-120px)
 }
-.toast-enter-to {
+/* .toast-enter-to {
     opacity: 1;
     transform: translateY(0px)
-}
+} */
 .toast-enter-active {
     transition: all 0.3s ease;
 }
+
+/* .toast-leave-from {
+    opacity: 0;
+    transform: translateY(0px)
+} */
+.toast-leave-to {
+    opacity: 1;
+    transform: translateY(-120px)
+}
+.toast-leave-active {
+    transition: all 0.3s ease;
+}
+
 </style>
