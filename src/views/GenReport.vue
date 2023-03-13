@@ -25,6 +25,7 @@ import RdoInputCard from '../components/RdoInputCard.vue'
 import { readXMLFile } from '../utils/helpers.js'
 import { header, details, controls, filename } from '../utils/datStructure.js'
 import { fileData } from '../utils/globals.js'
+import { validateXmlFile } from '../utils/validators.js'
 import { ref } from 'vue'
 
 export default {
@@ -57,15 +58,14 @@ export default {
         },
 
         async parseXmlFile(file) {
-            if (file) {
-                try {
-                    const xmlDoc = await readXMLFile(file)
-                    const records = await this.retrieveRecords(xmlDoc)
-                    await this.createTextData(records)
-                    await this.pushIntoFileData()
-                } catch (error) {
-                    console.log(error)
-                }
+            try {
+                await validateXmlFile(file)
+                const xmlDoc = await readXMLFile(file)
+                const records = await this.retrieveRecords(xmlDoc)
+                await this.createTextData(records)
+                await this.pushIntoFileData()
+            } catch (error) {
+                console.log(error)
             }
         },
 
@@ -89,7 +89,6 @@ export default {
             console.log(textDataOutput)
             this.textData = textDataOutput
             this.generatedFileName = filename(records, this.$route.params.id)
-
         },
 
         async pushIntoFileData() {
