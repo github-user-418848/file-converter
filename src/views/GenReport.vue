@@ -72,6 +72,7 @@ export default {
                 await this.pushIntoFileData()
             } catch (error) {
                 this.errorMessage = error
+                setTimeout(() => { this.errorMessage = "" }, 3000)
             }
         },
 
