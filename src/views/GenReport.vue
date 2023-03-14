@@ -71,7 +71,7 @@ export default {
                 await this.createTextData(records)
                 await this.pushIntoFileData()
             } catch (error) {
-d                this.errorMessage = error.message
+                this.errorMessage = error.message
                 setTimeout(() => { this.errorMessage = "" }, 3000)
             }
         },
