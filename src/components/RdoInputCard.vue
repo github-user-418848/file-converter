@@ -31,7 +31,7 @@ input {
     color: black;
     outline: none;
     border: 1px solid rgb(124, 124, 124);
-    padding: 10px;
+    padding: clamp(0.3125rem, 0.3125rem + 0.2604vw, 0.625rem);
     width: 65%;
 }
 </style>
