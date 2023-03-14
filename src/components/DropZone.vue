@@ -27,7 +27,7 @@
         <span>Drag and Drop</span>
         <span>OR</span>
         <label class="btn" for="dropzoneFile">Select File</label>
-        <input type="file" name="dropzoneFile" id="dropzoneFile" class="dropzoneFile">
+        <input type="file" name="dropzoneFile" id="dropzoneFile" class="dropzoneFile" accept=".xml">
     </div>
 </template>
 
