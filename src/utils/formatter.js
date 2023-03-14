@@ -5,7 +5,7 @@ export function formatTIN(tin) {
     if (match) {
         return match[5] && match[6] ? match[5] + ',' + match[6] : match[1] + match[2] + match[3] + ',' + match[4];
     } else {
-        throw new Error('TIN Numbers in the XML file were parsed as undefined. Please be sure to check the type of report and try uploading it again.');
+        throw new Error('There was an error upon parsing the TIN Numbers. Please be sure to check the type of report and try uploading it again.');
     }
 }
 
@@ -15,7 +15,7 @@ export function formatDate(date) {
         return ('0' + (new Date(match[2], getMonthIndex(match[1]), 1)).getMonth() + 1).slice(-2) + '/' + match[2]
     }
     else {
-        throw new Error('Dates in the XML file were parsed as undefined. Please be sure to check the type of report and try uploading it again.');
+        throw new Error('There was an error upon parsing the Date. Please be sure to check the type of report and try uploading it again.');
     }
 }
 
@@ -29,7 +29,7 @@ export function formatAgentName(agentName) {
         return `"${match[1]}"`
     }
     else {
-        throw new Error('Withholding Agent Names were parsed as undefined. Please be sure to check the type of report and try uploading it again.')
+        throw new Error('There was an error upon parsing the Withholding Agent. Please be sure to check the type of report and try uploading it again.')
     }
 }
 
