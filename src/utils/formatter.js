@@ -15,7 +15,7 @@ export function formatDate(date) {
         return ('0' + (new Date(match[2], getMonthIndex(match[1]), 1)).getMonth() + 1).slice(-2) + '/' + match[2]
     }
     else {
-        throw new Error('There was an error upon parsing the Date. Please be sure to check the type of report and try uploading it again.');
+        throw new Error('There was an error upon parsing the Dates. Please be sure to check the type of report and try uploading it again.');
     }
 }
 
