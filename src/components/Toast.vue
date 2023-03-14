@@ -24,14 +24,15 @@ export default {
 
 <style>
 .toast-wrapper {
+    --toast-width: clamp(9.375rem, 9.375rem + 39.0625vw, 56.25rem);
 	position: fixed;
-	max-width: clamp(9.375rem, 9.375rem + 23.4375vw, 37.5rem);
+	max-width: var(--toast-width);
 	top: 20px;
 	display: flex;
 	justify-content: center;
 	width: 100%;
 	margin: 0 auto;
-	left: calc(clamp(0rem, 0rem + 100vw, 120rem) / 2 - clamp(9.375rem, 9.375rem + 23.4375vw, 37.5rem) / 2);
+	left: calc(clamp(0rem, 0rem + 100vw, 120rem) / 2 - var(--toast-width) / 2);
 }
 .toast {
     padding: clamp(0.625rem, 0.625rem + 0.5208vw, 1.25rem);
