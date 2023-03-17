@@ -4,6 +4,7 @@
             <span class="file-info">Filename: {{ fileName }}</span>
         </div>
         <div class="col-2">
+            <button class="btn" @click="viewFile()">Preview</button>
             <button class="btn" @click="downloadFile()">Generate</button>
         </div>
     </div>
@@ -19,6 +20,12 @@ export default {
         generatedFileName: String,
     },
     methods: {
+        viewFile() {
+            const blob = new Blob([this.textData], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const win = window.open(url, '_blank');
+            win.focus();
+        },
         downloadFile() {
             const link = document.createElement('a');
             const file = new Blob([this.textData], { type: 'text/plain' });
