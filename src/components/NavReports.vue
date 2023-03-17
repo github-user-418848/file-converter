@@ -17,10 +17,10 @@
       return {
         reports: [
           { title: 'MAP', id: 1 },
-          { title: 'QAP', id: 2 },
+          // { title: 'QAP', id: 2 },
           { title: 'SAWT', id: 3 },
-          { title: 'Sales', id: 4 },
-          { title: 'Purchase', id: 5 },
+          // { title: 'Sales', id: 4 },
+          // { title: 'Purchase', id: 5 },
         ]
       }
     }
