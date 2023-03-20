@@ -10,6 +10,10 @@ const router = createRouter({
         //     component: GenReport,
         // },
         {
+            path: '/',
+            redirect: '/gen-dat-file/1'
+        },
+        {
             name: 'GenReport',
             path: '/gen-dat-file/:id',
             component: GenReport,
