@@ -28,6 +28,7 @@ export default {
 <style scoped>
 h1 {
   font-size: clamp(1.5rem, 1.5rem + 1.25vw, 3rem);
+  margin-bottom: clamp(0.4rem, 0.4rem + 0.5vw, 1rem);
 }
 
 .nav-links {
@@ -65,7 +66,7 @@ select {
 }
 
 svg {
-  padding: 10px;
+  padding: clamp(0.3125rem, 0.3125rem + 0.2604vw, 0.625rem);
 }
 
 </style>
