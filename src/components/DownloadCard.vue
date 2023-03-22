@@ -1,11 +1,13 @@
 <template>
+    <Toast :errorMessage="errorMessage" />
+
     <div class="card" v-if="fileName">
         <div class="col-1">
             <span class="file-info">
                 Filename: {{ fileName.slice(0, 35) }}
                 <span v-if="fileName.length > 35">...</span>
             </span>
-            
+
         </div>
         <div class="col-2">
             <button class="btn" @click="viewFile()">Preview</button>
@@ -16,27 +18,58 @@
 
 <script>
 
+import { validateRdoCode } from '../utils/validators';
+import Toast from '../components/Toast.vue'
+import { ref } from 'vue'
+
 export default {
     name: "Card",
+    components: {
+        Toast,
+    },
     props: {
         fileName: String,
         textData: String,
         generatedFileName: String,
     },
+    data() {
+        return {
+            errorMessage: ref(""),
+        }
+    },
     methods: {
-        viewFile() {
-            const blob = new Blob([`${this.textData.split('\n')[0]}${document.getElementById('rdo_code').value ? ',' + document.getElementById('rdo_code').value + '\n' : '\n'}${this.textData.split('\n').slice(1).join('\n')}`], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const win = window.open(url, '_blank');
-            win.focus();
+        async viewFile() {
+            try {
+                const blob = await this.generateBlob()
+                const url = URL.createObjectURL(blob)
+                const win = window.open(url, '_blank')
+                win.focus()
+            }
+            catch (error) {
+                this.errorMessage = error.message
+                setTimeout(() => { this.errorMessage = "" }, 7000)
+            }
         },
-        downloadFile() {
-            const link = document.createElement('a');
-            const file = new Blob([`${this.textData.split('\n')[0]}${document.getElementById('rdo_code').value ? ',' + document.getElementById('rdo_code').value + '\n' : '\n'}${this.textData.split('\n').slice(1).join('\n')}`], { type: 'text/plain' });
-            link.href = URL.createObjectURL(file);
-            link.download = this.generatedFileName;
-            link.click();
-            URL.revokeObjectURL(link.href);
+        async downloadFile() {
+            try {
+                const link = document.createElement('a')
+                const blob = await this.generateBlob()
+                link.href = URL.createObjectURL(blob)
+                link.download = this.generatedFileName
+                link.click()
+                URL.revokeObjectURL(link.href)
+            }
+            catch (error) {
+                this.errorMessage = error.message
+                setTimeout(() => { this.errorMessage = "" }, 7000)
+            }
+        },
+        async generateBlob() {
+            const rdoCode = document.getElementById('rdo_code').value;
+            const validatedRdoCode = rdoCode ? ',' + await validateRdoCode(rdoCode) + '\n' : '\n';
+            const blobData = `${this.textData.split('\n')[0]}${validatedRdoCode}${this.textData.split('\n').slice(1).join('\n')}`;
+            const blob = new Blob([blobData], { type: 'text/plain' });
+            return blob
         }
     }
 }
