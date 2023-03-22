@@ -88,16 +88,21 @@ a:hover {
   color: #535bf2;
 }
 
-body > .content {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
 #app {
   margin: 0 auto;
   text-align: center;
   padding: clamp(0.2rem, 0.2rem + 1.5vw, 2rem);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body .content {
+  margin: 0;
+  place-items: center;
+  min-width: 320px;
+  max-width: 100%;
+  width: 100%;
+
 }
