@@ -7,7 +7,7 @@ export function header(record, route) {
             textDataHeader += 'HMAP,H1600,' // Alpha List and Type Code
             textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
-            textDataHeader += `${formatDate(record[0][1])}${document.getElementById('rdo_code').value ? ',' + document.getElementById('rdo_code').value : ''}\n` // Return Period
+            textDataHeader += `${formatDate(record[0][1])}\n` // Return Period
             break;
         case '2':
             textDataHeader += 'HQAP,1601EQ,'
@@ -20,7 +20,7 @@ export function header(record, route) {
             textDataHeader += 'HSAWT,H1700,' // Alpha List and Type Code
             textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
-            textDataHeader += `${formatDate(record[0][1])}${document.getElementById('rdo_code').value ? ',' + document.getElementById('rdo_code').value : ''}\n` // Return Period
+            textDataHeader += `${formatDate(record[0][1])}\n` // Return Period
             break
     }
     return textDataHeader
