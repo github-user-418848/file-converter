@@ -21,14 +21,14 @@ export default {
     },
     methods: {
         viewFile() {
-            const blob = new Blob([this.textData], { type: 'text/plain' });
+            const blob = new Blob([`${this.textData.split('\n')[0]}${document.getElementById('rdo_code').value ? ',' + document.getElementById('rdo_code').value + '\n' : '\n'}${this.textData.split('\n').slice(1).join('\n')}`], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const win = window.open(url, '_blank');
             win.focus();
         },
         downloadFile() {
             const link = document.createElement('a');
-            const file = new Blob([this.textData], { type: 'text/plain' });
+            const file = new Blob([`${this.textData.split('\n')[0]}${document.getElementById('rdo_code').value ? ',' + document.getElementById('rdo_code').value + '\n' : '\n'}${this.textData.split('\n').slice(1).join('\n')}`], { type: 'text/plain' });
             link.href = URL.createObjectURL(file);
             link.download = this.generatedFileName;
             link.click();
