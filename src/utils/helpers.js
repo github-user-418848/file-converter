@@ -1,19 +1,10 @@
 export async function readXMLFile(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-
-        reader.onload = () => {
-            const parser = new DOMParser();
-            const xmlDoc = parser.parseFromString(reader.result, 'text/xml');
-            resolve(xmlDoc);
-        };
-
-        reader.onerror = () => {
-            reject(reader.error);
-        };
-
-        reader.readAsText(file);
-    });
+    const decoder = new TextDecoder();
+    const content = await file.arrayBuffer();
+    const decodedContent = decoder.decode(content);
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(decodedContent, 'text/xml');
+    return xmlDoc;
 }
 
 export function getMonthIndex(monthName) {
