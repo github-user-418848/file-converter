@@ -15,3 +15,7 @@ export function getMonthIndex(monthName) {
 export function regexMatched(regexPattern, string) {
     return string.match(regexPattern)
 }
+
+export function regexTest(regexPattern, string) {
+    return regexPattern.test(string)
+}
