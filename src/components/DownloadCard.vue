@@ -1,7 +1,11 @@
 <template>
     <div class="card" v-if="fileName">
         <div class="col-1">
-            <span class="file-info">Filename: {{ fileName }}</span>
+            <span class="file-info">
+                Filename: {{ fileName.slice(0, 35) }}
+                <span v-if="fileName.length > 35">...</span>
+            </span>
+            
         </div>
         <div class="col-2">
             <button class="btn" @click="viewFile()">Preview</button>
