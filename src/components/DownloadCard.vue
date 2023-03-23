@@ -4,7 +4,7 @@
     <div class="card" v-if="fileName">
         <div class="col-1">
             <span class="file-info">
-                Filename: {{ fileName.slice(0, 35) }}
+                {{ fileName.slice(0, 35) }}
                 <span v-if="fileName.length > 35">...</span>
             </span>
 
@@ -101,7 +101,7 @@ export default {
     width: 100%;
     margin: 0 auto;
     justify-content: space-between;
-    border: 1.5px solid lightgray;
+    background-color: #dddddd;
 }
 
 .col-1,
