@@ -79,17 +79,16 @@ export default {
 <style>
 .btn {
     padding: 8px 12px;
-    border-radius: 0px;
-    background-color: white;
-    border: 1.5px solid var(--primary);
-    color: var(--primary);
+    border-radius: 8px;
+    background-color: var(--primary);
+    border: 0;
+    margin: .2rem;
     transition: .3s ease all;
     cursor: pointer;
 }
 
 .btn:hover {
-    color: white;
-    background-color: var(--primary);
+    background-color: #0a4686;
 }
 
 .card {
@@ -99,6 +98,7 @@ export default {
     padding: .8rem;
     max-width: clamp(12.5rem, 12.5rem + 26.0417vw, 43.75rem);
     width: 100%;
+    row-gap: .5rem;
     margin: 0 auto;
     justify-content: space-between;
     background-color: #dddddd;
