@@ -23,7 +23,7 @@
 <script>
 import DropZone from '../components/DropZone.vue'
 import DownloadCard from '../components/DownloadCard.vue'
-import RdoInputCard from '../components/RdoInputCard.vue'
+import RdoInputCard from '../components/FormattingOptions.vue'
 import Toast from '../components/Toast.vue'
 
 import { readXMLFile } from '../utils/helpers.js'
