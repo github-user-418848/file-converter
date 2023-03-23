@@ -63,7 +63,7 @@ table {
 
   color-scheme: light dark;
   color: #242424;
-  background-color: #f1f1f1;
+  background-color: #f6f6f6;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -104,5 +104,5 @@ body .content {
   min-width: 320px;
   max-width: 100%;
   width: 100%;
-
+  /* background-color: #c9c9c9; */
 }
