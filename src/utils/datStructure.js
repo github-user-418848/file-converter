@@ -2,22 +2,22 @@ import { formatTIN, formatDate, formatAgentName, formatDigit, formatCorpName } f
 
 export function header(record, route) {
     let textDataHeader = ''
-    switch (route) {
-        case '1':
-            textDataHeader += 'HMAP,H1600,' // Alpha List and Type Code
+    switch (route.report_type) {
+        case 'map':
+            textDataHeader += `HMAP,H${route.form_type},` // Alpha List and Type Code
             textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
             textDataHeader += `${formatDate(record[0][1])}\n` // Return Period
             break;
-        case '2':
-            textDataHeader += 'HQAP,1601EQ,'
+        case 'qap':
+            textDataHeader += 'HQAP,H1601EQ,'
             textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             textDataHeader += `${formatAgentName(record[0][2])}\n` // WA's Registered Name
             // RETURN PERIOD HERE
             // RDO CODE
             break;
-        case '3':
-            textDataHeader += 'HSAWT,H1700,' // Alpha List and Type Code
+        case 'sawt':
+            textDataHeader += `HSAWT,H${route.form_type},`  // Alpha List and Type Code
             textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
             textDataHeader += `${formatDate(record[0][1])}\n` // Return Period
@@ -29,9 +29,9 @@ export function header(record, route) {
 export function details(records, route) {
     let textDataDetails = ''
     for (let row = 1; row < records.length - 1; row++) {
-        switch (route) {
-            case '1':
-                textDataDetails += 'DMAP,D1600VT,' // Alpha List and Type Code
+        switch (route.report_type) {
+            case 'map':
+                textDataDetails += `DMAP,D${route.form_type},`  // Alpha List and Type Code
                 textDataDetails += `${records[row][0]},` // Sequence Number together w/ the Branch Code
                 textDataDetails += `${formatTIN(records[row][1])},` // TIN Number
                 textDataDetails += `${formatCorpName(records[row][5])},` // Corporation (Registered Name)
@@ -42,7 +42,7 @@ export function details(records, route) {
                 textDataDetails += `${formatDigit(records[row][7])},` // Amount of Income Payment
                 textDataDetails += `${formatDigit(records[row][6])}` // Amount of Tax WithHeld
                 break
-            case '2':
+            case 'qap':
                 textDataDetails += 'D1,1601EQ,' // Alpha List and Type Code
                 textDataDetails += `${records[row][7]},` // Sequence Number together w/ the Branch Code
                 textDataDetails += `${formatTIN(records[row][6])},` // TIN Number
@@ -54,8 +54,8 @@ export function details(records, route) {
                 textDataDetails += `${formatDigit(records[row][0])},` // Amount of Income Payment
                 textDataDetails += `${formatDigit(records[row][2])}` // Amount of Tax WithHeld
                 break
-            case '3':
-                textDataDetails += 'DSAWT,D1700,' // Alpha List and Type Code
+            case 'sawt':
+                textDataDetails += `DSAWT,D${route.form_type},`  // Alpha List and Type Code
                 textDataDetails += `${records[row][7]},` // Sequence Number
                 textDataDetails += `${formatTIN(records[row][0])},` // TIN Number
                 textDataDetails += `${formatCorpName(records[row][4])},` // Corporation (Registered Name)
@@ -75,23 +75,23 @@ export function details(records, route) {
 
 export function controls(record, route) {
     let textDataControls = ''
-    switch (route) {
-        case '1':
-            textDataControls += 'CMAP,C1600,' // 1600VT or C1600PT
+    switch (route.report_type) {
+        case 'map':
+            textDataControls += `CMAP,C${route.form_type},` // 1600VT or C1600PT
             textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             textDataControls += `${formatDate(record[0][1])},` // Return Period
             textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
             textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
             break
-        case '2':
+        case 'qap':
             textDataControls += 'C1,1601EQ,'
             textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             // RETURN PERIOD HERE
             textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
             textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
             break
-        case '3':
-            textDataControls += 'CSAWT,C1700,'
+        case 'sawt':
+            textDataControls += `CSAWT,C${route.form_type},` 
             textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             // RETURN PERIOD HERE
             textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
@@ -104,22 +104,20 @@ export function controls(record, route) {
 export function filename(record, route) {
     // <TIN><BC><RETURN PERIOD><FORM TYPE>.DAT
     let filename = ''
-    switch (route) {
-        case '1':
+    switch (route.report_type) {
+        case 'map':
             filename += `${formatTIN(record[0][0]).replace(",", "")}` // WA Tin together w/ the Branch Code
             filename += `${formatDate(record[0][1]).replace("/", "")}` // Return Period
-            filename += '1600' // Form Type
             break
-        case '2':
+        case 'qap':
             filename += `${formatTIN(record[0][0]).replace(",", "")}` // WA Tin together w/ the Branch Code
-            filename += '1601EQ'
             break
-        case '3':
+        case 'sawt':
             filename += `${formatTIN(record[0][0]).replace(",", "")}` // WA Tin together w/ the Branch Code
             filename += `${formatDate(record[0][1]).replace("/", "")}` // Return Period
-            filename += '1700' // Form Type
             break
     }
+    filename += `${route.form_type}`
     filename += '.dat'
     return filename
 }
