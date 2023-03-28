@@ -1,16 +1,20 @@
 <template>
   <div class="content">
+    <Header />
     <router-view></router-view>
+    <Footer />
   </div>
 </template>
 
 <script>
-import NavReports from './components/NavReports.vue';
+import Header from './snippets/Header.vue'
+import Footer from './snippets/Footer.vue'
 
 export default {
   name: "App",
   components: {
-    NavReports,
+    Header,
+    Footer,
   }
 }
 </script>
