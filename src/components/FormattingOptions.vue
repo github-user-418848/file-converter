@@ -68,19 +68,10 @@ export default {
         },
 
         onReportTypeChange(event) {
-            const reportTypeId = event.target.value
-
-            let formTypeId = ''
-            if (reportTypeId === 'map') {
-                const mapFormType = this.dataFormTypes.find(formType => formType.index === 'map')
-                formTypeId = mapFormType.name
-            } else if (reportTypeId === 'sawt') {
-                const sawtFormType = this.dataFormTypes.find(formType => formType.index === 'sawt')
-                formTypeId = sawtFormType.name
-            }
-
-            if (reportTypeId) {
-                this.$router.push({ name: 'GenReport', params: { report_type: reportTypeId, form_type: formTypeId } })
+            const reportType = event.target.value
+            if (reportType) {
+                const formType = this.dataFormTypes.find(formType => formType.index === reportType).name
+                this.$router.push({ name: 'GenReport', params: { report_type: reportType, form_type: formType } })
             }
         },
         onFormTypeChange(event) {
