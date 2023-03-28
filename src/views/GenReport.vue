@@ -27,7 +27,7 @@ import Toast from '../components/Toast.vue'
 
 import { readXMLFile } from '../utils/helpers.js'
 import { header, details, controls, filename } from '../utils/datStructure.js'
-import { fileData } from '../utils/globals.js'
+import { files } from '../utils/globals.js'
 import { validateXmlFile } from '../utils/validators.js'
 import { ref } from 'vue'
 
@@ -45,8 +45,8 @@ export default {
             records: ref(""),
             textData: ref(""),
             generatedFileName: ref(""),
-            fileDataCollection: fileData,
             errorMessage: ref(""),
+            fileDataCollection: files,
         }
     },
     methods: {
