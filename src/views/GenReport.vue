@@ -13,9 +13,9 @@
 
     <!-- DownloadCard component to download transformed file -->
 
-    <div v-for="(file, index) in fileDataCollection.originalFileName" :key="index">
-        <DownloadCard :fileName="file" :textData="fileDataCollection.textContent[index]"
-            :generatedFileName="fileDataCollection.generatedFileName[index]" />
+    <div v-for="(file, index) in dataFiles.originalFileName" :key="index">
+        <DownloadCard :fileName="file" :textData="dataFiles.textContent[index]"
+            :generatedFileName="dataFiles.generatedFileName[index]" />
     </div>
 </template>
 
@@ -46,7 +46,7 @@ export default {
             textData: ref(""),
             generatedFileName: ref(""),
             errorMessage: ref(""),
-            fileDataCollection: files,
+            dataFiles: files,
         }
     },
     methods: {
@@ -98,9 +98,9 @@ export default {
         },
 
         async pushIntoFileData() {
-            this.fileDataCollection.originalFileName.push(this.file.name)
-            this.fileDataCollection.textContent.push(this.textData)
-            this.fileDataCollection.generatedFileName.push(this.generatedFileName)
+            this.dataFiles.originalFileName.push(this.file.name)
+            this.dataFiles.textContent.push(this.textData)
+            this.dataFiles.generatedFileName.push(this.generatedFileName)
         },
     },
 }
