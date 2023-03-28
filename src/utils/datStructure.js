@@ -10,7 +10,7 @@ export function header(record, route) {
             textDataHeader += `${formatDate(record[0][1])}\n` // Return Period
             break;
         case 'qap':
-            textDataHeader += 'HQAP,H1601EQ,'
+            textDataHeader += `HQAP,H${route.form_type},`
             textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             textDataHeader += `${formatAgentName(record[0][2])}\n` // WA's Registered Name
             // RETURN PERIOD HERE
@@ -43,7 +43,7 @@ export function details(records, route) {
                 textDataDetails += `${formatDigit(records[row][6])}` // Amount of Tax WithHeld
                 break
             case 'qap':
-                textDataDetails += 'D1,1601EQ,' // Alpha List and Type Code
+                textDataDetails += `D1,D${route.form_type},` // Alpha List and Type Code
                 textDataDetails += `${records[row][7]},` // Sequence Number together w/ the Branch Code
                 textDataDetails += `${formatTIN(records[row][6])},` // TIN Number
                 textDataDetails += `${formatCorpName(records[row][4])},` // Corporation (Registered Name)
@@ -84,7 +84,7 @@ export function controls(record, route) {
             textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
             break
         case 'qap':
-            textDataControls += 'C1,1601EQ,'
+            textDataControls += `C1,C${route.form_type}`
             textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             // RETURN PERIOD HERE
             textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
