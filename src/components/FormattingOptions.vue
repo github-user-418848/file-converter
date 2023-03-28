@@ -2,7 +2,7 @@
     <div class="card">
         <label for="report_type">Report Type</label>
         <select name="report_type" id="report_type" @change="onReportTypeChange">
-            <option v-for="reportType in reportTypes" :key="reportType.id" :value="reportType.id"
+            <option v-for="reportType in dataReportTypes" :key="reportType.id" :value="reportType.id"
                 :selected="isFirstMatchingReportType(reportType)">
                 {{ reportType.name }}
             </option>
@@ -25,48 +25,36 @@
 
 <script>
 
+import { reportTypes, formTypes } from '../utils/globals.js'
+
 export default {
     name: "RdoInputCard",
+
+
     data() {
         return {
-            reportTypes: [
-                { id: 'map', title: 'MAP', name: 'Monthly Alphalist of Payees' },
-                { id: 'sawt', title: 'SAWT', name: 'Summary Alphalist of Withholding Taxes' },
-            ],
-            formTypes: [
-                { id: 1, index: 'map', name: '1601E' },
-                { id: 2, index: 'map', name: '1601F' },
-                { id: 3, index: 'map', name: '1600VT' },
-                { id: 4, index: 'map', name: '1600PT' },
-                { id: 1, index: 'sawt', name: '1700' },
-                { id: 2, index: 'sawt', name: '1701' },
-                { id: 3, index: 'sawt', name: '1702Q' },
-                { id: 4, index: 'sawt', name: '1702' },
-                { id: 5, index: 'sawt', name: '2550M' },
-                { id: 6, index: 'sawt', name: '2550Q' },
-                { id: 7, index: 'sawt', name: '2551M' },
-                { id: 8, index: 'sawt', name: '2553' },
-            ],
+            dataReportTypes: reportTypes,
+            dataFormTypes: formTypes,
         }
     },
 
     computed: {
         filteredFormTypes() {
-            const formTypes = this.formTypes.filter(formType => formType.index === this.$route.params.report_type);
+            const output = this.dataFormTypes.filter(formType => formType.index === this.$route.params.report_type);
             if (!this.$route.params.form_type) {
-                return [formTypes[0]];
+                return [output[0]];
             }
-            return formTypes;
+            return output;
         },
     },
 
     methods: {
         isFirstMatchingReportType(reportType) {
             if (this.$route.params.report_type && reportType.id === this.$route.params.report_type) {
-                const index = this.reportTypes.findIndex(report => report.name === reportType.name);
-                return this.reportTypes.indexOf(reportType) === index;
+                const index = this.dataReportTypes.findIndex(report => report.name === reportType.name);
+                return this.dataReportTypes.indexOf(reportType) === index;
             } else {
-                return this.reportTypes.indexOf(reportType) === 0;
+                return this.dataReportTypes.indexOf(reportType) === 0;
             }
         },
 
@@ -84,10 +72,10 @@ export default {
 
             let formTypeId = ''
             if (reportTypeId === 'map') {
-                const mapFormType = this.formTypes.find(formType => formType.index === 'map')
+                const mapFormType = this.dataFormTypes.find(formType => formType.index === 'map')
                 formTypeId = mapFormType.name
             } else if (reportTypeId === 'sawt') {
-                const sawtFormType = this.formTypes.find(formType => formType.index === 'sawt')
+                const sawtFormType = this.dataFormTypes.find(formType => formType.index === 'sawt')
                 formTypeId = sawtFormType.name
             }
 

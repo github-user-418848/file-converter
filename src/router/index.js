@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { allowedFormTypes, allowedReportTypes } from '../utils/globals.js'
+import { reportTypes, formTypes } from '../utils/globals.js'
 
 import NotFound from '../views/NotFound.vue'
 import GenReport from '../views/GenReport.vue'
@@ -21,7 +21,7 @@ const router = createRouter({
                 const reportType = to.params.report_type
                 const formType = to.params.form_type
 
-                if (!allowedReportTypes.includes(reportType) || !allowedFormTypes.includes(formType)) {
+                if (!reportTypes.find(report => report.id === reportType) || !formTypes.find(form => form.index === reportType && form.name === formType)) {
                     next({ name: 'NotFound' })
                 }
                 else if (!reportType || !formType) {
