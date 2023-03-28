@@ -46,10 +46,10 @@ export function details(records, route) {
                 textDataDetails += `D1,D${route.form_type},` // Alpha List and Type Code
                 textDataDetails += `${records[row][7]},` // Sequence Number together w/ the Branch Code
                 textDataDetails += `${formatTIN(records[row][6])},` // TIN Number
-                textDataDetails += `${formatCorpName(records[row][4])},` // Corporation (Registered Name)
+                textDataDetails += `${formatCorpName(records[row][3])},` // Corporation (Registered Name)
                 // RETURN PERIOD HERE
-                textDataDetails += `${records[row][5]},` // ATC Code
-                // textDataDetails += `${formatDigit(records[row][6])},` // Nature of Income
+                textDataDetails += `${records[row][4]},` // ATC Code
+                // textDataDetails += `${records[row][5]},` // Nature of Income
                 textDataDetails += `${formatDigit(records[row][1])},` // Tax Rate
                 textDataDetails += `${formatDigit(records[row][0])},` // Amount of Income Payment
                 textDataDetails += `${formatDigit(records[row][2])}` // Amount of Tax WithHeld
@@ -84,7 +84,7 @@ export function controls(record, route) {
             textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
             break
         case 'qap':
-            textDataControls += `C1,C${route.form_type}`
+            textDataControls += `C1,C${route.form_type},`
             textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
             // RETURN PERIOD HERE
             textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
