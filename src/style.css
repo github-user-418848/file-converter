@@ -112,6 +112,11 @@ h1 {
   margin-bottom: clamp(0.4rem, 0.4rem + 0.5vw, 1rem);
 }
 
+h2 {
+  font-size: clamp(1.25rem, 1.25rem + 0.2083vw, 1.5rem);
+  margin-bottom: clamp(0.4rem, 0.4rem + 0.5vw, 1rem);
+}
+
 svg {
   padding: clamp(0.3125rem, 0.3125rem + 0.2604vw, 0.625rem);
 }
