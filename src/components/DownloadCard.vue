@@ -14,7 +14,7 @@
         </div>
         <div class="col-2">
             <button class="btn" @click="viewFile()">Preview</button>
-            <button class="btn" @click="downloadFile()">Generate</button>
+            <button class="btn" @click="generatedFile()">Generate</button>
         </div>
     </div>
 </template>
@@ -53,7 +53,7 @@ export default {
                 setTimeout(() => { this.errorMessage = "" }, 7000)
             }
         },
-        async downloadFile() {
+        async generatedFile() {
             try {
                 const link = document.createElement('a')
                 const blob = await this.generateBlob()
