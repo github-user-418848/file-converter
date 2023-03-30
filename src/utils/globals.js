@@ -2,11 +2,16 @@ import { ref } from 'vue'
 
 export const
 
-    files = { originalFileName: ref([]), textContent: ref([]), generatedFileName: ref([]), },
+    files = { 
+        originalFileName: ref([]), textContent: ref([]), generatedFileName: ref([])
+    },
+    
     allowedExtensions = ['xml',],
     sizeLimit = 35_000_000,
+    
     minRdoCodeLength = 0,
     maxRdoCodeLength = 5,
+
     reportTypes = [
         { id: 'map', title: 'MAP', name: 'Monthly Alphalist of Payees' },
         { id: 'qap', title: 'QAP', name: 'Quarterly Alphalist of Payees' },
