@@ -64,11 +64,22 @@ export default {
 
         async parseXmlFile(file) {
             try {
-                await validateXmlFile(file)
-                const xmlDoc = await readXMLFile(file)
-                const records = await this.retrieveRecords(xmlDoc)
-                await this.createTextData(records)
-                await this.pushIntoFileData()
+                if (this.$route.params.report_type === 'qap') {
+                    for (let index = 0; index < 3; index++) {
+                        await validateXmlFile(file)
+                        const xmlDoc = await readXMLFile(file)
+                        const records = await this.retrieveRecords(xmlDoc)
+                        await this.createTextData(records, index)
+                        await this.pushIntoFileData()
+                    }
+                }
+                else {
+                    await validateXmlFile(file)
+                    const xmlDoc = await readXMLFile(file)
+                    const records = await this.retrieveRecords(xmlDoc)
+                    await this.createTextData(records, 0)
+                    await this.pushIntoFileData()
+                }
             } catch (error) {
                 this.errorMessage = error.message
                 setTimeout(() => { this.errorMessage = "" }, 7000)
@@ -90,11 +101,11 @@ export default {
             return records
         },
 
-        async createTextData(records) {
-            const textDataOutput = `${header(records, this.$route.params)}${details(records, this.$route.params)}${controls(records, this.$route.params)}`
+        async createTextData(records, count) {
+            const textDataOutput = `${header(records, this.$route.params, count)}${details(records, this.$route.params, count)}${controls(records, this.$route.params, count)}`
             console.log(textDataOutput)
             this.textData = textDataOutput
-            this.generatedFileName = filename(records, this.$route.params)
+            this.generatedFileName = filename(records, this.$route.params, count)
         },
 
         async pushIntoFileData() {
