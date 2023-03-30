@@ -20,7 +20,7 @@ export function formatDate(date) {
 }
 
 export function formatCorpName(corpName) {
-    return `"${corpName.toUpperCase()}"`
+    return `"${corpName.toUpperCase().replaceAll(",", "")}"`
 }
 
 export function formatAgentName(agentName) {
@@ -35,4 +35,40 @@ export function formatAgentName(agentName) {
 
 export function formatDigit(digit) {
     return digit.replaceAll(",", "")
+}
+
+export function formatQuarterlyDate(str, count) {
+    const match = regexMatched(/(\d+)[A-Z]+\sQUARTER\sOF\s(\d+)/, str)
+    let period
+
+    if (match) {
+        const quarter = parseInt(match[1])
+        const year = parseInt(match[2])
+
+        let month
+
+        switch (quarter) {
+            case 1:
+                month = 1 + count
+                period = `0${month}/${year}`
+                break
+            case 2:
+                month = 4 + count
+                period = `0${month}/${year}`
+                break
+            case 3:
+                month = 7 + count
+                period = `0${month}/${year}`
+                break
+            case 4:
+                month = 10 + count
+                period = `${month}/${year}`
+                break
+            default:
+                period = ''
+                break
+        }
+    }
+
+    return period
 }
