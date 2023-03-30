@@ -3,42 +3,39 @@ import { ref, onMounted } from 'vue';
 
 export default {
     name: "DropZone",
+
     setup() {
-        const active = ref(false);
+        const active = ref(false)
 
         const toggleActive = () => {
-            active.value = !active.value;
-        };
+            active.value = !active.value
+        }
 
-        onMounted(() => {
-            // Check the user agent if it's a mobile device
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        // onMounted(() => {
+        //     // const isMobile = ref(false)
+        //     // Check the user agent if it's a mobile device
+        //     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        //         // Add a class to the dropzone element to hide the input
+        //         const dropzone = document.querySelector('.dropzone');
+        //         dropzone.classList.add('hide');
+        //         const mobilebtn = document.querySelector('.m-btn');
+        //         mobilebtn.classList.add('show');
+        //     }
+        // })
 
-            if (isMobile) {
-                // Add a class to the dropzone element to hide the input
-                const dropzone = document.querySelector('.dropzone');
-                dropzone.classList.add('hide');
-
-                
-                const mobilebtn = document.querySelector('.m-btn');
-                mobilebtn.classList.add('show');
-            }
-        });
-
-        return { active, toggleActive };
+        return { active, toggleActive }
     }
 };
 </script>
 
 <template>
-    <div @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent @drop.prevent="toggleActive"
-        :class="{ 'active-dropzone': active }" class="dropzone">
+    <div @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent
+        @drop.prevent="toggleActive" :class="{ 'active-dropzone': active }" class="dropzone">
         <span>Drag and Drop</span>
         <span>OR</span>
         <label class="btn" for="dropzoneFile">Select File</label>
         <input type="file" name="dropzoneFile" id="dropzoneFile" class="dropzoneFile" accept=".xml">
     </div>
-    <label class="m-btn" for="dropzoneFile">Select File</label>
 </template>
 
 <style scoped>
