@@ -56,6 +56,9 @@ table {
 :root {
 
   --primary: #053363;
+  
+  /* clamp(12.5rem, 12.5rem + 26.0417vw, 43.75rem); */
+  --default-width: clamp(15.625rem, 15.625rem + 43.75vw, 68.125rem);
 
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

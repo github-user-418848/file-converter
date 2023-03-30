@@ -40,7 +40,7 @@ export default {
 
 <style scoped>
 .dropzone {
-    max-width: clamp(12.5rem, 12.5rem + 26.0417vw, 43.75rem);
+    max-width: var(--default-width);
     width: 100%;
     height: clamp(12.5rem, 12.5rem + 10.4167vw, 25rem);
     display: flex;

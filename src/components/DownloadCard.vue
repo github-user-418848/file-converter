@@ -99,7 +99,7 @@ export default {
     flex-wrap: wrap;
     align-items: center;
     padding: .8rem;
-    max-width: clamp(12.5rem, 12.5rem + 26.0417vw, 43.75rem);
+    max-width: var(--default-width);
     width: 100%;
     row-gap: .5rem;
     margin: 0 auto;
