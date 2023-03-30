@@ -1,6 +1,6 @@
-import { formatTIN, formatDate, formatAgentName, formatDigit, formatCorpName } from './formatter.js';
+import { formatTIN, formatDate, formatAgentName, formatDigit, formatCorpName, formatQuarterlyDate } from './formatter.js';
 
-export function header(record, route) {
+export function header(record, route, count) {
     let textDataHeader = ''
     switch (route.report_type) {
         case 'map':
@@ -12,9 +12,8 @@ export function header(record, route) {
         case 'qap':
             textDataHeader += `HQAP,H${route.form_type},`
             textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
-            textDataHeader += `${formatAgentName(record[0][2])}\n` // WA's Registered Name
-            // RETURN PERIOD HERE
-            // RDO CODE
+            textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
+            textDataHeader += `${formatQuarterlyDate(record[0][1], count)}\n` // Return Period
             break;
         case 'sawt':
             textDataHeader += `HSAWT,H${route.form_type},`  // Alpha List and Type Code
@@ -26,7 +25,7 @@ export function header(record, route) {
     return textDataHeader
 }
 
-export function details(records, route) {
+export function details(records, route, count) {
     let textDataDetails = ''
     for (let row = 1; row < records.length - 1; row++) {
         switch (route.report_type) {
@@ -47,7 +46,7 @@ export function details(records, route) {
                 textDataDetails += `${records[row][7]},` // Sequence Number together w/ the Branch Code
                 textDataDetails += `${formatTIN(records[row][6])},` // TIN Number
                 textDataDetails += `${formatCorpName(records[row][3])},` // Corporation (Registered Name)
-                // RETURN PERIOD HERE
+                textDataDetails += `${formatQuarterlyDate(records[0][1], count)},` // Return Period
                 textDataDetails += `${records[row][4]},` // ATC Code
                 // textDataDetails += `${records[row][5]},` // Nature of Income
                 textDataDetails += `${formatDigit(records[row][1])},` // Tax Rate
@@ -73,7 +72,7 @@ export function details(records, route) {
     return textDataDetails
 }
 
-export function controls(record, route) {
+export function controls(record, route, count) {
     let textDataControls = ''
     switch (route.report_type) {
         case 'map':
@@ -86,7 +85,7 @@ export function controls(record, route) {
         case 'qap':
             textDataControls += `C1,C${route.form_type},`
             textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
-            // RETURN PERIOD HERE
+            textDataControls += `${formatQuarterlyDate(record[0][1], count)},` // Return Period
             textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
             textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
             break
@@ -101,7 +100,7 @@ export function controls(record, route) {
     return textDataControls
 }
 
-export function filename(record, route) {
+export function filename(record, route, count) {
     // <TIN><BC><RETURN PERIOD><FORM TYPE>.DAT
     let filename = ''
     switch (route.report_type) {
@@ -111,6 +110,7 @@ export function filename(record, route) {
             break
         case 'qap':
             filename += `${formatTIN(record[0][0]).replace(",", "")}` // WA Tin together w/ the Branch Code
+            filename += `${formatQuarterlyDate(record[0][1], count).replace("/", "")}` // Return Period
             break
         case 'sawt':
             filename += `${formatTIN(record[0][0]).replace(",", "")}` // WA Tin together w/ the Branch Code
