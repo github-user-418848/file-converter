@@ -4,6 +4,9 @@
     <div class="card" v-if="fileName">
         <div class="col-1">
             <span class="file-info">
+                {{ generatedFileName }}
+            </span>
+            <span class="file-info-sm">
                 {{ fileName.slice(0, 35) }}
                 <span v-if="fileName.length > 35">...</span>
             </span>
@@ -107,6 +110,12 @@ export default {
 .col-1,
 .col-2 {
     width: 100%;
+}
+
+.file-info-sm {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
 }
 
 @media screen and (min-width: 920px) {
