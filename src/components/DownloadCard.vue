@@ -94,19 +94,6 @@ export default {
     background-color: #0a4686;
 }
 
-.card {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: .8rem;
-    max-width: var(--default-width);
-    width: 100%;
-    row-gap: .5rem;
-    margin: 0 auto;
-    justify-content: space-between;
-    background-color: #dddddd;
-}
-
 .col-1,
 .col-2 {
     width: 100%;

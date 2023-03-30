@@ -1,4 +1,5 @@
 <template>
+    <h2>Format Options</h2>
     <div class="card">
         <label for="report_type">Report Type</label>
         <select name="report_type" id="report_type" @change="onReportTypeChange">
@@ -86,19 +87,6 @@ export default {
 </script>
 
 <style>
-.card {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    padding: .8rem;
-    max-width: var(--default-width);
-    width: 100%;
-    margin: 0 auto;
-    justify-content: space-between;
-    border-bottom: .5px solid lightgray;
-    background-color: #e4e4e4;
-    color: rgb(90, 94, 99);
-}
 
 input,
 select {
@@ -115,4 +103,15 @@ select {
 select {
     max-width: 287px;
 }
+
+@media screen and (max-width: 450px) {
+    .card {
+        flex-direction: column;
+        justify-content: center;
+    }
+    label {
+        margin-bottom: .3rem;
+    }
+}
+
 </style>
