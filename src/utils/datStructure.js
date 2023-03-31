@@ -31,7 +31,8 @@ export function header(record, route, count) {
 export function details(records, route, count) {
     
     const alphaList = reportTypes.find(reportType => reportType.id === route.report_type)
-    let detailsData = [], detail
+    const detailsData = []
+    let detail = {}
     
     for (let row = 1; row < records.length - 1; row++) {
         switch (route.report_type) {
