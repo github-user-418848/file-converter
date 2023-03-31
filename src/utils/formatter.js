@@ -19,6 +19,16 @@ export function formatDate(date) {
     }
 }
 
+export function formatOwnersName(ownersName) {
+    const match = regexMatched(/OWNER'S NAME: (.*)/, ownersName)
+    if (match) {
+        return `"${match[1]}"`
+    }
+    else {
+        throw new Error('There was an error upon parsing the Withholding Agent. Please be sure to check the type of report and try uploading it again.')
+    }
+}
+
 export function formatCorpName(corpName) {
     return `"${corpName.toUpperCase().replaceAll(",", "")}"`
 }
