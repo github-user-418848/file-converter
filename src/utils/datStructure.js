@@ -1,123 +1,134 @@
-import { formatTIN, formatDate, formatAgentName, formatDigit, formatCorpName, formatQuarterlyDate } from './formatter.js';
+import { formatTIN, formatDate, formatAgentName, formatDigit, formatCorpName, formatQuarterlyDate } from './formatter.js'
+import { reportTypes } from './globals.js'
+
 
 export function header(record, route, count) {
-    let textDataHeader = ''
+
+    const alphaList = reportTypes.find(reportType => reportType.id === route.report_type)
+    let headerData = {}
+
     switch (route.report_type) {
-        case 'map':
-            textDataHeader += `HMAP,H${route.form_type},` // Alpha List and Type Code
-            textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
-            textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
-            textDataHeader += `${formatDate(record[0][1])}\n` // Return Period
-            break;
         case 'qap':
-            textDataHeader += `HQAP,H${route.form_type},`
-            textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
-            textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
-            textDataHeader += `${formatQuarterlyDate(record[0][1], count)}\n` // Return Period
-            break;
-        case 'sawt':
-            textDataHeader += `HSAWT,H${route.form_type},`  // Alpha List and Type Code
-            textDataHeader += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
-            textDataHeader += `${formatAgentName(record[0][2])},` // WA's Registered Name
-            textDataHeader += `${formatDate(record[0][1])}\n` // Return Period
-            break
+            headerData = {
+                alphaListTypeCode: `H${alphaList.acronym},H${route.form_type}`,
+                tinWithBranchCode: `${formatTIN(record[0][0])}`,
+                registeredName: `${formatAgentName(record[0][2])}`,
+                returnPeriod: `${formatQuarterlyDate(record[0][1], count)}`
+            }
+        break
+        default:
+            headerData = {
+                alphaListTypeCode: `H${alphaList.acronym},H${route.form_type}`,
+                tinWithBranchCode: `${formatTIN(record[0][0])}`,
+                registeredName: `${formatAgentName(record[0][2])}`,
+                returnPeriod: `${formatDate(record[0][1])}`
+            }
+        break
     }
-    return textDataHeader
+    return headerData
 }
 
 export function details(records, route, count) {
-    let textDataDetails = ''
+    
+    const alphaList = reportTypes.find(reportType => reportType.id === route.report_type)
+    let detailsData = [], detail
+    
     for (let row = 1; row < records.length - 1; row++) {
         switch (route.report_type) {
             case 'map':
-                textDataDetails += `DMAP,D${route.form_type},`  // Alpha List and Type Code
-                textDataDetails += `${records[row][0]},` // Sequence Number together w/ the Branch Code
-                textDataDetails += `${formatTIN(records[row][1])},` // TIN Number
-                textDataDetails += `${formatCorpName(records[row][5])},` // Corporation (Registered Name)
-                textDataDetails += `${formatDate(records[0][1])},` // Return Period
-                textDataDetails += `${records[row][2]},` // ATC Code
-                // textDataDetails += `${formatDigit(records[row][3])},` // Nature of Income
-                textDataDetails += `${formatDigit(records[row][4])},` // Tax Rate
-                textDataDetails += `${formatDigit(records[row][7])},` // Amount of Income Payment
-                textDataDetails += `${formatDigit(records[row][6])}` // Amount of Tax WithHeld
-                break
+                detail = {
+                    alphaListTypeCode: `D${alphaList.acronym},D${route.form_type}`,
+                    sequenceNumber: `${records[row][0]}`,
+                    tinWithBranchCode: `${formatTIN(records[row][1])}`,
+                    corporation: `${formatCorpName(records[row][5])}`,
+                    returnPeriod: `${formatDate(records[0][1])}`,
+                    atcCode: `${records[row][2]}`,
+                    taxRate: `${formatDigit(records[row][4])}`,
+                    incomePayment: `${formatDigit(records[row][7])}`,
+                    taxWithHeld: `${formatDigit(records[row][6])}`,
+                }
+            break
             case 'qap':
-                textDataDetails += `D1,D${route.form_type},` // Alpha List and Type Code
-                textDataDetails += `${records[row][7]},` // Sequence Number together w/ the Branch Code
-                textDataDetails += `${formatTIN(records[row][6])},` // TIN Number
-                textDataDetails += `${formatCorpName(records[row][3])},` // Corporation (Registered Name)
-                textDataDetails += `${formatQuarterlyDate(records[0][1], count)},` // Return Period
-                textDataDetails += `${records[row][4]},` // ATC Code
-                // textDataDetails += `${records[row][5]},` // Nature of Income
-                textDataDetails += `${formatDigit(records[row][1])},` // Tax Rate
-                textDataDetails += `${formatDigit(records[row][0])},` // Amount of Income Payment
-                textDataDetails += `${formatDigit(records[row][2])}` // Amount of Tax WithHeld
-                break
+                detail = {
+                    alphaListTypeCode: `D1,D${route.form_type}`,
+                    sequenceNumber: `${records[row][7]}`,
+                    tinWithBranchCode: `${formatTIN(records[row][6])}`,
+                    corporation: `${formatCorpName(records[row][3])}`,
+                    returnPeriod: `${formatQuarterlyDate(records[0][1], count)}`,
+                    atcCode: `${records[row][4]}`,
+                    taxRate: `${formatDigit(records[row][1])}`,
+                    incomePayment: `${formatDigit(records[row][0])}`,
+                    taxWithHeld: `${formatDigit(records[row][2])}`,
+                }
+            break
             case 'sawt':
-                textDataDetails += `DSAWT,D${route.form_type},`  // Alpha List and Type Code
-                textDataDetails += `${records[row][7]},` // Sequence Number
-                textDataDetails += `${formatTIN(records[row][0])},` // TIN Number
-                textDataDetails += `${formatCorpName(records[row][4])},` // Corporation (Registered Name)
-                textDataDetails += `${formatDate(records[0][1])},` // Return Period
-                // textDataDetails += `${formatDigit(records[row][2])},` // Nature of Income
-                textDataDetails += `${records[row][1]},` // ATC Code
-                textDataDetails += `${formatDigit(records[row][3])},` // Tax Rate
-                textDataDetails += `${formatDigit(records[row][6])},` // Amount of Income Payment
-                textDataDetails += `${formatDigit(records[row][5])}` // Amount of Tax WithHeld
-                break
+                detail = {
+                    alphaListTypeCode: `D${alphaList.acronym},D${route.form_type}`,
+                    sequenceNumber: `${records[row][7]}`,
+                    tinWithBranchCode: `${formatTIN(records[row][0])}`,
+                    corporation: `${formatCorpName(records[row][4])}`,
+                    returnPeriod: `${formatDate(records[0][1])}`,
+                    atcCode: `${records[row][1]}`,
+                    taxRate: `${formatDigit(records[row][3])}`,
+                    incomePayment: `${formatDigit(records[row][6])}`,
+                    taxWithHeld: `${formatDigit(records[row][5])}`,
+                }
+            break
         }
-
-        textDataDetails += `\n`
+        detailsData.push(detail);
     }
-    return textDataDetails
+    return detailsData
 }
 
 export function controls(record, route, count) {
-    let textDataControls = ''
+
+    const alphaList = reportTypes.find(reportType => reportType.id === route.report_type)
+    let controlsData = {}
+
     switch (route.report_type) {
-        case 'map':
-            textDataControls += `CMAP,C${route.form_type},` // 1600VT or C1600PT
-            textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
-            textDataControls += `${formatDate(record[0][1])},` // Return Period
-            textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
-            textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
-            break
         case 'qap':
-            textDataControls += `C1,C${route.form_type},`
-            textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
-            textDataControls += `${formatQuarterlyDate(record[0][1], count)},` // Return Period
-            textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
-            textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
-            break
-        case 'sawt':
-            textDataControls += `CSAWT,C${route.form_type},` 
-            textDataControls += `${formatTIN(record[0][0])},` // WA Tin together w/ the Branch Code
-            // RETURN PERIOD HERE
-            textDataControls += `${formatDigit(record[record.length - 1][4])},` // Total Amount of Income Payment 
-            textDataControls += `${formatDigit(record[record.length - 1][5])}` // Total Amount of Tax Withheld
-            break
+            controlsData = {
+                alphaListTypeCode: `C1,C${route.form_type}`,
+                tinWithBranchCode: `${formatTIN(record[0][0])}`,
+                returnPeriod: `${formatQuarterlyDate(record[0][1], count)}`,
+                incomePayment: `${formatDigit(record[record.length - 1][4])}`,
+                taxWithHeld: `${formatDigit(record[record.length - 1][5])}`,
+            }
+        break
+        default:
+            controlsData = {
+                alphaListTypeCode: `C${alphaList.acronym},C${route.form_type}`,
+                tinWithBranchCode: `${formatTIN(record[0][0])}`,
+                returnPeriod: `${formatDate(record[0][1])}`,
+                incomePayment: `${formatDigit(record[record.length - 1][4])}`,
+                taxWithHeld: `${formatDigit(record[record.length - 1][5])}`,
+            }
+        break
     }
-    return textDataControls
+    return controlsData
 }
 
 export function filename(record, route, count) {
-    // <TIN><BC><RETURN PERIOD><FORM TYPE>.DAT
-    let filename = ''
+    const alphaList = reportTypes.find(reportType => reportType.id === route.report_type)
+    let fileNameData = {}
+
     switch (route.report_type) {
-        case 'map':
-            filename += `${formatTIN(record[0][0]).replace(",", "")}` // WA Tin together w/ the Branch Code
-            filename += `${formatDate(record[0][1]).replace("/", "")}` // Return Period
-            break
         case 'qap':
-            filename += `${formatTIN(record[0][0]).replace(",", "")}` // WA Tin together w/ the Branch Code
-            filename += `${formatQuarterlyDate(record[0][1], count).replace("/", "")}` // Return Period
-            break
-        case 'sawt':
-            filename += `${formatTIN(record[0][0]).replace(",", "")}` // WA Tin together w/ the Branch Code
-            filename += `${formatDate(record[0][1]).replace("/", "")}` // Return Period
-            break
+            fileNameData = {
+                tinWithBranchCode: `${formatTIN(record[0][0]).replace(",", "")}`,
+                returnPeriod: `${formatQuarterlyDate(record[0][1], count).replace("/", "")}`,
+                routeFormType: `${route.form_type}`,
+                extension: '.dat'
+            }
+        break
+        default:
+            fileNameData = {
+                tinWithBranchCode: `${formatTIN(record[0][0]).replace(",", "")}`,
+                returnPeriod: `${formatDate(record[0][1]).replace("/", "")}`,
+                routeFormType: `${route.form_type}`,
+                extension: '.dat'
+            }
+        break
     }
-    filename += `${route.form_type}`
-    filename += '.dat'
-    return filename
+    return fileNameData
 }

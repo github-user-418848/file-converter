@@ -64,20 +64,13 @@ export default {
 
         async parseXmlFile(file) {
             try {
-                if (this.$route.params.report_type === 'qap') {
-                    for (let index = 0; index < 3; index++) {
-                        await validateXmlFile(file)
-                        const xmlDoc = await readXMLFile(file)
-                        const records = await this.retrieveRecords(xmlDoc)
-                        await this.createTextData(records, index)
-                        await this.pushIntoFileData()
-                    }
-                }
-                else {
+                let count = 1
+                if (this.$route.params.report_type === 'qap') { count = 3 }
+                for (let index = 0; index < count; index++) {
                     await validateXmlFile(file)
                     const xmlDoc = await readXMLFile(file)
                     const records = await this.retrieveRecords(xmlDoc)
-                    await this.createTextData(records, 0)
+                    await this.createTextData(records, index)
                     await this.pushIntoFileData()
                 }
             } catch (error) {
@@ -102,10 +95,23 @@ export default {
         },
 
         async createTextData(records, count) {
-            const textDataOutput = `${header(records, this.$route.params, count)}${details(records, this.$route.params, count)}${controls(records, this.$route.params, count)}`
-            console.log(textDataOutput)
-            this.textData = textDataOutput
-            this.generatedFileName = filename(records, this.$route.params, count)
+            const head = header(records, this.$route.params, count)
+            const detail = details(records, this.$route.params, count)
+            const control = controls(records, this.$route.params, count)
+            const file = filename(records, this.$route.params, count)
+            const separator = ','
+            let rawText = ''
+            
+            rawText += `${head.alphaListTypeCode}${separator}${head.tinWithBranchCode}${separator}${head.registeredName}${separator}${head.returnPeriod}\n`
+            for (let index = 0; index < detail.length; index++) {
+                rawText += `${detail[index].alphaListTypeCode}${separator}${detail[index].sequenceNumber}${separator}${detail[index].tinWithBranchCode}${separator}${detail[index].corporation}${separator}${detail[index].returnPeriod}${separator}${detail[index].atcCode}${separator}${detail[index].taxRate}${separator}${detail[index].incomePayment}${separator}${detail[index].taxWithHeld}\n`;
+            }
+            rawText += `${control.alphaListTypeCode}${separator}${control.tinWithBranchCode}${separator}${control.returnPeriod}${separator}${control.incomePayment}${separator}${control.taxWithHeld}`
+
+            this.textData = rawText
+            console.log(this.textData)
+
+            this.generatedFileName = `${file.tinWithBranchCode}${file.returnPeriod}${file.routeFormType}${file.extension}`
         },
 
         async pushIntoFileData() {
