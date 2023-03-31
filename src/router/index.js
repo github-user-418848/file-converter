@@ -24,9 +24,6 @@ const router = createRouter({
                 if (!reportTypes.find(report => report.id === reportType) || !formTypes.find(form => form.index === reportType && form.name === formType)) {
                     next({ name: 'NotFound' })
                 }
-                else if (!reportType || !formType) {
-                    next({ name: 'NotFound' })
-                }
                 else {
                     next()
                 }
