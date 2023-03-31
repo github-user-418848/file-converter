@@ -95,17 +95,17 @@ export default {
         },
 
         async createTextData(records, count) {
-            const head = header(records, this.$route.params, count)
-            const detail = details(records, this.$route.params, count)
-            const control = controls(records, this.$route.params, count)
-            const file = filename(records, this.$route.params, count)
+            const {params} = this.$route
+            const head = header(records, params, count)
+            const detail = details(records, params, count)
+            const control = controls(records, params, count)
+            const file = filename(records, params, count)
             const separator = ','
             let rawText = ''
             
             rawText += `${head.alphaListTypeCode}${separator}${head.tinWithBranchCode}${separator}${head.registeredName}${separator}${head.returnPeriod}\n`
-            for (let index = 0; index < detail.length; index++) {
-                rawText += `${detail[index].alphaListTypeCode}${separator}${detail[index].sequenceNumber}${separator}${detail[index].tinWithBranchCode}${separator}${detail[index].corporation}${separator}${detail[index].returnPeriod}${separator}${detail[index].atcCode}${separator}${detail[index].taxRate}${separator}${detail[index].incomePayment}${separator}${detail[index].taxWithHeld}\n`;
-            }
+            const detailLines = detail.map(d => `${d.alphaListTypeCode}${separator}${d.sequenceNumber}${separator}${d.tinWithBranchCode}${separator}${d.corporation}${separator}${d.returnPeriod}${separator}${d.atcCode}${separator}${d.taxRate}${separator}${d.incomePayment}${separator}${d.taxWithHeld}`)
+            rawText += detailLines.join('\n') + '\n'
             rawText += `${control.alphaListTypeCode}${separator}${control.tinWithBranchCode}${separator}${control.returnPeriod}${separator}${control.incomePayment}${separator}${control.taxWithHeld}`
 
             this.textData = rawText
