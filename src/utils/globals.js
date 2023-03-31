@@ -13,9 +13,10 @@ export const
     maxRdoCodeLength = 5,
 
     reportTypes = [
-        { id: 'map', title: 'MAP', name: 'Monthly Alphalist of Payees' },
-        { id: 'qap', title: 'QAP', name: 'Quarterly Alphalist of Payees' },
-        { id: 'sawt', title: 'SAWT', name: 'Summary Alphalist of Withholding Taxes' },
+        { id: 'map', acronym: 'MAP', name: 'Monthly Alphalist of Payees' },
+        { id: 'qap', acronym: 'QAP', name: 'Quarterly Alphalist of Payees' },
+        { id: 'sawt', acronym: 'SAWT', name: 'Summary Alphalist of Withholding Taxes' },
+        { id: 'sales', acronym: 'SALES', name: 'Sales Transaction' },
     ],
     formTypes = [
         { id: 1, index: 'map', name: '1601E' },
@@ -35,4 +36,9 @@ export const
         { id: 6, index: 'sawt', name: '2550Q' },
         { id: 7, index: 'sawt', name: '2551M' },
         { id: 8, index: 'sawt', name: '2553' },
+
+        { id: 1, index: 'sales', name: '1601E' },
+        { id: 2, index: 'sales', name: '1601F' },
+        { id: 3, index: 'sales', name: '1600VT' },
+        { id: 4, index: 'sales', name: '1600PT' },
     ]
