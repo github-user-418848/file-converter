@@ -25,7 +25,7 @@ import DownloadCard from '../components/DownloadCard.vue'
 import RdoInputCard from '../components/FormattingOptions.vue'
 import Toast from '../components/Toast.vue'
 
-import { readXMLFile } from '../utils/helpers.js'
+import { readXMLFile, retrieveRecords } from '../utils/helpers.js'
 import { header, details, controls, filename } from '../utils/datStructure.js'
 import { files } from '../utils/globals.js'
 import { validateXmlFile } from '../utils/validators.js'
@@ -64,12 +64,12 @@ export default {
 
         async parseXmlFile(file) {
             try {
-                let count = 1
-                if (this.$route.params.report_type === 'qap') { count = 3 }
-                for (let index = 0; index < count; index++) {
-                    await validateXmlFile(file)
-                    const xmlDoc = await readXMLFile(file)
-                    const records = await this.retrieveRecords(xmlDoc)
+                await validateXmlFile(file)
+                const xmlDoc = await readXMLFile(file)
+                const records = await retrieveRecords(xmlDoc)
+                let count = 0
+                if (this.$route.params.report_type === 'qap') { count = 2 }
+                for (let index = 0; index <= count; index++) {
                     await this.createTextData(records, index)
                     await this.pushIntoFileData()
                 }
@@ -77,21 +77,6 @@ export default {
                 this.errorMessage = error.message
                 setTimeout(() => { this.errorMessage = "" }, 7000)
             }
-        },
-
-        async retrieveRecords(xmlDoc) {
-            // Spread operator (...) to convert the HTMLCollection object returned by getElementsByTagName into an array
-            const xmlSection = [...xmlDoc.getElementsByTagName('Section')];
-            const records = xmlSection.map(item => {
-                const values = [];
-                for (const child of item.children) {
-                    // Get the value of the first child element (assuming it is either a "FormattedValue" or "TextValue") and add it to the object with the field name as the key
-                    values.push(child.children[0].textContent)
-                }
-                return values
-            });
-            this.records = records
-            return records
         },
 
         async createTextData(records, count) {
@@ -109,7 +94,7 @@ export default {
             rawText += `${control.alphaListTypeCode}${separator}${control.tinWithBranchCode}${separator}${control.returnPeriod}${separator}${control.incomePayment}${separator}${control.taxWithHeld}`
 
             this.textData = rawText
-            console.log(this.textData)
+            // console.log(this.textData)
 
             this.generatedFileName = `${file.tinWithBranchCode}${file.returnPeriod}${file.routeFormType}${file.extension}`
         },
