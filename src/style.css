@@ -94,19 +94,17 @@ a:hover {
 #app {
   margin: 0 auto;
   text-align: center;
+}
+
+body .content {
   padding: clamp(0.2rem, 0.2rem + 1.5vw, 2rem);
+  margin: 0;
+  place-items: center;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-body .content {
-  margin: 0;
-  place-items: center;
-  min-width: 320px;
-  max-width: 100%;
-  width: 100%;
+  flex-direction: column;
   /* background-color: #c9c9c9; */
 }
 
