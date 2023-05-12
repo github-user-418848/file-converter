@@ -97,10 +97,6 @@ select {
     border-radius: 8px;
     padding: clamp(0.3125rem, 0.3125rem + 0.2604vw, 0.625rem);
     width: 100%;
-    max-width: 270px;
-}
-
-select {
     max-width: 287px;
 }
 
