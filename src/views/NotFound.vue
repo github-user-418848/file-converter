@@ -12,7 +12,8 @@
 <style>
 
 .not-found {
-    min-height: 50vh;
+    min-height: 320px;
+    width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
