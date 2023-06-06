@@ -3,7 +3,7 @@
     <div class="card">
         <label for="report_type">Report Type</label>
         <select name="report_type" id="report_type" @change="onReportTypeChange">
-            <option v-for="reportType in dataReportTypes" :key="reportType.id" :value="reportType.id"
+            <option v-for="reportType in filteredReportTypes" :key="reportType.id" :value="reportType.id"
                 :selected="isFirstMatchingReportType(reportType)">
                 {{ reportType.name }}
             </option>
@@ -31,7 +31,6 @@ import { reportTypes, formTypes } from '../utils/globals.js'
 export default {
     name: "RdoInputCard",
 
-
     data() {
         return {
             dataReportTypes: reportTypes,
@@ -40,6 +39,9 @@ export default {
     },
 
     computed: {
+        filteredReportTypes() {
+            return this.dataReportTypes.filter(reportType => reportType.index === this.$route.params.tax_type);
+        },
         filteredFormTypes() {
             const output = this.dataFormTypes.filter(formType => formType.index === this.$route.params.report_type);
             if (!this.$route.params.form_type) {
@@ -72,13 +74,13 @@ export default {
             const reportType = event.target.value
             if (reportType) {
                 const formType = this.dataFormTypes.find(formType => formType.index === reportType).name
-                this.$router.push({ name: 'GenReport', params: { report_type: reportType, form_type: formType } })
+                this.$router.push({ name: 'TaxPage', params: { report_type: reportType, form_type: formType } })
             }
         },
         onFormTypeChange(event) {
             const formTypeId = event.target.value
             if (formTypeId) {
-                this.$router.push({ name: 'GenReport', params: { report_type: this.$route.params.report_type, form_type: formTypeId } })
+                this.$router.push({ name: 'TaxPage', params: { report_type: this.$route.params.report_type, form_type: formTypeId } })
             }
         }
     }
