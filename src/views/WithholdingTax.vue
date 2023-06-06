@@ -36,7 +36,7 @@ import { validateXmlFile } from '../utils/validators.js'
 import { ref } from 'vue'
 
 export default {
-    name: "GenReport",
+    name: "WithholdingTax",
     components: {
         DropZone,
         DownloadCard,

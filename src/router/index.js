@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { reportTypes, formTypes } from '../utils/globals.js'
 
 import NotFound from '../views/NotFound.vue'
-import GenReport from '../views/GenReport.vue'
+import WithholdingTax from '../views/WithholdingTax.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -10,12 +10,12 @@ const router = createRouter({
         {
             name: 'Root',
             path: '/',
-            redirect: '/gen-dat-file/map/1601E'
+            redirect: '/wt/map/1601E'
         },
         {
-            name: 'GenReport',
-            path: '/gen-dat-file/:report_type/:form_type',
-            component: GenReport,
+            name: 'WithholdingTax',
+            path: '/wt/:report_type/:form_type',
+            component: WithholdingTax,
             beforeEnter: (to, from, next) => {
 
                 const reportType = to.params.report_type
