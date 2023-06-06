@@ -19,7 +19,9 @@ const routes = [
         },
         beforeEnter: (to, from, next) => {
             const { tax_type, report_type, form_type } = to.params;
-            const report = reportTypes.find(report => report.id === report_type);
+
+            const tax = reportTypes.find(report => report.index === tax_type);
+            const report = reportTypes.find(report => report.index === tax_type && report.id === report_type);
             const form = formTypes.find(form => form.index === report_type && form.name === form_type);
 
             if (!report || !form) {
