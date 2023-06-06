@@ -57,6 +57,7 @@ table {
 :root {
 
   --primary: #053363;
+  --secondary: #67a3d9;
 
   /* clamp(12.5rem, 12.5rem + 26.0417vw, 43.75rem); */
   --default-width: clamp(15.625rem, 15.625rem + 43.75vw, 68.125rem);
@@ -80,7 +81,7 @@ table {
 
 ::selection {
   background-color: var(--primary);
-  color: white;
+  color: #fff;
 }
 
 a {
