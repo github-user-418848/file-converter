@@ -24,7 +24,7 @@ export default {
             isMobile: false,
             views: [
                 { id: 1, params: { tax_type: 'wt', report_type: 'map', form_type: '1601E' }, name: 'Withholding Tax' },
-                { id: 2, params: { tax_type: 'vat', report_type: 'map', form_type: '1601E' }, name: 'Value Added Tax' },
+                { id: 2, params: { tax_type: 'vat', report_type: 'st', form_type: 'placholder1' }, name: 'Value Added Tax' },
                 { id: 3, params: { tax_type: 'book', report_type: 'map', form_type: 'book' }, name: 'Book of Accounts' },
             ]
         }
