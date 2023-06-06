@@ -1,8 +1,5 @@
 <template>
     <nav>
-        <!-- <div class="navbar-brand">
-            Generate DAT File
-        </div> -->
         <button class="menu-toggle" @click="toggleMenu">
             <span></span>
             <span></span>
@@ -10,8 +7,7 @@
         </button>
         <ul :class="{ 'show-menu': showMenu }">
             <li v-for="view in views" :key="view.id">
-                <!-- { name: 'GenReport', params: { id: view.id } } -->
-                <router-link to="#">
+                <router-link :to="generateRoute(view)">
                     {{ view.name }}
                 </router-link>
             </li>
@@ -27,9 +23,9 @@ export default {
             showMenu: false,
             isMobile: false,
             views: [
-                { id: 1, params: 'page1', name: 'Withholding Tax' },
-                { id: 2, params: 'page2', name: 'Value Added Tax' },
-                { id: 3, params: 'page3', name: 'Book of Accounts' },
+                { id: 1, params: { tax_type: 'wt', report_type: 'map', form_type: '1601E' }, name: 'Withholding Tax' },
+                { id: 2, params: { tax_type: 'vat', report_type: 'map', form_type: '1601E' }, name: 'Value Added Tax' },
+                { id: 3, params: { tax_type: 'book', report_type: 'map', form_type: 'book' }, name: 'Book of Accounts' },
             ]
         }
     },
@@ -50,15 +46,21 @@ export default {
                 this.showMenu = false;
             }
         },
-    },
+        generateRoute(view) {
+            return {
+                name: 'TaxPage',
+                params: view.params
+            }
+        },
+    }
 }
 </script>
   
 <style>
 nav {
-    background-color: #e4e4e4;
+    background-color: var(--primary);
     border-bottom: .5px solid lightgray;
-    color: #242424;
+    color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,12 +84,12 @@ nav li {
     padding: 0 clamp(0.9375rem, 0.9375rem + 0.7813vw, 1.875rem);
 }
 
-.router-link {
-    color: #242424;
+nav a, .router-link {
+    color: #fff;
 }
 
-.router-link-active {
-    color: #242424;
+nav a:hover, .router-link-active {
+    color: var(--secondary);
 }
 
 .menu-toggle {
@@ -107,7 +109,7 @@ nav li {
     width: 100%;
     height: 2px;
     margin-bottom: 4px;
-    background-color: #242424;
+    background-color: #fff;
     margin-left: auto;
 }
 
@@ -120,7 +122,7 @@ nav li {
 }
 
 .show-menu {
-    border-top: .5px solid lightgray;
+    /* border-top: .5px solid lightgray; */
     display: flex;
     flex-direction: column;
     text-align: right;
@@ -128,7 +130,7 @@ nav li {
     top: 55px;
     left: 0;
     width: 100%;
-    background-color: #e4e4e4;
+    background-color: var(--primary);
 }
 
 .show-menu li {
