@@ -40,7 +40,7 @@ export default {
     components: {
         DropZone,
         DownloadCard,
-        RdoInputCard,
+        FormattingOptions,
         Toast,
     },
     data() {
