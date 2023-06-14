@@ -12,8 +12,8 @@
     <!-- DropZone component to select XML file -->
     <DropZone @drop.prevent="dropFile" @change="selectedFile" />
 
-    <!-- RdoInputCard component for formatting of the DAT output -->
-    <RdoInputCard />
+    <!-- FormattingOptions component for formatting of the DAT output -->
+    <FormattingOptions />
 
     <!-- DownloadCard component to download transformed file -->
 
@@ -26,7 +26,7 @@
 <script>
 import DropZone from '../components/DropZone.vue'
 import DownloadCard from '../components/DownloadCard.vue'
-import RdoInputCard from '../components/FormattingOptions.vue'
+import FormattingOptions from '../components/FormattingOptions.vue'
 import Toast from '../components/Toast.vue'
 
 import { readXMLFile, retrieveRecords } from '../utils/helpers.js'
