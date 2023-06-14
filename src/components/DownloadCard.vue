@@ -94,9 +94,12 @@ export default {
     background-color: #0a4686;
 }
 
-.col-1,
+.col-1 {
+    text-align: left;
+}
+
 .col-2 {
-    width: 100%;
+    text-align: right;
 }
 
 .file-info-sm {
@@ -108,12 +111,15 @@ export default {
 @media screen and (min-width: 920px) {
     .col-1 {
         width: 50%;
-        text-align: left;
     }
-
     .col-2 {
         width: 50%;
-        text-align: right;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .col-1, .col-2 {
+        text-align: center;
     }
 }
 </style>

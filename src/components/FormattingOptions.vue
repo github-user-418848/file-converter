@@ -106,6 +106,7 @@ select {
     .card {
         flex-direction: column;
         justify-content: center;
+        text-align: center;
     }
     label {
         margin-bottom: .3rem;
