@@ -17,10 +17,10 @@
 
     <!-- DownloadCard component to download transformed file -->
 
-    <div v-for="(file, index) in dataFiles.originalFileName" :key="index">
+    <template v-for="(file, index) in dataFiles.originalFileName" :key="index">
         <DownloadCard :fileName="file" :textData="dataFiles.textContent[index]"
             :generatedFileName="dataFiles.generatedFileName[index]" />
-    </div>
+    </template>
 </template>
 
 <script>
