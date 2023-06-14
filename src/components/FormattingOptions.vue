@@ -29,7 +29,7 @@
 import { reportTypes, formTypes } from '../utils/globals.js'
 
 export default {
-    name: "RdoInputCard",
+    name: "FormattingOptions",
 
     data() {
         return {
