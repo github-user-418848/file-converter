@@ -1,26 +1,42 @@
 <template>
-    <h2>Format Options</h2>
-    <div class="card">
-        <label for="report_type">Report Type</label>
-        <select name="report_type" id="report_type" @change="onReportTypeChange">
-            <option v-for="reportType in filteredReportTypes" :key="reportType.id" :value="reportType.id"
-                :selected="isFirstMatchingReportType(reportType)">
-                {{ reportType.name }}
-            </option>
-        </select>
+    <div v-if="showReportTypeCard" class="card">
+        <div class="col-4">
+            <label for="report_type">Report Type</label>
+        </div>
+        <div class="col-8">
+            <select name="report_type" id="report_type" @change="onReportTypeChange">
+                <option v-for="reportType in filteredReportTypes" :key="reportType.id" :value="reportType.id"
+                    :selected="isFirstMatchingReportType(reportType)">
+                    {{ reportType.name }}
+                </option>
+            </select>
+        </div>
     </div>
-    <div class="card">
-        <label for="form_type">Form Type</label>
-        <select name="form_type" id="form_type" @change="onFormTypeChange">
-            <option v-for="formType in filteredFormTypes" :key="formType.id" :value="formType.name"
-                :selected="isFirstMatchingFormType(formType)">
-                {{ formType.name }}
-            </option>
-        </select>
+    <div v-if="showFormTypeCard" class="card">
+        <div class="col-4">
+            <label for="form_type">Form Type</label>
+        </div>
+        <div class="col-8">
+            <select name="form_type" id="form_type" @change="onFormTypeChange">
+                <option v-for="formType in filteredFormTypes" :key="formType.id" :value="formType.name"
+                    :selected="isFirstMatchingFormType(formType)">
+                    {{ formType.name }}
+                </option>
+            </select>
+        </div>
     </div>
-    <div class="card">
-        <label for="rdo_code">RDO Code </label>
-        <input type="text" name="rdo_code" id="rdo_code">
+    <div v-if="showRdoCode" class="card">
+        <div class="col-4">
+            <label for="rdo_code">RDO Code </label>
+        </div>
+        <div class="row col-8">
+            <div class="col-sm-9 col-12">
+                <input ref="rdoCodeInput" type="text" name="rdo_code" id="rdo_code" v-model="rdoCode" :disabled="!isRdoCodeEmpty" @keyup.enter="onRdoCodeChange">
+            </div>
+            <div class="col-sm-3 col-12">
+                <button id="rdoCodeSubmitBtn" :class="['btn', { 'btn-danger': !isRdoCodeEmpty }]" @click="onRdoCodeChange">{{ rdoCodeButtonLabel }}</button>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -35,6 +51,7 @@ export default {
         return {
             dataReportTypes: reportTypes,
             dataFormTypes: formTypes,
+            rdoCode: this.$route.params.rdo_code,
         }
     },
 
@@ -48,6 +65,21 @@ export default {
                 return [output[0]];
             }
             return output;
+        },
+        showFormTypeCard() {
+            return this.$route.params.tax_type === 'wt'
+        },
+        showReportTypeCard() {
+            return this.$route.params.tax_type !== 'boa'
+        },
+        showRdoCode() {
+            return this.$route.params.tax_type === 'wt'
+        },
+        isRdoCodeEmpty() {
+            return this.$route.params.rdo_code === '';
+        },
+        rdoCodeButtonLabel() {
+            return this.$route.params.rdo_code ? 'Remove' : 'Enter';
         },
     },
 
@@ -72,16 +104,37 @@ export default {
 
         onReportTypeChange(event) {
             const reportType = event.target.value
+
             if (reportType) {
-                const formType = this.dataFormTypes.find(formType => formType.index === reportType).name
-                this.$router.push({ name: 'TaxPage', params: { report_type: reportType, form_type: formType } })
+                let params = { report_type: reportType }
+                if (this.$route.params.tax_type === 'wt') {
+                    const formType = this.dataFormTypes.find(formType => formType.index === reportType).name
+                    params.form_type = formType
+                }
+
+                this.$router.push({ params })
             }
         },
         onFormTypeChange(event) {
             const formTypeId = event.target.value
             if (formTypeId) {
-                this.$router.push({ name: 'TaxPage', params: { report_type: this.$route.params.report_type, form_type: formTypeId } })
+                this.$router.push({ params: { report_type: this.$route.params.report_type, form_type: formTypeId } })
             }
+        },
+        onRdoCodeChange() {
+            const params = {
+                report_type: this.$route.params.report_type,
+                form_type: this.$route.params.form_type,
+            }
+
+            if (this.isRdoCodeEmpty) {
+                params.rdo_code = this.rdoCode
+            }
+            else {
+                params.rdo_code = ''
+            }
+
+            this.$router.push({ params });
         }
     }
 }
@@ -89,9 +142,7 @@ export default {
 </script>
 
 <style>
-
-input,
-select {
+input, select {
     background-color: white;
     color: black;
     outline: none;
@@ -99,18 +150,31 @@ select {
     border-radius: 8px;
     padding: clamp(0.3125rem, 0.3125rem + 0.2604vw, 0.625rem);
     width: 100%;
-    max-width: 287px;
 }
 
-@media screen and (max-width: 450px) {
-    .card {
+#rdoCodeSubmitBtn {
+    width: 100%;
+    max-width: 100%;
+}
+
+.btn-danger {
+  background-color: var(--warning);
+}
+
+.btn-danger:hover {
+    background-color: var(--warning-secondary);
+}
+
+@media screen and (max-width: 499px) {
+    .card, .card > .row {
+        row-gap: .4rem;
         flex-direction: column;
         justify-content: center;
         text-align: center;
     }
+
     label {
         margin-bottom: .3rem;
     }
 }
-
 </style>
