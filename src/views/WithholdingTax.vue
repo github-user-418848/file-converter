@@ -84,23 +84,37 @@ export default {
         },
 
         async createTextData(records, count) {
+            
             const {params} = this.$route
             const head = header(records, params, count)
             const detail = details(records, params, count)
             const control = controls(records, params, count)
             const file = filename(records, params, count)
+
             const separator = ','
+            const headValues = Object.values(head)
+            const headString = headValues.join(separator)
+
             let rawText = ''
-            
-            rawText += `${head.alphaListTypeCode}${separator}${head.tinWithBranchCode}${separator}${head.registeredName}${separator}${head.returnPeriod}\n`
-            const detailLines = detail.map(d => `${d.alphaListTypeCode}${separator}${d.sequenceNumber}${separator}${d.tinWithBranchCode}${separator}${d.corporation}${separator}${d.returnPeriod}${separator}${d.atcCode}${separator}${d.taxRate}${separator}${d.incomePayment}${separator}${d.taxWithHeld}`)
+            rawText += `${headString}${this.$route.params.rdo_code ? ',' + this.$route.params.rdo_code : ''}\n`
+
+            const detailLines = detail.map(d => {
+                const detailValues = Object.values(d)
+                const detailString = detailValues.join(separator)
+                return detailString
+            })
             rawText += detailLines.join('\n') + '\n'
-            rawText += `${control.alphaListTypeCode}${separator}${control.tinWithBranchCode}${separator}${control.returnPeriod}${separator}${control.incomePayment}${separator}${control.taxWithHeld}`
+
+            const controlValues = Object.values(control)
+            const controlString = controlValues.join(separator)
+            
+            rawText += `${controlString}\n`
 
             this.textData = rawText
-            // console.log(this.textData)
 
-            this.generatedFileName = `${file.tinWithBranchCode}${file.returnPeriod}${file.routeFormType}${file.extension}`
+            const fileValues = Object.values(file).join('')
+
+            this.generatedFileName = fileValues
         },
 
         async pushIntoFileData() {
