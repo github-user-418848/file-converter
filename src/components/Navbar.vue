@@ -24,8 +24,8 @@ export default {
             isMobile: false,
             views: [
                 { id: 1, params: { tax_type: 'wt', report_type: 'map', form_type: '1601E' }, name: 'Withholding Tax' },
-                { id: 2, params: { tax_type: 'vat', report_type: 'st', form_type: 'placholder1' }, name: 'Value Added Tax' },
-                { id: 3, params: { tax_type: 'book', report_type: 'map', form_type: 'book' }, name: 'Book of Accounts' },
+                { id: 2, params: { tax_type: 'vat', report_type: 'st' }, name: 'Value Added Tax' },
+                { id: 3, params: { tax_type: 'boa' }, name: 'Book of Accounts' },
             ]
         }
     },
@@ -52,8 +52,7 @@ export default {
                 params: view.params
             }
         },
-    }
-}
+    }}
 </script>
   
 <style>
@@ -84,11 +83,13 @@ nav li {
     padding: 0 clamp(0.9375rem, 0.9375rem + 0.7813vw, 1.875rem);
 }
 
-nav a, .router-link {
+nav a,
+.router-link {
     color: #fff;
 }
 
-nav a:hover, .router-link-active {
+nav a:hover,
+.router-link-active {
     color: var(--secondary);
 }
 
