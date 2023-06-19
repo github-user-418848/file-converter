@@ -2,7 +2,7 @@
     <Toast :errorMessage="errorMessage" />
 
     <div class="card" v-if="fileName">
-        <div class="col-1">
+        <div class="col-sm-4 col-12">
             <span class="file-info">
                 {{ generatedFileName }}
             </span>
@@ -12,7 +12,7 @@
             </span>
 
         </div>
-        <div class="col-2">
+        <div class="col-8 gen-btn">
             <button class="btn" @click="viewFile()">Preview</button>
             <button class="btn" @click="generatedFile()">Generate</button>
         </div>
@@ -68,9 +68,10 @@ export default {
             }
         },
         async generateBlob() {
-            const rdoCode = document.getElementById('rdo_code').value;
-            const validatedRdoCode = rdoCode ? ',' + await validateRdoCode(rdoCode) + '\n' : '\n';
-            const blobData = `${this.textData.split('\n')[0]}${validatedRdoCode}${this.textData.split('\n').slice(1).join('\n')}`;
+            // const rdoCode = document.getElementById('rdo_code').value;
+            // const validatedRdoCode = rdoCode ? ',' + await validateRdoCode(rdoCode) + '\n' : '\n';
+            const blobData = `${this.textData}`
+            // const blobData = `${this.textData.split('\n')[0]}${validatedRdoCode}${this.textData.split('\n').slice(1).join('\n')}`;
             const blob = new Blob([blobData], { type: 'text/plain' });
             return blob
         }
@@ -94,32 +95,15 @@ export default {
     background-color: #0a4686;
 }
 
-.col-1 {
-    text-align: left;
-}
-
-.col-2 {
-    text-align: right;
+@media screen and (min-width: 500px) {
+    .gen-btn {
+        text-align: right;
+    }
 }
 
 .file-info-sm {
     display: block;
     font-size: 11px;
     font-weight: 600;
-}
-
-@media screen and (min-width: 920px) {
-    .col-1 {
-        width: 50%;
-    }
-    .col-2 {
-        width: 50%;
-    }
-}
-
-@media screen and (max-width: 450px) {
-    .col-1, .col-2 {
-        text-align: center;
-    }
 }
 </style>
