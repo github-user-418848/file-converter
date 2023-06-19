@@ -37,10 +37,4 @@ export const
         { id: 6, index: 'sawt', name: '2550Q' },
         { id: 7, index: 'sawt', name: '2551M' },
         { id: 8, index: 'sawt', name: '2553' },
-
-        { id: 1, index: 'st', name: 'placholder1' },
-        { id: 2, index: 'st', name: 'placholder2' },
-
-        { id: 3, index: 'pt', name: 'placholder3' },
-        { id: 4, index: 'pt', name: 'placholder4' },
     ]
