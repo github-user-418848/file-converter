@@ -28,7 +28,8 @@ export function getMonthIndex(monthName) {
 }
 
 export function regexMatched(regexPattern, string) {
-    return string.match(regexPattern)
+    const regex = new RegExp(regexPattern);
+    return string.match(regex);
 }
 
 export function regexTest(regexPattern, string) {
