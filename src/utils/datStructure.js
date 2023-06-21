@@ -41,13 +41,6 @@ export function header(record, route, count = 0) {
             }
             break
         case 'pt':
-            // 0 - [ "PURCHASE TRANSACTION\nRECONCILIATION OF LISTING FOR ENFORCEMENT\n\nTIN: 008-290-765-0000\nOWNER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\nOWNER'S TRADE NAME: \nOWNER'S ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY\n\n\nPHILIPPINES\n" ]
-            // 9 - [ "40,118.53", "316,239.15", "0.00", "4,544.61", "295,105.42", "138,242.68", "0.00", "156,862.74", "Grand Total:", "END OF REPORT", "356,357.68" ]
-
-
-
-            // H,S,008290765,0000,"MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.",40118.53,316239.15,0.00,4544.61,295105.42,138242.68,0.00,Grand Total:
-            // H,P"204332439","MUSTARD SEED SYSTEMS CORPORATION","","","","MUSTARD SEED SYSTEMS CORPORATION","1001 SUMMIT ONE OFFICE TOWER 530 ","SHAW BOULEVARD MANDALUYONG 1552",0.00,0.00,1336649.04,0.00,4007290.97,641272.48,641272.48,0.00,041,04/30/2017,12
             headerData = {
                 alphaListTypeCode: `H,P`,
                 tinWithBranchCode: `${formatTIN(record[0][0])}`,
@@ -64,7 +57,7 @@ export function header(record, route, count = 0) {
                 amtOfGrossTaxablePurchase: `${formatDigit(record[record.length - 1][10])}`
             }
             break
-        
+            
         default:
             headerData = {
                 alphaListTypeCode: `H${alphaList.acronym},H${route.form_type}`,
@@ -152,8 +145,6 @@ export function details(records, route, count = 0) {
                 amtOfGrossTaxableSales: `${formatDigit(record[11])}`
             }))
             break
-        // 1 - [ "", "12212312121", "23,529.41", "01/22/2023", "156,862.74", "0.00", "0.00", "156,862.74", "0.00", "0.00", "156,862.74", "MICHAEL BELLIDO", "180,392.15" ]
-        // D,P,"149831066",,"LAQUI","MARKO","MEDARDO","KALAYAAN AVE. DILIMAN","QUEZON CITY",0,0,0,0,5983.87,718.07,204332439,04/30/2017
         case 'pt':
             details = records.slice(1, -2).map(record => ({
                 alphaListTypeCode: `D,P`,
@@ -297,3 +288,190 @@ export function filename(record, route, count = 0) {
     }
     return fileNameData
 }
+
+
+// 0 - [ "MBTC/PDC-01.01.2023", "3126", "Security Agency & Intelligent Network Technology", "01/01/2023", "21533" ]
+
+// 1 - [ "1-11001", "MBTC-CA#392-7-39253433-0", "0.00", "62,500.00" ]
+
+// 2 - [ "1-12100", "Trade Debtors/ Trade Receivables", "62,500.00", "0.00" ]
+
+// 3 - [ "62,500.00", "62,500.00", "TOTAL" ]
+
+// 4 - []
+
+// 5 - [ "LBP; PDC-01.05.2023/ FULL PAYMENT/ PART OF PHP 198,370.99", "4258", "RDF Feed, Livestock & Foods, Inc", "01/05/2023", "28171" ]
+
+// 6 - [ "1-11001", "MBTC-CA#392-7-39253433-0", "0.00", "112,924.56" ]
+
+// 7 - [ "1-12100", "Trade Debtors/ Trade Receivables", "112,924.56", "0.00" ]
+
+// 8 - [ "112,924.56", "112,924.56", "TOTAL" ]
+
+// 9 - []
+
+// 10 - [ "LBP; BI-P0059/PART OF PHP 198,370.99/ PDC 01.05.2023", "4259", "RDF Feed, Livestock & Foods, Inc", "01/05/2023", "28173" ]
+
+// 11 - [ "1-11001", "MBTC-CA#392-7-39253433-0", "0.00", "85,446.43" ]
+
+// 12 - [ "1-17800", "Deferred Output VAT", "0.00", "9,154.98" ]
+
+// 13 - [ "1-12100", "Trade Debtors/ Trade Receivables", "85,446.43", "0.00" ]
+
+// 14 - [ "2-13300", "Output VAT Payable", "9,154.98", "0.00" ]
+
+// 15 - [ "94,601.41", "94,601.41", "TOTAL" ]
+
+// 16 - []
+
+// 17 - [ "BPI / PDC - 01.06.2023 / 3 of 12", "4363", "TOA Global Remote Inc", "01/06/2023", "28805" ]
+
+// 18 - [ "1-11002", "MBTC-CA#007-195-50984-7", "0.00", "333,399.36" ]
+
+// 19 - [ "1-12100", "Trade Debtors/ Trade Receivables", "333,399.36", "0.00" ]
+
+// 20 - [ "333,399.36", "333,399.36", "TOTAL" ]
+
+// 21 - []
+
+// 22 - [ "UB / 3 of 36 / PDC - 01.12.2023", "4162", "Conti's Specialty Foods Inc.", "01/12/2023", "27489" ]
+
+// 23 - [ "1-11001", "MBTC-CA#392-7-39253433-0", "0.00", "182,959.71" ]
+
+// 24 - [ "1-12100", "Trade Debtors/ Trade Receivables", "182,959.71", "0.00" ]
+
+// 25 - [ "182,959.71", "182,959.71", "TOTAL" ]
+
+// 26 - []
+
+// 27 - [ "BPI/PDC-01.15.2023", "3132", "2GL Communication Phils.", "01/15/2023", "21546" ]
+
+// 28 - [ "1-11001", "MBTC-CA#392-7-39253433-0", "0.00", "25,000.00" ]
+
+// 29 - [ "2-11100", "Trade Payables", "25,000.00", "0.00" ]
+
+// 30 - [ "25,000.00", "25,000.00", "TOTAL" ]
+
+// 31 - []
+
+// 32 - [ "UB/PDC-01.15.2023/BI-1850", "3139", "Yatai International Corporation", "01/15/2023", "21560" ]
+
+// 33 - [ "1-11001", "MBTC-CA#392-7-39253433-0", "0.00", "63,932.28" ]
+
+// 34 - [ "1-12100", "Trade Debtors/ Trade Receivables", "63,932.28", "0.00" ]
+
+// 35 - [ "63,932.28", "63,932.28", "TOTAL" ]
+
+// 36 - []
+
+// 37 - [ "CANCEL / BPI / 6 of 12", "3387", "TOA Global Remote Inc", "01/15/2023", "22961" ]
+
+// 38 - [ "1-11001", "MBTC-CA#392-7-39253433-0", "0.00", "186,296.29" ]
+
+// 39 - [ "1-12100", "Trade Debtors/ Trade Receivables", "186,296.29", "0.00" ]
+
+// 40 - [ "186,296.29", "186,296.29", "TOTAL" ]
+
+// 41 - []
+
+// 42 - [ "BPI / PDC - 01.15.2023 / 6 of 12", "3398", "TOA Global Remote Inc", "01/15/2023", "22984" ]
+
+// 43 - [ "1-11002", "MBTC-CA#007-195-50984-7", "0.00", "186,296.29" ]
+
+// 44 - [ "1-12100", "Trade Debtors/ Trade Receivables", "186,296.29", "0.00" ]
+
+// 45 - [ "186,296.29", "186,296.29", "TOTAL" ]
+
+// 46 - []
+
+// 47 - [ "BPI / PDC - 01.15.2023 / 6 of 12", "3424", "TOA Global Remote Inc", "01/15/2023", "23046" ]
+
+// 48 - [ "1-11002", "MBTC-CA#007-195-50984-7", "0.00", "603,856.94" ]
+
+// 49 - [ "1-12100", "Trade Debtors/ Trade Receivables", "603,856.94", "0.00" ]
+
+// 50 - [ "603,856.94", "603,856.94", "TOTAL" ]
+
+// 51 - []
+
+// 52 - [ "BPI/ PDC 01.15.23/ 6 of 12", "3602", "TOA Global Remote Inc", "01/15/2023", "24020" ]
+
+// 53 - [ "1-11002", "MBTC-CA#007-195-50984-7", "0.00", "610,280.95" ]
+
+// 54 - [ "1-12100", "Trade Debtors/ Trade Receivables", "610,280.95", "0.00" ]
+
+// 55 - [ "610,280.95", "610,280.95", "TOTAL" ]
+
+// 56 - []
+
+// 57 - [ "BPI/ PDC 01.22.23/ 6 of 12", "3573", "TOA Global Remote Inc", "01/22/2023", "23966" ]
+
+// 58 - [ "1-11002", "MBTC-CA#007-195-50984-7", "0.00", "70,664.11" ]
+
+// 59 - [ "1-12100", "Trade Debtors/ Trade Receivables", "70,664.11", "0.00" ]
+
+// 60 - [ "70,664.11", "70,664.11", "TOTAL" ]
+
+// 61 - []
+
+// 62 - [ "BPI/ PDC 01.22.23/ 6 of 12", "3580", "TOA Global Remote Inc", "01/22/2023", "23980" ]
+
+// 63 - [ "1-11002", "MBTC-CA#007-195-50984-7", "0.00", "167,024.26" ]
+
+// 64 - [ "1-12100", "Trade Debtors/ Trade Receivables", "167,024.26", "0.00" ]
+
+// 65 - [ "167,024.26", "167,024.26", "TOTAL" ]
+
+// 66 - []
+
+// 67 - [ "UB / PDC - 01.30.2023", "3049", "Yatai International Corporation", "01/30/2023", "21112" ]
+
+// 68 - [ "1-11001", "MBTC-CA#392-7-39253433-0", "0.00", "75,934.50" ]
+
+// 69 - [ "1-12100", "Trade Debtors/ Trade Receivables", "75,934.50", "0.00" ]
+
+// 70 - [ "75,934.50", "75,934.50", "TOTAL" ]
+
+// 71 - []
+
+// 72 - [ "WC158 (JAN)", "3157", "Yatai International Corporation", "01/31/2023", "21588" ]
+
+// 73 - [ "1-17400", "Creditable W/holding Tax 2307", "0.00", "690.31" ]
+
+// 74 - [ "1-12100", "Trade Debtors/ Trade Receivables", "690.31", "0.00" ]
+
+// 75 - [ "690.31", "690.31", "TOTAL" ]
+
+// 76 - []
+
+// 77 - [ "BPI/ PDC 01.29.23/ 6 of 12", "3587", "TOA Global Remote Inc", "01/29/2023", "23991" ]
+
+// 78 - [ "1-11002", "MBTC-CA#007-195-50984-7", "0.00", "96,360.15" ]
+
+// 79 - [ "1-12100", "Trade Debtors/ Trade Receivables", "96,360.15", "0.00" ]
+
+// 80 - [ "96,360.15", "96,360.15", "TOTAL" ]
+
+// 81 - []
+
+// 82 - [ "BPI / PDC -01.30.2023 / 5 of 12", "4034", "TOA Global Remote Inc", "01/30/2023", "26794" ]
+
+// 83 - [ "1-11001", "MBTC-CA#392-7-39253433-0", "0.00", "200,039.61" ]
+
+// 84 - [ "1-12100", "Trade Debtors/ Trade Receivables", "200,039.61", "0.00" ]
+
+// 85 - [ "200,039.61", "200,039.61", "TOTAL" ]
+
+// 86 - []
+
+// 87 - [ "PBCOM / PDC - 01.31.2023 / 5 of 36", "4605", "Wenphil Corporation", "01/31/2023", "30344" ]
+
+// 88 - [ "1-11001", "MBTC-CA#392-7-39253433-0", "0.00", "78,952.70" ]
+
+// 89 - [ "1-12100", "Trade Debtors/ Trade Receivables", "78,952.70", "0.00" ]
+
+// 90 - [ "78,952.70", "78,952.70", "TOTAL" ]
+
+// 91 - []
+
+// 92 - [ "GRAND TOTAL", "3,151,713.43", "3,151,713.43" ]
