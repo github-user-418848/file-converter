@@ -1,4 +1,4 @@
-import { formatTIN, formatDate, formatOwnersName, formatAgentName, formatDigit, formatCorpName } from './formatter.js'
+import { formatTIN, formatDate, formatOwnersName, formatOwnersAddress, formatAgentName, formatDigit, formatCorpName } from './formatter.js'
 import { reportTypes } from './globals.js'
 
 export function header(record, route, count = 0) {
@@ -40,6 +40,31 @@ export function header(record, route, count = 0) {
                 amtOfGrossTaxableSales: `${formatDigit(record[record.length - 1][8])}`
             }
             break
+        case 'pt':
+            // 0 - [ "PURCHASE TRANSACTION\nRECONCILIATION OF LISTING FOR ENFORCEMENT\n\nTIN: 008-290-765-0000\nOWNER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\nOWNER'S TRADE NAME: \nOWNER'S ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY\n\n\nPHILIPPINES\n" ]
+            // 9 - [ "40,118.53", "316,239.15", "0.00", "4,544.61", "295,105.42", "138,242.68", "0.00", "156,862.74", "Grand Total:", "END OF REPORT", "356,357.68" ]
+
+
+
+            // H,S,008290765,0000,"MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.",40118.53,316239.15,0.00,4544.61,295105.42,138242.68,0.00,Grand Total:
+            // H,P"204332439","MUSTARD SEED SYSTEMS CORPORATION","","","","MUSTARD SEED SYSTEMS CORPORATION","1001 SUMMIT ONE OFFICE TOWER 530 ","SHAW BOULEVARD MANDALUYONG 1552",0.00,0.00,1336649.04,0.00,4007290.97,641272.48,641272.48,0.00,041,04/30/2017,12
+            headerData = {
+                alphaListTypeCode: `H,P`,
+                tinWithBranchCode: `${formatTIN(record[0][0])}`,
+                ownersName: `${formatOwnersName(record[0][0])}`,
+                ownersAddress: `${formatOwnersAddress(record[0][0])}`,
+                amtOfGrossPurchase: `${formatDigit(record[record.length - 1][1])}`,
+                amtOfExemptPurchase: `${formatDigit(record[record.length - 1][2])}`,
+                amtOfZeroRatedPurchase: `${formatDigit(record[record.length - 1][3])}`,
+                amtOfTaxablePurchase: `${formatDigit(record[record.length - 1][4])}`,
+                amtOfPurchaseOfServices: `${formatDigit(record[record.length - 1][5])}`,
+                amtOfPurchaseOfGoods: `${formatDigit(record[record.length - 1][6])}`,
+                amtOfPurchaseOfGoodsOtherThanCapitalGoods: `${formatDigit(record[record.length - 1][7])}`,
+                amtOfInputTax: `${formatDigit(record[record.length - 1][0])}`,
+                amtOfGrossTaxablePurchase: `${formatDigit(record[record.length - 1][10])}`
+            }
+            break
+        
         default:
             headerData = {
                 alphaListTypeCode: `H${alphaList.acronym},H${route.form_type}`,
@@ -115,7 +140,7 @@ export function details(records, route, count = 0) {
                 alphaListTypeCode: `D,S`,
                 taxableMonth: `${record[10]}`,
                 tinWithBranchCode: `${formatTIN(record[7])}`,
-                registeredName: `${record[6]}`,
+                registeredName: `${formatCorpName(record[6])}`,
                 customerAddress: `${record[8]}`,
                 amtOfGrossSales: `${formatDigit(record[5])}`,
                 amtOfExemptSales: `${formatDigit(record[4])}`,
@@ -125,6 +150,26 @@ export function details(records, route, count = 0) {
                 amtOfSalesOfGoods: `${formatDigit(record[0])}`,
                 amtOfOutputTax: `${formatDigit(record[8])}`,
                 amtOfGrossTaxableSales: `${formatDigit(record[11])}`
+            }))
+            break
+        // 1 - [ "", "12212312121", "23,529.41", "01/22/2023", "156,862.74", "0.00", "0.00", "156,862.74", "0.00", "0.00", "156,862.74", "MICHAEL BELLIDO", "180,392.15" ]
+        // D,P,"149831066",,"LAQUI","MARKO","MEDARDO","KALAYAAN AVE. DILIMAN","QUEZON CITY",0,0,0,0,5983.87,718.07,204332439,04/30/2017
+        case 'pt':
+            details = records.slice(1, -2).map(record => ({
+                alphaListTypeCode: `D,P`,
+                tinWithBranchCode: `${formatTIN(record[1])}`,
+                registeredName: `${formatCorpName(record[11])}`,
+                suppliersAddress: `${record[0]}`,
+                amtOfGrossPurchase: `${formatDigit(record[4])}`,
+                amtOfExemptPurchase: `${formatDigit(record[5])}`,
+                amtOfZeroRatedPurchase: `${formatDigit(record[6])}`,
+                amtOfTaxablePurchase: `${formatDigit(record[7])}`,
+                amtOfPurchaseOfServices: `${formatDigit(record[8])}`,
+                amtOfPurchaseOfGoods: `${formatDigit(record[9])}`,
+                amtOfPurchaseOfGoodsOtherThanCapitalGoods: `${formatDigit(record[10])}`,
+                amtOfInputTax: `${formatDigit(record[2])}`,
+                amtOfGrossTaxablePurchase: `${formatDigit(record[12])}`,
+                taxableMonth: `${record[3]}`
             }))
             break
     }
@@ -168,7 +213,25 @@ export function controls(record, route, count = 0) {
                 amtOfSalesServices: `${formatDigit(record[record.length - 1][4])}`,
                 amtOfSalesOfGoods: `${formatDigit(record[record.length - 1][5])}`,
                 amtOfOutputTax: `${formatDigit(record[record.length - 1][6])}`,
-                amtOfTaxableSalesq: `${formatDigit(record[record.length - 1][8])}`,
+                amtOfTaxableSales: `${formatDigit(record[record.length - 1][8])}`,
+            }
+            break
+        case 'pt':
+            controlsData = {
+                alphaListTypeCode: `D,P`,
+                tinWithBranchCode: `${formatTIN(record[record.length - 2][1])}`,
+                registeredName: `${formatCorpName(record[record.length - 2][11])}`,
+                suppliersAddress: `${record[record.length - 2][0]}`,
+                amtOfGrossPurchase: `${formatDigit(record[record.length - 2][4])}`,
+                amtOfExemptPurchase: `${formatDigit(record[record.length - 2][5])}`,
+                amtOfZeroRatedPurchase: `${formatDigit(record[record.length - 2][6])}`,
+                amtOfTaxablePurchase: `${formatDigit(record[record.length - 2][7])}`,
+                amtOfPurchaseOfServices: `${formatDigit(record[record.length - 2][8])}`,
+                amtOfPurchaseOfGoods: `${formatDigit(record[record.length - 2][9])}`,
+                amtOfPurchaseOfGoodsOtherThanCapitalGoods: `${formatDigit(record[record.length - 2][10])}`,
+                amtOfInputTax: `${formatDigit(record[record.length - 2][2])}`,
+                amtOfGrossTaxablePurchase: `${formatDigit(record[record.length - 2][12])}`,
+                taxableMonth: `${record[record.length - 2][3]}`
             }
             break
         default:
@@ -208,11 +271,18 @@ export function filename(record, route, count = 0) {
             }
             break
         case 'st':
-            console.log(record)
             const [month, day, year] = record[1][10].split('/')
             fileNameData = {
                 tinWithBranchCode: `${formatTIN(record[0][0]).replace(",", "")}S0`,
                 returnPeriod: `${month}${year}`,
+                extension: '.dat'
+            }
+            break
+        case 'pt':
+            const [month2, day2, year2] = record[1][3].split('/')
+            fileNameData = {
+                tinWithBranchCode: `${formatTIN(record[0][0]).replace(",", "")}P0`,
+                returnPeriod: `${month2}${year2}`,
                 extension: '.dat'
             }
             break
