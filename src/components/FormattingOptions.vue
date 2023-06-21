@@ -76,7 +76,7 @@ export default {
             return this.$route.params.tax_type === 'wt'
         },
         isRdoCodeEmpty() {
-            return this.$route.params.rdo_code === '';
+            return this.$route.params.rdo_code === '' || this.$route.params.rdo_code === undefined;
         },
         rdoCodeButtonLabel() {
             return this.$route.params.rdo_code ? 'Remove' : 'Enter';
