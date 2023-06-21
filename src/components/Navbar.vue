@@ -1,5 +1,8 @@
 <template>
     <nav>
+        <h3 class="navbar-brand">
+            {{ displayTaxName }}
+        </h3>
         <button class="menu-toggle" @click="toggleMenu">
             <span></span>
             <span></span>
@@ -36,6 +39,11 @@ export default {
     destroyed() {
         window.removeEventListener("resize", this.checkMobile);
     },
+    computed: {
+        displayTaxName() {
+            return this.views.find(view => view.params.tax_type === this.$route.params.tax_type)?.name
+        }
+    },
     methods: {
         toggleMenu() {
             this.showMenu = !this.showMenu
@@ -52,7 +60,8 @@ export default {
                 params: view.params
             }
         },
-    }}
+    }
+}
 </script>
   
 <style>
@@ -67,8 +76,9 @@ nav {
 }
 
 .navbar-brand {
-    font-size: 22px;
-    font-weight: 400;
+    display: none;
+    font-size: clamp(1.0625rem, 1.0625rem + 0.3906vw, 1.25rem);
+    font-weight: bold;
 }
 
 ul {
@@ -140,8 +150,12 @@ nav a:hover,
 
 @media screen and (max-width: 768px) {
 
+    .navbar-brand {
+        display: block;
+        text-align: left;
+    }
     nav {
-        justify-content: flex-end;
+        justify-content: space-between;
     }
 
     ul {
