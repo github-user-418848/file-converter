@@ -1,35 +1,9 @@
-<script>
-import { ref, onMounted } from 'vue';
-
-export default {
-    name: "DropZone",
-
-    setup() {
-        const active = ref(false)
-
-        const toggleActive = () => {
-            active.value = !active.value
-        }
-
-        // onMounted(() => {
-        //     // const isMobile = ref(false)
-        //     // Check the user agent if it's a mobile device
-        //     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        //         // Add a class to the dropzone element to hide the input
-        //         const dropzone = document.querySelector('.dropzone');
-        //         dropzone.classList.add('hide');
-        //         const mobilebtn = document.querySelector('.m-btn');
-        //         mobilebtn.classList.add('show');
-        //     }
-        // })
-
-        return { active, toggleActive }
-    }
-};
-</script>
-
 <template>
-    <div @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent
+    <template v-if="isMobile">
+        <button class="m-btn col-8" @click="selectFile">Select File</button>
+        <input type="file" name="dropzoneFile" id="dropzoneFile" class="dropzoneFile" accept=".xml">
+    </template>
+    <div v-else @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent
         @drop.prevent="toggleActive" :class="{ 'active-dropzone': active }" class="dropzone">
         <span>Drag and Drop</span>
         <span>OR</span>
@@ -37,6 +11,38 @@ export default {
         <input type="file" name="dropzoneFile" id="dropzoneFile" class="dropzoneFile" accept=".xml">
     </div>
 </template>
+
+<script>
+import { ref, computed, onMounted } from 'vue';
+
+export default {
+    name: "DropZone",
+
+    setup() {
+        const active = ref(false)
+        const isMobile = ref(false)
+
+        const toggleActive = () => {
+            active.value = !active.value
+        }
+
+        const selectFile = () => {
+            const dropzoneFileInput = document.querySelector('.dropzoneFile');
+            if (dropzoneFileInput) {
+                dropzoneFileInput.click();
+            }
+        };
+
+        const screenWidth = computed(() => window.innerWidth);
+
+        onMounted(() => {
+            isMobile.value = screenWidth.value <= 960;
+        });
+
+        return { active, toggleActive, isMobile, selectFile }
+    }
+};
+</script>
 
 <style scoped>
 .dropzone {
@@ -66,15 +72,14 @@ export default {
 }
 
 .m-btn {
-    max-width: clamp(12.5rem, 12.5rem + 26.0417vw, 43.75rem);
     padding: 8px 12px;
     border-radius: 8px;
     background-color: var(--primary);
     border: 0;
-    margin: 12px auto;
+    margin: 12px auto 24px;
     transition: .3s ease all;
     cursor: pointer;
-    display: none;
+    display: block;
     color: white;
 }
 
