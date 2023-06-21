@@ -1,3 +1,5 @@
+import { header, details, controls, filename } from '../utils/datStructure.js'
+
 export async function readXMLFile(file) {
     const decoder = new TextDecoder();
     const content = await file.arrayBuffer();
@@ -8,7 +10,6 @@ export async function readXMLFile(file) {
 }
 
 export async function retrieveRecords(xmlDoc) {
-    // Spread operator (...) to convert the HTMLCollection object returned by getElementsByTagName into an array
     const xmlSection = [...xmlDoc.getElementsByTagName('Section')];
     const records = xmlSection.map(item => {
         const values = [];
@@ -18,8 +19,38 @@ export async function retrieveRecords(xmlDoc) {
         }
         return values
     });
-    // this.records = records
     return records
+}
+
+export function createTextData(records, params, separator = ',') {
+    const head = header(records, params);
+    const detail = details(records, params);
+    const control = controls(records, params);
+    const file = filename(records, params);
+
+    const headValues = Object.values(head);
+    const headString = headValues.join(separator);
+
+    let rawText = `${headString}\n`;
+
+    const detailLines = detail.map(d => {
+        const detailValues = Object.values(d);
+        const detailString = detailValues.join(separator);
+        return detailString;
+    });
+    rawText += detailLines.join('\n') + '\n';
+
+    const controlValues = Object.values(control);
+    const controlString = controlValues.join(separator);
+
+    rawText += `${controlString}\n`;
+
+    const fileValues = Object.values(file).join('');
+
+    return {
+        textData: rawText,
+        generatedFileName: fileValues
+    };
 }
 
 export function getMonthIndex(monthName) {
