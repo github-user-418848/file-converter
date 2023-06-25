@@ -1,30 +1,34 @@
 <template>
-    <Toast :errorMessage="errorMessage" />
+    <div class="dropzone" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent
+        @drop.prevent="dropFile" :class="{ 'active-dropzone': active }">
+        <!-- <template v-if="!active"> -->
+            <Toast :errorMessage="errorMessage" />
 
-    <h1>File Converter</h1>
-    <p>Convert financial reports to various file formats</p>
-    
-    <!-- Display records array -->
-    <!-- <div v-for="(record, index) in records" :key="index">
-        <p>{{ index }} - {{ record }}</p>
-    </div> -->
+            <h1>File Converter</h1>
+            <p>Convert financial reports to various file formats. Drag and Drop files are supported.</p>
 
-    <!-- DropZone component to select XML file -->
-    <DropZone @drop.prevent="dropFile" @change="selectedFile" />
+            <!-- Display records array
+            <div v-for="(record, index) in records" :key="index">
+                <p>{{ index }} - {{ record }}</p>
+            </div> -->
 
-    <!-- FormattingOptions component for formatting of the DAT output -->
-    <FormattingOptions />
+            <BtnUploadFile @upload-file="uploadFile" />
 
-    <!-- DownloadCard component to download transformed file -->
+            <FormattingOptions />
 
-    <template v-for="(file, index) in dataFiles.originalFileName" :key="index">
-        <DownloadCard :fileName="file" :textData="dataFiles.textContent[index]"
-            :generatedFileName="dataFiles.generatedFileName[index]" />
-    </template>
+            <template v-for="(file, index) in dataFiles.originalFileName" :key="index">
+                <DownloadCard :fileName="file" :textData="dataFiles.textContent[index]"
+                    :generatedFileName="dataFiles.generatedFileName[index]" />
+            </template>
+        <!-- </template>
+        <template v-else>
+            <h3 class="pointer-events-none">Drop your file here to start the conversion</h3>
+        </template> -->
+    </div>
 </template>
 
 <script>
-import DropZone from '../components/DropZone.vue'
+import BtnUploadFile from '../components/BtnUploadFile.vue'
 import DownloadCard from '../components/DownloadCard.vue'
 import FormattingOptions from '../components/FormattingOptions.vue'
 import Toast from '../components/Toast.vue'
@@ -37,13 +41,14 @@ import { ref } from 'vue'
 export default {
     name: "WithholdingTax",
     components: {
-        DropZone,
+        BtnUploadFile,
         DownloadCard,
         FormattingOptions,
         Toast,
     },
     data() {
         return {
+            active: ref(false),
             file: ref(""),
             records: ref(""),
             textData: ref(""),
@@ -53,14 +58,19 @@ export default {
         }
     },
     methods: {
+        async toggleActive() {
+            this.active = !this.active
+        },
+
         async dropFile(e) {
+            this.active = false
             this.file = e.dataTransfer.files[0]
             await this.parseXmlFile(this.file)
             console.log(this.file.name)
         },
 
-        async selectedFile() {
-            this.file = document.querySelector('.dropzoneFile').files[0]
+        async uploadFile() {
+            this.file = document.querySelector('.uploadFile').files[0]
             await this.parseXmlFile(this.file)
             console.log(this.file.name)
         },
@@ -81,7 +91,7 @@ export default {
                 setTimeout(() => { this.errorMessage = "" }, 7000)
             }
         },
-        
+
         async createTextData(records) {
             const { params } = this.$route;
             const separator = ',';
