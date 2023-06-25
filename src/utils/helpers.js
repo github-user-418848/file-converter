@@ -22,11 +22,11 @@ export async function retrieveRecords(xmlDoc) {
     return records
 }
 
-export function createTextData(records, params, separator = ',') {
-    const head = header(records, params);
-    const detail = details(records, params);
-    const control = controls(records, params);
-    const file = filename(records, params);
+export function createTextData(records, params, separator = ',', count) {
+    const head = header(records, params, count);
+    const detail = details(records, params, count);
+    const control = controls(records, params, count);
+    const file = filename(records, params, count);
 
     const headValues = Object.values(head);
     const headString = headValues.join(separator);

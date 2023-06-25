@@ -92,10 +92,10 @@ export default {
             }
         },
 
-        async createTextData(records) {
+        async createTextData(records, count) {
             const { params } = this.$route;
             const separator = ',';
-            const { textData, generatedFileName } = createTextData(records, params, separator);
+            const { textData, generatedFileName } = createTextData(records, params, separator, count);
             this.textData = textData;
             this.generatedFileName = generatedFileName;
         },
