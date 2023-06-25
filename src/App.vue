@@ -45,12 +45,4 @@ a.router-link-active {
 .fade-leave-active {
   transition: opacity 0.5s ease-in-out;
 }
-
-/* select {
-  border: 0;
-  outline: none;
-  background: rgba(0, 0, 0, .123);
-  width: clamp(12.5rem, 12.5rem + 26.0417vw, 43.75rem);
-  height: 35px;
-} */
 </style>
