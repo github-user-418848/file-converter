@@ -1,5 +1,5 @@
 <template>
-    <button class="btn col-md-3 col-8 mb-1" @click="uploadFile">Select File</button>
+    <button class="btn col-md-3 col-8 mb-1" @click="uploadFile">Convert File</button>
     <input type="file" name="uploadFile" id="uploadFile" class="uploadFile" accept=".xml" @change="handleUploadFile"/>
 </template>
 
