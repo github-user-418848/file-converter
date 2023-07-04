@@ -2,24 +2,25 @@
     <div class="dropzone" @dragenter.prevent="toggleActive" @dragleave.prevent="toggleActive" @dragover.prevent
         @drop.prevent="dropFile" :class="{ 'active-dropzone': active }">
         <!-- <template v-if="!active"> -->
-            <Toast :errorMessage="errorMessage" />
+        <Toast :errorMessage="errorMessage" />
 
-            <h1>File Converter</h1>
-            <p>Convert financial reports to various file formats. Drag and Drop files are supported.</p>
+        <h1>File Converter</h1>
+        <p>Convert financial reports to various file formats. <span class="hide-md">Drag and Drop files are
+                supported.</span></p>
 
-            <!-- Display records array
+        <!-- Display records array
             <div v-for="(record, index) in records" :key="index">
                 <p>{{ index }} - {{ record }}</p>
             </div> -->
 
-            <BtnUploadFile @upload-file="uploadFile" />
+        <BtnUploadFile @upload-file="uploadFile" />
 
-            <FormattingOptions />
+        <FormattingOptions />
 
-            <template v-for="(file, index) in dataFiles.originalFileName" :key="index">
-                <DownloadCard :fileName="file" :textData="dataFiles.textContent[index]"
-                    :generatedFileName="dataFiles.generatedFileName[index]" />
-            </template>
+        <template v-for="(file, index) in dataFiles.originalFileName" :key="index">
+            <DownloadCard :fileName="file" :textData="dataFiles.textContent[index]"
+                :generatedFileName="dataFiles.generatedFileName[index]" />
+        </template>
         <!-- </template>
         <template v-else>
             <h3 class="pointer-events-none">Drop your file here to start the conversion</h3>
@@ -74,7 +75,7 @@ export default {
             await this.parseXmlFile(this.file)
             console.log(this.file.name)
         },
-        
+
         async parseXmlFile(file) {
             try {
                 await validateXmlFile(file)

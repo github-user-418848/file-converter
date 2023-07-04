@@ -4,7 +4,7 @@
         <Toast :errorMessage="errorMessage" />
 
         <h1>File Converter</h1>
-        <p>Convert financial reports to various file formats. Drag and Drop files are supported.</p>
+        <p>Convert financial reports to various file formats. <span class="hide-md">Drag and Drop files are supported.</span></p>
 
         <!-- Display records array -->
         <!-- <div v-for="(record, index) in records" :key="index">
