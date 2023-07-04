@@ -26,42 +26,54 @@ export function createFormattedOutput(records) {
         `File Layout :\n` +
         setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
 
-    for (let row = 0; row < groupedRecords(records).length; row++) {
-        if (row % 3 === 0 && row !== groupedRecords(records).length - 1) {
+    const groupedRec = groupedRecords(records);
+
+    for (let row = 0; row < groupedRec.length; row++) {
+        const isMultipleOfThree = row % 3 === 0;
+        const isLastRow = row === groupedRec.length - 1;
+
+        if (isMultipleOfThree && !isLastRow) {
             data.push({
                 header,
-                date: setTblHeaderFormat('Date', 1, 10, 10, groupedRecords(records)[row][0][3]),
-                customerName: setTblHeaderFormat('Customer Name', 11, 111, 100, groupedRecords(records)[row][0][2]),
-                acknowledgementCertNo: setTblHeaderFormat('Reference No.', 112, 122, 10, groupedRecords(records)[row][0][1]),
-                accountingBooks: setTblHeaderFormat('Journal Entry', 123, 133, 10, groupedRecords(records)[row][0][4]),
-                details_: setTblHeaderFormat('Details', 134, 388, 254, groupedRecords(records)[row][0][0]),
-                gLAccount: setTblHeaderFormat('G/L Account', 389, 404, 15, groupedRecords(records)[row][1][0]),
-                accountName: setTblHeaderFormat('Account Name', 405, 505, 100, groupedRecords(records)[row][1][1]),
-                debit: setTblHeaderFormat('Debit', 506, 525, 19, groupedRecords(records)[row][1][2]),
-                credit: setTblHeaderFormat('Credit', 526, 545, 19, groupedRecords(records)[row][1][3]),
+                date: setTblHeaderFormat('Date', 1, 10, 10, groupedRec[row][0][3]),
+                customerName: setTblHeaderFormat('Customer Name', 11, 111, 100, groupedRec[row][0][2]),
+                acknowledgementCertNo: setTblHeaderFormat('Reference No.', 112, 122, 10, groupedRec[row][0][1]),
+                accountingBooks: setTblHeaderFormat('Journal Entry', 123, 133, 10, groupedRec[row][0][4]),
+                details_: setTblHeaderFormat('Details', 134, 388, 254, groupedRec[row][0][0]),
+                gLAccount: setTblHeaderFormat('G/L Account', 389, 404, 15, groupedRec[row][1][0]),
+                accountName: setTblHeaderFormat('Account Name', 405, 505, 100, groupedRec[row][1][1]),
+                debit: setTblHeaderFormat('Debit', 506, 525, 19, groupedRec[row][1][2]),
+                credit: setTblHeaderFormat('Credit', 526, 545, 19, groupedRec[row][1][3]),
                 tblLabel: setTblBodyFormat('Date', 'Customer', 'Reference No', 'Journal Entry No.', 'Details', 'G/L Account', 'Account Name', 'Debit', 'Credit'),
                 table: '',
+                pageNo: 'Page -1 of 1\n',
             });
-        }
-        else if (row === groupedRecords(records).length - 1) {
-            data.push({
-                table: setTblBodyFormat(' ', ' ', ' ', ' ', ' ', ' ', groupedRecords(records)[row][0][0], groupedRecords(records)[row][0][1], groupedRecords(records)[row][0][2])
-            })
+        } else if (isLastRow) {
+            const lastRowObj = {
+                table: setTblBodyFormat(' ', ' ', ' ', ' ', ' ', ' ', groupedRec[row][0][0], groupedRec[row][0][1], groupedRec[row][0][2]),
+            };
+            data.push(lastRowObj);
         }
 
-        groupedRecords(records)[row].slice(1, -1).map((record, index) => {
-            data[data.length - 1].table += setTblBodyFormat(
-                groupedRecords(records)[row][0][3],
-                groupedRecords(records)[row][0][2],
-                groupedRecords(records)[row][0][1],
-                groupedRecords(records)[row][0][4],
-                groupedRecords(records)[row][0][0],
-                record[0],
-                record[1],
-                record[2],
-                record[3],
-                record[4]
-            );
+        groupedRecords(records)[row].slice(1, -1).forEach((record, index) => {
+            const isFirstChild = index === 0;
+            const [glAccount, accountName, debit, credit] = record;
+
+            const tableRow = isFirstChild
+                ? setTblBodyFormat(
+                    groupedRecords(records)[row][0][3], // Date
+                    groupedRecords(records)[row][0][2], // Customer
+                    groupedRecords(records)[row][0][1], // Reference
+                    groupedRecords(records)[row][0][4], // Journal
+                    groupedRecords(records)[row][0][0], // Details
+                    glAccount,
+                    accountName,
+                    debit,
+                    credit
+                )
+                : setTblBodyFormat('', '', '', '', '', glAccount, accountName, debit, credit);
+
+            data[data.length - 1].table += tableRow;
         });
     }
 
