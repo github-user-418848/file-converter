@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { reportTypes, formTypes } from '../utils/globals.js'
+import { getReportTypeByIndex, getReportTypeById, getFormType, isRdoCodeValid, isParamsValid } from '../utils/validators.js'
+
 import NotFound from '../views/NotFound.vue'
 import ValueAddedTax from '../views/ValueAddedTax.vue'
 import WithholdingTax from '../views/WithholdingTax.vue'
@@ -16,19 +17,20 @@ const routes = [
         path: '/:tax_type/:report_type?/:form_type?/:rdo_code?',
         components: { default: null },
         beforeEnter: (to, from, next) => {
-            const { tax_type, report_type, form_type, rdo_code } = to.params
-            const tax = reportTypes.find(report => report.index === tax_type)
-            const report = tax && reportTypes.find(report => report.index === tax_type && report.id === report_type)
-            const form = form_type && formTypes.find(form => form.index === report_type && form.name === form_type)
-            const validParams =
-            (tax_type === 'wt' && report && form) ||
-            (tax_type === 'vat' && report && !form_type && !rdo_code) ||
-            (tax_type === 'boa' && !report_type && !form_type && !rdo_code);
+            const { tax_type, report_type, form_type, rdo_code } = to.params;
 
+            const tax = getReportTypeByIndex(tax_type);
+            const report = getReportTypeById(tax_type, report_type);
+            const form = getFormType(form_type, report_type);
+          
+            const validRdoCode = isRdoCodeValid(rdo_code);
+          
+            const validParams = isParamsValid(tax_type, report, form, validRdoCode);
+          
             if (!validParams) {
-                next({ name: 'NotFound' })
+              next({ name: 'NotFound' });
             } else {
-                next()
+              next();
             }
         }
     },
