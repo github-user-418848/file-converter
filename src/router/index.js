@@ -25,7 +25,7 @@ const routes = [
           
             const validRdoCode = isRdoCodeValid(rdo_code);
           
-            const validParams = isParamsValid(tax_type, report, form, validRdoCode);
+            const validParams = isParamsValid(tax_type, report, form, validRdoCode, rdo_code);
           
             if (!validParams) {
               next({ name: 'NotFound' });

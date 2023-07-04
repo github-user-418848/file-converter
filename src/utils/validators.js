@@ -35,7 +35,7 @@ export function isRdoCodeValid(rdo_code) {
     return !rdo_code || /^[a-zA-Z0-9]{0,10}$/.test(rdo_code);
 }
 
-export function isParamsValid(tax_type, report, form, validRdoCode) {
+export function isParamsValid(tax_type, report, form, validRdoCode, rdo_code) {
     return (
         (tax_type === 'wt' && report && form && validRdoCode) ||
         (tax_type === 'vat' && report && !form && !rdo_code) ||
