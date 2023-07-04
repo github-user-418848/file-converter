@@ -67,3 +67,11 @@ export function formatAgentName(agentName) {
 export function formatDigit(digit) {
     return digit ? digit.replaceAll(",", "") : ""
 }
+
+export const setTblHeaderFormat = (label, from, to, length, value) => {
+    return `${label.padEnd(15)}${from.toString().padEnd(5)}${to.toString().padEnd(6)}${length.toString().padEnd(7)}${value}\n`;
+};
+
+export const setTblBodyFormat = (date, customer, referenceNo, journal, details, gLAccount, accountName, debit, credit) => {
+    return `${date.padEnd(15)}${customer.padEnd(50)}${referenceNo.toString().padEnd(15)}${journal.toString().padEnd(19)}${details.padEnd(60)}${gLAccount.padEnd(20)}${accountName.padEnd(50)}${debit.toString().padEnd(14)}${credit.toString()}\n\n`;
+};
