@@ -1,4 +1,5 @@
 <template>
+    <Toast :errorMessage="errorMessage" />
     <div v-if="showReportTypeCard" class="card">
         <div class="col-4">
             <label for="report_type">Report Type</label>
@@ -43,15 +44,22 @@
 <script>
 
 import { reportTypes, formTypes } from '../utils/globals.js'
+import { isRdoCodeValid } from '../utils/validators.js'
+import Toast from '../components/Toast.vue'
+import { ref } from 'vue'
 
 export default {
     name: "FormattingOptions",
+    components: {
+        Toast,
+    },
 
     data() {
         return {
             dataReportTypes: reportTypes,
             dataFormTypes: formTypes,
             rdoCode: this.$route.params.rdo_code,
+            errorMessage: ref(""),
         }
     },
 
@@ -127,11 +135,13 @@ export default {
                 form_type: this.$route.params.form_type,
             }
 
-            if (this.isRdoCodeEmpty) {
+            if (this.isRdoCodeEmpty && isRdoCodeValid(this.rdoCode)) {
                 params.rdo_code = this.rdoCode
             }
             else {
                 params.rdo_code = ''
+                this.errorMessage = 'Only alphabetic and numeric characters are accepted with a maximum of 10 characters.'
+                setTimeout(() => { this.errorMessage = "" }, 7000)
             }
 
             this.$router.push({ params });
