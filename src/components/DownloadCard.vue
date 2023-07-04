@@ -85,6 +85,7 @@ export default {
     padding: 8px 12px;
     border-radius: 8px;
     background-color: var(--primary);
+    color: white;
     border: 0;
     margin: .2rem;
     transition: .3s ease all;

@@ -159,6 +159,7 @@ input, select {
 
 .btn-danger {
   background-color: var(--warning);
+  color: white;
 }
 
 .btn-danger:hover {
