@@ -10,7 +10,7 @@
         </button>
         <ul :class="{ 'show-menu': showMenu }">
             <li v-for="view in views" :key="view.id">
-                <router-link :to="generateRoute(view)">
+                <router-link :to="generateRoute(view)" @click="this.showMenu = false">
                     {{ view.name }}
                 </router-link>
             </li>
@@ -154,6 +154,7 @@ nav a:hover,
         display: block;
         text-align: left;
     }
+
     nav {
         justify-content: space-between;
     }
