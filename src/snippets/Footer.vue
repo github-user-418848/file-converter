@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <p>&copy; {{ new Date().getFullYear() }} Generate DAT File</p>
+        <p>&copy; {{ new Date().getFullYear() }} File Converter</p>
     </footer>
 </template>
   
