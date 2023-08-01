@@ -32,7 +32,7 @@ export function createFormattedOutput(records) {
         const isMultipleOfThree = row % 3 === 0;
         const isLastRow = row === groupedRec.length - 1;
 
-        if (isMultipleOfThree && !isLastRow) {
+        if (isMultipleOfThree && row === 0) {
             data.push({
                 header,
                 date: setTblHeaderFormat('Date', 1, 10, 10, groupedRec[row][0][3]),
