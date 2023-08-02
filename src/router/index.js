@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { getReportTypeByIndex, getReportTypeById, getFormType, isRdoCodeValid, isParamsValid } from '../utils/validators.js'
+import { getReportTypeById, getFormType, isRdoCodeValid, isParamsValid } from '../utils/validators.js'
 
 import NotFound from '../views/NotFound.vue'
 import ValueAddedTax from '../views/ValueAddedTax.vue'
@@ -19,14 +19,12 @@ const routes = [
         beforeEnter: (to, from, next) => {
             const { tax_type, report_type, form_type, rdo_code } = to.params;
 
-            const tax = getReportTypeByIndex(tax_type);
             const report = getReportTypeById(tax_type, report_type);
             const form = getFormType(form_type, report_type);
           
             const validRdoCode = isRdoCodeValid(rdo_code);
-          
             const validParams = isParamsValid(tax_type, report, form, validRdoCode, rdo_code);
-          
+
             if (!validParams) {
               next({ name: 'NotFound' });
             } else {
