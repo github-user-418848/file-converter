@@ -28,7 +28,7 @@ export default {
             views: [
                 { id: 1, params: { tax_type: 'wt', report_type: 'map', form_type: '1601E' }, name: 'Withholding Tax' },
                 { id: 2, params: { tax_type: 'vat', report_type: 'st' }, name: 'Value Added Tax' },
-                { id: 3, params: { tax_type: 'boa' }, name: 'Book of Accounts' },
+                { id: 3, params: { tax_type: 'boa', report_type: 'at' }, name: 'Book of Accounts' },
             ]
         }
     },
