@@ -4,6 +4,7 @@ import { groupedRecords } from './helpers.js'
 export function createFormattedOutput(records) {
 
     let data = [];
+    const groupedRec = groupedRecords(records);
 
     const header =
         `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
@@ -16,7 +17,7 @@ export function createFormattedOutput(records) {
         `Filename: Cash Receipt Book 1/1/2023\n` +
         `\n` +
         `File Type: Text File\n` +
-        `Number of Records: 38\n` +
+        `Number of Records: ${groupedRec.length}\n` +
         `Amount Field Control Total: ${records[records.length - 1][1]}\n` +
         `Period Covered:  1/1/2023 - 1/31/2023\n` +
         `Transaction Cut-off Date & Time: May 11, 2023  8:49:14AM\n` +
@@ -25,8 +26,6 @@ export function createFormattedOutput(records) {
         `\n` +
         `File Layout :\n` +
         setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
-
-    const groupedRec = groupedRecords(records);
 
     for (let row = 0; row < groupedRec.length; row++) {
         const isMultipleOfThree = row % 3 === 0;
