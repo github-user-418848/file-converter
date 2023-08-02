@@ -19,10 +19,6 @@ export async function validateRdoCode(rdoCode) {
     }
 }
 
-export function getReportTypeByIndex(tax_type) {
-    return reportTypes.find((report) => report.index === tax_type);
-}
-
 export function getReportTypeById(tax_type, report_type) {
     return reportTypes.find((report) => report.index === tax_type && report.id === report_type);
 }
@@ -35,10 +31,11 @@ export function isRdoCodeValid(rdo_code) {
     return !rdo_code || /^[a-zA-Z0-9]{0,10}$/.test(rdo_code);
 }
 
-export function isParamsValid(tax_type, report, form, validRdoCode, rdo_code) {
+export function isParamsValid(tax_type, report, form, validRdoCode, rdo_code, template) {
+    console.log(tax_type)
     return (
         (tax_type === 'wt' && report && form && validRdoCode) ||
         (tax_type === 'vat' && report && !form && !rdo_code) ||
-        (tax_type === 'boa' && !report && !form && !rdo_code)
+        (tax_type === 'boa' && report && !form && !rdo_code)
     );
 }
