@@ -1,6 +1,6 @@
 <template>
     <Toast :errorMessage="errorMessage" />
-    <div v-if="showReportTypeCard" class="card">
+    <div class="card">
         <div class="col-4">
             <label for="report_type">Report Type</label>
         </div>
@@ -32,10 +32,12 @@
         </div>
         <div class="row col-8">
             <div class="col-sm-9 col-12">
-                <input ref="rdoCodeInput" type="text" name="rdo_code" id="rdo_code" v-model="rdoCode" :disabled="!isRdoCodeEmpty" @keyup.enter="onRdoCodeChange">
+                <input ref="rdoCodeInput" type="text" name="rdo_code" id="rdo_code" v-model="rdoCode"
+                    :disabled="!isRdoCodeEmpty" @keyup.enter="onRdoCodeChange">
             </div>
             <div class="col-sm-3 col-12">
-                <button id="rdoCodeSubmitBtn" :class="['btn', { 'btn-danger': !isRdoCodeEmpty }]" @click="onRdoCodeChange">{{ rdoCodeButtonLabel }}</button>
+                <button id="rdoCodeSubmitBtn" :class="['btn', { 'btn-danger': !isRdoCodeEmpty }]"
+                    @click="onRdoCodeChange">{{ rdoCodeButtonLabel }}</button>
             </div>
         </div>
     </div>
@@ -74,12 +76,15 @@ export default {
             }
             return output;
         },
+        filteredTemplateTypes() {
+            return this.dataTemplateTypes.filter(templateType => templateType.index === this.$route.params.tax_type);
+        },
         showFormTypeCard() {
             return this.$route.params.tax_type === 'wt'
         },
-        showReportTypeCard() {
-            return this.$route.params.tax_type !== 'boa'
-        },
+        // showReportTypeCard() {
+        //     return this.$route.params.tax_type !== 'boa'
+        // },
         showRdoCode() {
             return this.$route.params.tax_type === 'wt'
         },
@@ -123,12 +128,21 @@ export default {
                 this.$router.push({ params })
             }
         },
+
         onFormTypeChange(event) {
             const formTypeId = event.target.value
             if (formTypeId) {
                 this.$router.push({ params: { report_type: this.$route.params.report_type, form_type: formTypeId } })
             }
         },
+
+        onTemplateTypeChange(event) {
+            const templateTypeId = event.target.value
+            if (templateTypeId) {
+                this.$router.push({ params: { report_type: this.$route.params.report_type, template_type: templateTypeId } })
+            }
+        },
+
         onRdoCodeChange() {
             const params = {
                 report_type: this.$route.params.report_type,
@@ -152,7 +166,8 @@ export default {
 </script>
 
 <style>
-input, select {
+input,
+select {
     background-color: white;
     color: black;
     outline: none;
@@ -168,8 +183,8 @@ input, select {
 }
 
 .btn-danger {
-  background-color: var(--warning);
-  color: white;
+    background-color: var(--warning);
+    color: white;
 }
 
 .btn-danger:hover {
@@ -177,7 +192,9 @@ input, select {
 }
 
 @media screen and (max-width: 499px) {
-    .card, .card > .row {
+
+    .card,
+    .card>.row {
         row-gap: .4rem;
         flex-direction: column;
         justify-content: center;
