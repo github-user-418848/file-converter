@@ -67,15 +67,14 @@ export const setTblHeaderFormat = (label, from, to, length, value) => {
     return `${label.padEnd(columnWidth)}${from.toString().padEnd(columnWidth)}${to.toString().padEnd(columnWidth)}${length.toString().padEnd(columnWidth)}${value}\n`;
 };
 
-// export const setTblHeaderFormat = (label, from, to, length, value) => {
-//     return `${label.padEnd(15)}${from.toString().padEnd(5)}${to.toString().padEnd(6)}${length.toString().padEnd(7)}${value}\n`;
-// };
+export const setAuditTrailTblBodyFormat = (date, code, login, module, activity, refNum, postDate, details, amount) => {
+    return `${date.padEnd(25)}${code.padEnd(15)}${login.toString().padEnd(20)}${module.toString().padEnd(25)}${activity.toString().padEnd(25)}${refNum.padEnd(20)}${postDate.padEnd(20)}${details.toString().padEnd(75)}${amount.toString()}\n\n`;
+};
 
 export const setCashReceiptBookTblBodyFormat = (date, customer, referenceNo, journal, details, gLAccount, accountName, debit, credit) => {
     return `${date.padEnd(15)}${customer.padEnd(50)}${referenceNo.toString().padEnd(15)}${journal.toString().padEnd(19)}${details.padEnd(60)}${gLAccount.padEnd(20)}${accountName.padEnd(50)}${debit.toString().padEnd(14)}${credit.toString()}\n\n`;
 };
 
-
-export const setAuditTrailTblBodyFormat = (date, code, login, module, activity, refNum, postDate, details, amount) => {
-    return `${date.padEnd(25)}${code.padEnd(15)}${login.toString().padEnd(20)}${module.toString().padEnd(25)}${details.padEnd(75)}${refNum.padEnd(20)}${postDate.padEnd(50)}${details.toString().padEnd(14)}${amount.toString()}\n\n`;
-};
+export const setCreditMemoTblBodyFormat = (date, tin, name, address, description, refNum, amount, discount, vat, wt, net) => {
+    return `${date.padEnd(25)}${tin.padEnd(20)}${name.replaceAll("\n", "").padEnd(75)}${address.replaceAll("\n", "").trim().padEnd(120)}${description.replaceAll("\n", "").trim().padEnd(200)}${discount.toString().padEnd(20)}${refNum.toString().padEnd(20)}${amount.toString().padEnd(20)}${vat.toString().padEnd(20)}${wt.toString().padEnd(20)}${net.toString().padEnd(20)}\n\n`;
+}
