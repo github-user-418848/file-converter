@@ -1,4 +1,4 @@
-import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat } from './formatter.js'
+import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat } from './formatter.js'
 import { groupedRecords } from './helpers.js'
 
 export function createFormattedOutput(records, route) {
@@ -10,7 +10,7 @@ export function createFormattedOutput(records, route) {
             groupedRec = groupedRecords(records);
             header =
                 `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
-                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY   PHILIPPINES\n` +
+                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
                 `VAT REG TIN : 008-290-765-0000\n` +
                 `Accounting System: SAP Business One Version 10\n` +
                 `Acknowledgement Certificate No.:\n` +
@@ -22,15 +22,12 @@ export function createFormattedOutput(records, route) {
                 `Number of Records: ${groupedRec.length}\n` +
                 `Amount Field Control Total: ${records[records.length - 1][1]}\n` +
                 `Period Covered:  ${groupedRec[0][0][3]} - ${groupedRec[groupedRec.length - 2][0][3]}\n` +
-                `Transaction Cut-off Date & Time: May 11, 2023  8:49:14AM\n` +
+                `Transaction Cut-off Date & Time:\n` +
                 `\n` +
                 `Extracted by: 1\n` +
                 `\n` +
                 `File Layout :\n` +
                 setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
-
-            // console.log(records);
-            // console.log(groupedRec);
 
             for (let row = 0; row < groupedRec.length; row++) {
                 const isMultipleOfThree = row % 3 === 0;
@@ -48,13 +45,13 @@ export function createFormattedOutput(records, route) {
                         accountName: setTblHeaderFormat('Account Name', 405, 505, 100, groupedRec[row][1][1]),
                         debit: setTblHeaderFormat('Debit', 506, 525, 19, groupedRec[row][1][2]),
                         credit: setTblHeaderFormat('Credit', 526, 545, 19, groupedRec[row][1][3]),
-                        tblLabel: setTblBodyFormat('Date', 'Customer', 'Reference No', 'Journal Entry No.', 'Details', 'G/L Account', 'Account Name', 'Debit', 'Credit'),
+                        tblLabel: setCashReceiptBookTblBodyFormat('Date', 'Customer', 'Reference No', 'Journal Entry No.', 'Details', 'G/L Account', 'Account Name', 'Debit', 'Credit'),
                         table: '',
-                        pageNo: 'Page -1 of 1\n',
+                        // pageNo: 'Page -1 of 1\n',
                     });
                 } else if (isLastRow) {
                     const lastRowObj = {
-                        table: setTblBodyFormat(' ', ' ', ' ', ' ', ' ', ' ', groupedRec[row][0][0], groupedRec[row][0][1], groupedRec[row][0][2]),
+                        table: setCashReceiptBookTblBodyFormat(' ', ' ', ' ', ' ', ' ', ' ', groupedRec[row][0][0], groupedRec[row][0][1], groupedRec[row][0][2]),
                     };
                     data.push(lastRowObj);
                 }
@@ -64,7 +61,7 @@ export function createFormattedOutput(records, route) {
                     const [glAccount, accountName, debit, credit] = record;
 
                     const tableRow = isFirstChild
-                        ? setTblBodyFormat(
+                        ? setCashReceiptBookTblBodyFormat(
                             groupedRecords(records)[row][0][3], // Date
                             groupedRecords(records)[row][0][2], // Customer
                             groupedRecords(records)[row][0][1], // Reference
@@ -75,7 +72,7 @@ export function createFormattedOutput(records, route) {
                             debit,
                             credit
                         )
-                        : setTblBodyFormat('', '', '', '', '', glAccount, accountName, debit, credit);
+                        : setCashReceiptBookTblBodyFormat('', '', '', '', '', glAccount, accountName, debit, credit);
 
                     data[data.length - 1].table += tableRow;
                 });
@@ -83,10 +80,9 @@ export function createFormattedOutput(records, route) {
             break;
 
         case 'at':
-            groupedRec = groupedRecords(records);
             header =
                 `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
-                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY   PHILIPPINES\n` +
+                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
                 `VAT REG TIN : 008-290-765-0000\n` +
                 `Accounting System: SAP Business One Version 10\n` +
                 `Acknowledgement Certificate No.:\n` +
@@ -95,10 +91,10 @@ export function createFormattedOutput(records, route) {
                 `Extracted by: sample\n` +
                 `Filename: Audit Trail\n` +
                 `File Type: Text File\n` +
-                `Number of Records: ${groupedRec.length}\n` +
+                `Number of Records: ${records.length}\n` +
                 `Amount Field Control Total: \n` +
                 `Period Covered: ${records[0][0]} - ${records[records.length - 1][0]}\n` +
-                `Transaction Cut-off Date & Time: August 25, 2022 10:30:52PM\n` +
+                `Transaction Cut-off Date & Time:\n` +
                 `\n` +
                 `Extracted by: sample\n` +
                 `\n` +
@@ -126,6 +122,52 @@ export function createFormattedOutput(records, route) {
                 });
             }
             break;
+
+        case 'cmj':
+            header =
+                `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
+                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
+                `VAT REG TIN : 008-290-765-0000\n` +
+                `Accounting System: SAP Business One Version 10\n` +
+                `Acknowledgement Certificate No.:\n` +
+                `\n` +
+                `Accouting Books File Attributes/Layout Definition\n` +
+                `Extracted by: sample\n` +
+                `Filename: Credit Memo Journal\n` +
+                `File Type: Text File\n` +
+                `Number of Records: ${records.length}\n` +
+                `Amount Field Control Total: ${records[records.length - 1][0]}\n` +
+                `Period Covered: ${records[0][1]} - ${records[records.length - 2][1]}\n` +
+                `Transaction Cut-off Date & Time:\n` +
+                `\n` +
+                `Extracted by: sample\n` +
+                `\n` +
+                `File Layout :\n` +
+                setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
+
+            data.push({
+                header,
+                date: setTblHeaderFormat('Generated Date & Time', '1', '10', '10', records[0][1]),
+                customerTin: setTblHeaderFormat("Customer's TIN", '11', '43', '32', records[0][10]),
+                customerName: setTblHeaderFormat("Customer's Name", '44', '144', '100', records[0][2]),
+                customerAddress: setTblHeaderFormat("Customer's Address", '145', '245', '100', records[0][3].replaceAll("\n", " ")),
+                description: setTblHeaderFormat('Description', '246', '491', '254', records[0][4]),
+                refNumber: setTblHeaderFormat('Reference No.', '492', '507', '15', records[0][5]),
+                amount: setTblHeaderFormat('Amount', '508', '523', '15', records[0][9]),
+                discount: setTblHeaderFormat('Discount', '524', '539', '15', records[0][8]),
+                vatAmount: setTblHeaderFormat('VAT Amount', '540', '555', '15', records[0][7]),
+                wtAmount: setTblHeaderFormat('WT Amount', '556', '571', '15', records[0][11]),
+                netSales: setTblHeaderFormat('Net Sales', '572', '587', '15', records[0][6]),
+                tblLabel: setCreditMemoTblBodyFormat('Date', "Customer's TIN", "Customer's Name", "Customer's Address", 'Description', 'Reference No.', 'Amount', 'Discount', 'VAT Amount', 'WT Amount', 'Net Sales'),
+                table: '',
+            });
+
+            for (let row = 0; row < records.length - 1; row++) {
+                data.push({
+                    table: setCreditMemoTblBodyFormat(records[row][1], records[row][10], records[row][2], records[row][3], records[row][4], records[row][5], records[row][9], records[row][8], records[row][7], records[row][11], records[row][6])
+                });
+            }
+            break;
     }
 
     return data
@@ -139,6 +181,9 @@ export function fileName(records, route) {
             break;
         case 'crb':
             fileNameData = 'Cash Receipt Book.txt';
+            break;
+        case 'cmj':
+            fileNameData = 'Credit Memo Journal.txt';
             break;
     }
     return fileNameData
