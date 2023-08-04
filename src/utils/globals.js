@@ -20,7 +20,7 @@ export const
         { id: 'pt', index: 'vat', acronym: 'PT', name: 'Purchase Transaction' },
         { id: 'at', index: 'boa', name: 'Audit Trail' },
         { id: 'crb', index: 'boa', name: 'Cash Receipt Book' },
-        // { id: 'cmj', index: 'boa', name: 'Credit Memo Journal' },
+        { id: 'cmj', index: 'boa', name: 'Credit Memo Journal' },
         // { id: 'dmj', index: 'boa', name: 'Debit Memo Journal' },
         // { id: 'dj', index: 'boa', name: 'Disbursement Journal' },
         // { id: 'gj', index: 'boa', name: 'General Journal' },
