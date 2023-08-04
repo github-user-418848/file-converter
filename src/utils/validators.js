@@ -32,7 +32,6 @@ export function isRdoCodeValid(rdo_code) {
 }
 
 export function isParamsValid(tax_type, report, form, validRdoCode, rdo_code, template) {
-    console.log(tax_type)
     return (
         (tax_type === 'wt' && report && form && validRdoCode) ||
         (tax_type === 'vat' && report && !form && !rdo_code) ||
