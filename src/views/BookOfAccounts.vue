@@ -29,7 +29,7 @@ import FormattingOptions from '../components/FormattingOptions.vue'
 import Toast from '../components/Toast.vue'
 
 
-import { createFormattedOutput } from '../utils/boaStructure.js'
+import { createFormattedOutput, fileName } from '../utils/boaStructure.js'
 import { readXMLFile, retrieveRecords, createTextData } from '../utils/helpers.js'
 import { files } from '../utils/globals.js'
 import { validateXmlFile } from '../utils/validators.js'
@@ -77,7 +77,7 @@ export default {
                 await validateXmlFile(file)
                 const xmlDoc = await readXMLFile(file)
                 const records = await retrieveRecords(xmlDoc)
-                const formattedOutput = createFormattedOutput(records);
+                const formattedOutput = createFormattedOutput(records, this.$route.params);
                 let textData = '';
                 for (let i = 0; i < formattedOutput.length; i++) {
                     for (const [key, value] of Object.entries(formattedOutput[i])) {
@@ -85,7 +85,7 @@ export default {
                     }
                 }
                 this.textData = textData;
-                this.generatedFileName = 'Cash Receipt Book.txt'
+                this.generatedFileName = fileName(records, this.$route.params)
                 await this.pushIntoFileData()
             } catch (error) {
                 this.errorMessage = error.message
