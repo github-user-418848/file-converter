@@ -23,7 +23,7 @@ export const
         { id: 'cmj', index: 'boa', name: 'Credit Memo Journal' },
         // { id: 'dmj', index: 'boa', name: 'Debit Memo Journal' },
         // { id: 'dj', index: 'boa', name: 'Disbursement Journal' },
-        { id: 'gjb', index: 'boa', name: 'General Journal Book' },
+        // { id: 'gjb', index: 'boa', name: 'General Journal Book' },
         // { id: 'glb', index: 'boa', name: 'General Ledger Book' },
         // { id: 'ij', index: 'boa', name: 'Inventory Journal' },
         // { id: 'pj', index: 'boa', name: 'Purchase Journal' },
