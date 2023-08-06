@@ -1,4 +1,4 @@
-import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat } from './formatter.js'
+import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat } from './formatter.js'
 import { groupedRecords } from './helpers.js'
 
 export function createFormattedOutput(records, route) {
@@ -168,12 +168,74 @@ export function createFormattedOutput(records, route) {
                 });
             }
             break;
+
+        case 'gjb':
+            console.log(records);
+            header =
+                `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
+                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
+                `VAT REG TIN : 008-290-765-0000\n` +
+                `Accounting System: SAP Business One Version 10\n` +
+                `Acknowledgement Certificate No.:\n` +
+                `\n` +
+                `Accouting Books File Attributes/Layout Definition\n` +
+                `Extracted by: sample\n` +
+                `Filename: General Journal 2022\n` +
+                `File Type: Text File\n` +
+                `Number of Records: ${records.length}\n` +
+                `Amount Field Control Total: ${records[records.length - 1][0]}\n` +
+                `Period Covered: ${records[0][5]} - ${records[records.length - 3][5]}\n` +
+                `Transaction Cut-off Date & Time:\n` +
+                `\n` +
+                `Extracted by: sample\n` +
+                `\n` +
+                `File Layout :\n` +
+                setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
+
+            data.push({
+                header,
+                date: setTblHeaderFormat('Date', '1', '10', '10', records[0][5]),
+                refNumber: setTblHeaderFormat('Reference No.', '11', '22', '11', records[0][3]),
+                description: setTblHeaderFormat('Description', '23', '277', '254', records[0][4]),
+                accCode: setTblHeaderFormat('Account Code', '278', '293', '15', records[0][2]),//Code
+                accTitle: setTblHeaderFormat('Account Title', '294', '394', '100', records[0][2]),//NAME
+                debit: setTblHeaderFormat('Debit', '395', '414', '19', records[0][0]),
+                credit: setTblHeaderFormat('Credit', '415', '434', '19', records[0][1]),
+                tblLabel: setGeneralJournalBookFormat('Date', 'Reference No.', 'Description', 'Account Code', 'Account Title', 'Debit', 'Credit',),
+                table: '',
+            });
+
+            let prevValue = null;
+
+            for (let row = 0; row < records.length - 1; row++) {
+
+                if (records[row][5] !== prevValue) {
+                    if (records[row][5] !== undefined) {
+                        data.push({
+                            table: setGeneralJournalBookFormat(records[row][5], records[row][3], records[row][4], records[row][2], records[row][0], records[row][1])
+                        });
+                    } else {
+                        data.push({
+                            table: setGeneralJournalBookFormat('', '', '', records[row][2], records[row][0], records[row][1])
+                        });
+                    }
+                }
+                else {
+                    data.push({
+                        table: setGeneralJournalBookFormat('', '', '', records[row][2], records[row][0], records[row][1])
+                    });
+                }
+
+                prevValue = records[row][5];
+            }
+            break;
+
     }
 
     return data
 }
 
-export function fileName(records, route) {
+export function fileName(route) {
     let fileNameData = ''
     switch (route.report_type) {
         case 'at':
@@ -184,6 +246,9 @@ export function fileName(records, route) {
             break;
         case 'cmj':
             fileNameData = 'Credit Memo Journal.txt';
+            break;
+        case 'gjb':
+            fileNameData = 'General Journal Book.txt';
             break;
     }
     return fileNameData
