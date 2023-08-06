@@ -85,7 +85,7 @@ export default {
                     }
                 }
                 this.textData = textData;
-                this.generatedFileName = fileName(records, this.$route.params)
+                this.generatedFileName = fileName(this.$route.params)
                 await this.pushIntoFileData()
             } catch (error) {
                 this.errorMessage = error.message
