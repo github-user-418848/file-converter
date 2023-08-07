@@ -82,3 +82,8 @@ export const setCreditMemoTblBodyFormat = (date, tin, name, address, description
 export const setGeneralJournalBookFormat = (date, refNum, description, account, debit, credit) => {
     return `${date.padEnd(12)}${refNum.padEnd(12)}${description.toString().padEnd(50)}${account.toString().padEnd(75)}${debit.toString().padEnd(25)}${credit.toString().padEnd(25)}\n\n`;
 }
+
+
+export const setGeneralLedgerBookFormat = (date, documentNo, transaction, description, debit, credit, balance) => {
+    return `${date.padEnd(42)}${documentNo.padEnd(20)}${transaction.toString().padEnd(20)}${description.toString().padEnd(40)}${debit.toString().padEnd(25)}${credit.toString().padEnd(25)}${balance.toString()}\n\n`;
+}
