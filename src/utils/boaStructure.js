@@ -1,4 +1,4 @@
-import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat } from './formatter.js'
+import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat, setGeneralLedgerBookFormat } from './formatter.js'
 import { groupedRecords } from './helpers.js'
 
 export function createFormattedOutput(records, route) {
@@ -16,7 +16,7 @@ export function createFormattedOutput(records, route) {
                 `Acknowledgement Certificate No.:\n` +
                 `\n` +
                 `Accouting Books File Attributes/Layout Definition\n` +
-                `Filename: Cash Receipt Book 1/1/2023\n` +
+                `Filename: Cash Receipt Book\n` +
                 `\n` +
                 `File Type: Text File\n` +
                 `Number of Records: ${groupedRec.length}\n` +
@@ -170,7 +170,6 @@ export function createFormattedOutput(records, route) {
             break;
 
         case 'gjb':
-            console.log(records);
             header =
                 `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
                 `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
@@ -180,7 +179,7 @@ export function createFormattedOutput(records, route) {
                 `\n` +
                 `Accouting Books File Attributes/Layout Definition\n` +
                 `Extracted by: sample\n` +
-                `Filename: General Journal 2022\n` +
+                `Filename: General Journal\n` +
                 `File Type: Text File\n` +
                 `Number of Records: ${records.length}\n` +
                 `Amount Field Control Total: ${records[records.length - 1][0]}\n` +
@@ -197,8 +196,8 @@ export function createFormattedOutput(records, route) {
                 date: setTblHeaderFormat('Date', '1', '10', '10', records[0][5]),
                 refNumber: setTblHeaderFormat('Reference No.', '11', '22', '11', records[0][3]),
                 description: setTblHeaderFormat('Description', '23', '277', '254', records[0][4]),
-                accCode: setTblHeaderFormat('Account Code', '278', '293', '15', records[0][2]),//Code
-                accTitle: setTblHeaderFormat('Account Title', '294', '394', '100', records[0][2]),//NAME
+                accCode: setTblHeaderFormat('Account Code', '278', '293', '15', records[0][2].split(' - ')[0].trim()),//Code
+                accTitle: setTblHeaderFormat('Account Title', '294', '394', '100', records[0][2].split(' - ')[1].trim()),//NAME
                 debit: setTblHeaderFormat('Debit', '395', '414', '19', records[0][0]),
                 credit: setTblHeaderFormat('Credit', '415', '434', '19', records[0][1]),
                 tblLabel: setGeneralJournalBookFormat('Date', 'Reference No.', 'Description', 'Account Code', 'Account Title', 'Debit', 'Credit',),
@@ -229,6 +228,60 @@ export function createFormattedOutput(records, route) {
                 prevValue = records[row][5];
             }
             break;
+            
+        case 'glb':
+            console.log(records);
+            header =
+                `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
+                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
+                `VAT REG TIN : 008-290-765-0000\n` +
+                `Accounting System: SAP Business One Version 10\n` +
+                `Acknowledgement Certificate No.:\n` +
+                `\n` +
+                `Accouting Books File Attributes/Layout Definition\n` +
+                `Extracted by: sample\n` +
+                `Filename: General Ledger Book\n` +
+                `File Type: Text File\n` +
+                `Number of Records: ${records.length}\n` +
+                `Amount Field Control Total: ${records[records.length - 1][1]}\n` +
+                `Period Covered: ${records[1][3]} - ${records[records.length - 2][3]}\n` +
+                `Transaction Cut-off Date & Time:\n` +
+                `\n` +
+                `Extracted by: sample\n` +
+                `\n` +
+                `File Layout :\n` +
+                setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
+                
+            data.push({
+                header,
+                date: setTblHeaderFormat('Date', '1', '10', '10', records[1][3]),
+                refNumber: setTblHeaderFormat('Reference No.', '11', '22', '11', records[1][5].split("-")[1].trim()),
+                description: setTblHeaderFormat('Description', '23', '277', '254', records[1][2]),
+                accCode: setTblHeaderFormat('Account Code', '278', '293', '15', records[0][0].split(":")[0].trim()),
+                accTitle: setTblHeaderFormat('Account Title', '294', '394', '100', records[0][0].split(":")[1].trim()),
+                debit: setTblHeaderFormat('Debit', '395', '414', '19', records[1][0]),
+                credit: setTblHeaderFormat('Credit', '415', '434', '19', records[1][1]),
+                tblLabel: setGeneralLedgerBookFormat('Date', 'Document No.', 'Transaction No.', 'Description', 'Debit', 'Credit', 'Balance'),
+                table: '',
+            });
+
+            for (let row = 0; row < records.length - 1; row++) {
+                if (records[row][1] === 'Beginning Balance:') {
+                    data.push({
+                        table: setGeneralLedgerBookFormat(records[row][0], '', '', records[row][1], '', '', records[row][2])
+                    });
+                }
+                else if (records[row][0] === 'Ending Balance:') {
+                    data.push({
+                        table: setGeneralLedgerBookFormat('', '', '', records[row][0], '', '', records[row][1])
+                    });
+                }
+                else {
+                    data.push({
+                        table: setGeneralLedgerBookFormat(records[row][3], records[row][5], records[row][4], records[row][2], records[row][0], records[row][1], records[row][6])
+                    });
+                }
+            }
 
     }
 
@@ -249,6 +302,9 @@ export function fileName(route) {
             break;
         case 'gjb':
             fileNameData = 'General Journal Book.txt';
+            break;
+        case 'glb':
+            fileNameData = 'General Ledger Book.txt';
             break;
     }
     return fileNameData
