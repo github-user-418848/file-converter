@@ -1,4 +1,4 @@
-import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat, setGeneralLedgerBookFormat } from './formatter.js'
+import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat, setGeneralLedgerBookFormat, setInventoryJournalFormat } from './formatter.js'
 import { groupedRecords } from './helpers.js'
 
 export function createFormattedOutput(records, route) {
@@ -228,9 +228,8 @@ export function createFormattedOutput(records, route) {
                 prevValue = records[row][5];
             }
             break;
-            
+
         case 'glb':
-            console.log(records);
             header =
                 `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
                 `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
@@ -251,7 +250,7 @@ export function createFormattedOutput(records, route) {
                 `\n` +
                 `File Layout :\n` +
                 setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
-                
+
             data.push({
                 header,
                 date: setTblHeaderFormat('Date', '1', '10', '10', records[1][3]),
@@ -283,6 +282,68 @@ export function createFormattedOutput(records, route) {
                 }
             }
 
+            break;
+
+
+        case 'ij':
+            console.log(records);
+            header =
+                `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
+                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
+                `VAT REG TIN : 008-290-765-0000\n` +
+                `Accounting System: SAP Business One Version 10\n` +
+                `Acknowledgement Certificate No.:\n` +
+                `\n` +
+                `Accouting Books File Attributes/Layout Definition\n` +
+                `Extracted by: sample\n` +
+                `Filename: Inventory Journal\n` +
+                `File Type: Text File\n` +
+                `Number of Records: ${records.length}\n` +
+                // `Amount Field Control Total: ${records[records.length - 1][1]}\n` +
+                `Period Covered: ${records[1][0]} - ${records[records.length - 2][0]}\n` +
+                `Transaction Cut-off Date & Time:\n` +
+                `\n` +
+                `Extracted by: sample\n` +
+                `\n` +
+                `File Layout :\n` +
+                setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
+
+            data.push({
+                header,
+                date: setTblHeaderFormat('Date', '1', '10', '10', records[1][0]),
+                itemCode: setTblHeaderFormat('Item Code', '11', '61', '50', records[0][3].split(":")[0].trim()),
+                itemName: setTblHeaderFormat('Item Description', '62', '262', '200', records[0][3].split(":")[1].trim()),
+                qty: setTblHeaderFormat('Qty', '278', '293', '15', records[1][2]),
+                uom: setTblHeaderFormat('UOM', '294', '394', '100', records[1][3]),
+                unitPrice: setTblHeaderFormat('Unit Price', '395', '414', '19', records[1][4]),
+                total: setTblHeaderFormat('Total', '415', '434', '19', records[1][5]),
+                tblLabel: setInventoryJournalFormat('Item Description', 'Date', 'Reference #', 'Warehouse', 'QTY', 'UOM', 'Unit Price', 'Total'),
+                table: '',
+            });
+
+            for (let row = 0; row < records.length - 1; row++) {
+                if (records[row][0] === 'Beginning Balance:') {
+                    data.push({
+                        table: setInventoryJournalFormat(records[row][3], '', '', records[row][0], records[row][1], '', '', records[row][2])
+                    });
+                }
+                else if (records[row][0] === 'Net Change:') {
+                    data.push({
+                        table: setInventoryJournalFormat('', '', '', records[row][0], records[row][2], '', '', records[row][3])
+                    });
+                    data.push({
+                        table: setInventoryJournalFormat('', '', '', records[row][1], records[row][4], '', '', records[row][5])
+                    });
+                }
+                else {
+                    data.push({
+                        table: setInventoryJournalFormat('', records[row][0], records[row][6], records[row][1], records[row][2], records[row][3], records[row][4], records[row][5])
+                    });
+                }
+            }
+
+            break;
+
     }
 
     return data
@@ -305,6 +366,9 @@ export function fileName(route) {
             break;
         case 'glb':
             fileNameData = 'General Ledger Book.txt';
+            break;
+        case 'ij':
+            fileNameData = 'Inventory Journal.txt';
             break;
     }
     return fileNameData

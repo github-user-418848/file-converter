@@ -83,7 +83,10 @@ export const setGeneralJournalBookFormat = (date, refNum, description, account, 
     return `${date.padEnd(12)}${refNum.padEnd(12)}${description.toString().padEnd(50)}${account.toString().padEnd(75)}${debit.toString().padEnd(25)}${credit.toString().padEnd(25)}\n\n`;
 }
 
-
 export const setGeneralLedgerBookFormat = (date, documentNo, transaction, description, debit, credit, balance) => {
     return `${date.padEnd(42)}${documentNo.padEnd(20)}${transaction.toString().padEnd(20)}${description.toString().padEnd(40)}${debit.toString().padEnd(25)}${credit.toString().padEnd(25)}${balance.toString()}\n\n`;
+}
+
+export const setInventoryJournalFormat = (description, date, refNum, warehouse, qty, uom, unitPrice, total) => {
+    return `${description.padEnd(50)}${date.padEnd(20)}${refNum.toString().padEnd(20)}${warehouse.toString().padEnd(20)}${qty.toString().padEnd(35)}${uom.toString().padEnd(25)}${unitPrice.toString().padEnd(25)}${total.toString().padEnd(25)}\n\n`;
 }
