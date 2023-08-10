@@ -90,3 +90,7 @@ export const setGeneralLedgerBookFormat = (date, documentNo, transaction, descri
 export const setInventoryJournalFormat = (description, date, refNum, warehouse, qty, uom, unitPrice, total) => {
     return `${description.padEnd(50)}${date.padEnd(20)}${refNum.toString().padEnd(20)}${warehouse.toString().padEnd(20)}${qty.toString().padEnd(35)}${uom.toString().padEnd(25)}${unitPrice.toString().padEnd(25)}${total.toString().padEnd(25)}\n\n`;
 }
+
+export const setPurchaseJournalForm = (date, tin, name, address, description, refNum, grossAmt, vatableSales, vatExemptSales, zeroRatedSales, discountAmt, vatAmt, netAmt) => {
+    return `${date.padEnd(20)}${tin.padEnd(20)}${name.padEnd(20)}${address.toString().padEnd(30)}${description.padEnd(30)}${refNum.toString().padEnd(22)}${grossAmt.toString().padEnd(22)}${vatableSales.toString().padEnd(22)}${vatExemptSales.toString().padEnd(22)}${zeroRatedSales.toString().padEnd(22)}${discountAmt.toString().padEnd(22)}${vatAmt.toString().padEnd(22)}${netAmt.toString()}\n\n`;
+}

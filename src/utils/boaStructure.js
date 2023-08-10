@@ -1,4 +1,4 @@
-import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat, setGeneralLedgerBookFormat, setInventoryJournalFormat } from './formatter.js'
+import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat, setGeneralLedgerBookFormat, setInventoryJournalFormat, setPurchaseJournalForm } from './formatter.js'
 import { groupedRecords } from './helpers.js'
 
 export function createFormattedOutput(records, route) {
@@ -344,6 +344,81 @@ export function createFormattedOutput(records, route) {
 
             break;
 
+        case 'pj':
+            
+            console.log(records);
+            header =
+                `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
+                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
+                `VAT REG TIN : 008-290-765-0000\n` +
+                `Accounting System: SAP Business One Version 10\n` +
+                `Acknowledgement Certificate No.:\n` +
+                `\n` +
+                `Accouting Books File Attributes/Layout Definition\n` +
+                `Extracted by: sample\n` +
+                `Filename: Inventory Journal\n` +
+                `File Type: Text File\n` +
+                `Number of Records: ${records.length}\n` +
+                // `Amount Field Control Total: ${records[records.length - 1][1]}\n` +
+                `Period Covered: ${records[0][0]} - ${records[records.length - 1][0]}\n` +
+                `Transaction Cut-off Date & Time:\n` +
+                `\n` +
+                `Extracted by: sample\n` +
+                `\n` +
+                `File Layout :\n` +
+                setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
+                
+            data.push({
+                header,
+                date: setTblHeaderFormat('Date', '1', '10', '10', records[0][0]),
+                vendorTIN: setTblHeaderFormat('Vendor TIN', '11', '26', '15', records[0][1]),
+                vendorName: setTblHeaderFormat('Vendor Name', '27', '127', '100', records[0][2]),
+                vendorAddress: setTblHeaderFormat('Vendor Address', '128', '228', '100', records[0][3]),
+                description: setTblHeaderFormat('Description', '229', '474', '254', records[0][11]),
+                invoiceNo: setTblHeaderFormat('Invoice/CM No.', '475', '483', '8', records[0][4]),
+                grossAmt: setTblHeaderFormat('Gross Amount', '484', '503', '19', records[0][10]),
+                vatableSales: setTblHeaderFormat('Vatable Sales', '504', '523', '19', records[0][5]),
+                vatExemptSales: setTblHeaderFormat('Vat Exempt Sales', '524', '523', '19', records[0][7]),
+                zeroRatedSales: setTblHeaderFormat('Zero Rated Sales', '544', '563', '19', records[0][6]),
+                discountAmt: setTblHeaderFormat('Discount Amount', '564', '583', '19', records[0][12]),
+                vatAmt: setTblHeaderFormat('Vat Amount', '584', '603', '19', records[0][8]),
+                netAmt: setTblHeaderFormat('Net Amount', '604', '623', '19', records[0][9]),
+
+                tblLabel: setPurchaseJournalForm(
+                    'Date', "Vendor's TIN", "Vendor's Name", "Vendor's Address", 'Description', 'Ref No.', 
+                    'Gross Amount', 'Vatable Sales', 'Vat Exempt Sales', 'Zero Rated Sales', 'Discount Amount', 
+                    'Vat Amount', 'Net Amount'),
+                table: '',
+            });
+
+            
+            for (let row = 0; row < records.length - 1; row++) {
+                data.push({
+                    table: setPurchaseJournalForm(
+                        records[row][0], records[row][1], records[row][2], records[row][3], records[row][11], 
+                        records[row][4], records[row][10], records[row][5], records[row][7], records[row][6], 
+                        records[row][12], records[row][8], records[row][9])
+                });
+                
+{/* <Field Name="SumofTotal1" FieldName="Sum ({SS_AP_INVOICE;1.Total})"><FormattedValue>809,804,678.08</FormattedValue><Value>809804678.08</Value></Field>
+<Field Name="SumofVAT1" FieldName="Sum ({SS_AP_INVOICE;1.VAT})"><FormattedValue>64,266,681.15</FormattedValue><Value>64266681.15</Value></Field>
+<Field Name="SumofAmountOfZeroRatedSales1" FieldName="Sum ({SS_AP_INVOICE;1.Amount_Of_Zero_Rated_Sales})"><FormattedValue>274,404,556.86</FormattedValue><Value>274404556.86</Value></Field>
+<Field Name="SumofAmountOfExemptSales1" FieldName="Sum ({SS_AP_INVOICE;1.Amount_Of_Exempt_Sales})"><FormattedValue>99,355.72</FormattedValue><Value>99355.72</Value></Field>
+<Field Name="SumofAmountOfTaxableSales1" FieldName="Sum ({SS_AP_INVOICE;1.Amount_Of_Taxable_Sales})"><FormattedValue>536,409,672.97</FormattedValue><Value>536409672.97</Value></Field>
+<Field Name="SumofAmountOfGrossSales1" FieldName="Sum ({SS_AP_INVOICE;1.Amount_Of_Gross_Sales})"><FormattedValue>872,151,711.42</FormattedValue><Value>872151711.42</Value></Field>
+<Text Name="Text12"><TextValue>Grand Total:</TextValue> */}
+            }
+
+            
+            data.push({
+                table: setPurchaseJournalForm(
+                    '', '', '', '', '',
+                    records[records.length -1][6], records[records.length -1][5], records[records.length -1][4], records[records.length -1][3], records[records.length -1][2], 
+                    records[records.length -1][7], records[records.length -1][1], records[records.length -1][2])
+            });
+
+            break;
+
     }
 
     return data
@@ -369,6 +444,9 @@ export function fileName(route) {
             break;
         case 'ij':
             fileNameData = 'Inventory Journal.txt';
+            break;
+        case 'pj':
+            fileNameData = 'Purchase Journal.txt';
             break;
     }
     return fileNameData
