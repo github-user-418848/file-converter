@@ -359,8 +359,8 @@ export function createFormattedOutput(records, route) {
                 `Filename: Inventory Journal\n` +
                 `File Type: Text File\n` +
                 `Number of Records: ${records.length}\n` +
-                // `Amount Field Control Total: ${records[records.length - 1][1]}\n` +
-                `Period Covered: ${records[0][0]} - ${records[records.length - 1][0]}\n` +
+                `Amount Field Control Total: ${records[records.length -1][2]}\n` +
+                `Period Covered: ${records[0][0]} - ${records[records.length - 2][0]}\n` +
                 `Transaction Cut-off Date & Time:\n` +
                 `\n` +
                 `Extracted by: sample\n` +
