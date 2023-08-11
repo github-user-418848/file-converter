@@ -76,7 +76,7 @@ export const setCashReceiptBookTblBodyFormat = (date, customer, referenceNo, jou
 };
 
 export const setCreditMemoTblBodyFormat = (date, tin, name, address, description, refNum, amount, discount, vat, wt, net) => {
-    return `${date.padEnd(25)}${tin.padEnd(20)}${name.replaceAll("\n", "").padEnd(75)}${address.replaceAll("\n", "").trim().padEnd(120)}${description.replaceAll("\n", "").trim().padEnd(200)}${discount.toString().padEnd(20)}${refNum.toString().padEnd(20)}${amount.toString().padEnd(20)}${vat.toString().padEnd(20)}${wt.toString().padEnd(20)}${net.toString().padEnd(20)}\n\n`;
+    return `${date.padEnd(25)}${tin.padEnd(20)}${name.replaceAll("\n", "").padEnd(75)}${address.replaceAll("\n", "").trim().padEnd(120)}${description.replaceAll("\n", "").trim().padEnd(200)}${refNum.toString().padEnd(20)}${amount.toString().padEnd(20)}${discount.toString().padEnd(20)}${vat.toString().padEnd(20)}${wt.toString().padEnd(20)}${net.toString().padEnd(20)}\n\n`;
 }
 
 export const setGeneralJournalBookFormat = (date, refNum, description, account, debit, credit) => {
