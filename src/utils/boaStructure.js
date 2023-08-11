@@ -399,14 +399,6 @@ export function createFormattedOutput(records, route) {
                         records[row][4], records[row][10], records[row][5], records[row][7], records[row][6], 
                         records[row][12], records[row][8], records[row][9])
                 });
-                
-{/* <Field Name="SumofTotal1" FieldName="Sum ({SS_AP_INVOICE;1.Total})"><FormattedValue>809,804,678.08</FormattedValue><Value>809804678.08</Value></Field>
-<Field Name="SumofVAT1" FieldName="Sum ({SS_AP_INVOICE;1.VAT})"><FormattedValue>64,266,681.15</FormattedValue><Value>64266681.15</Value></Field>
-<Field Name="SumofAmountOfZeroRatedSales1" FieldName="Sum ({SS_AP_INVOICE;1.Amount_Of_Zero_Rated_Sales})"><FormattedValue>274,404,556.86</FormattedValue><Value>274404556.86</Value></Field>
-<Field Name="SumofAmountOfExemptSales1" FieldName="Sum ({SS_AP_INVOICE;1.Amount_Of_Exempt_Sales})"><FormattedValue>99,355.72</FormattedValue><Value>99355.72</Value></Field>
-<Field Name="SumofAmountOfTaxableSales1" FieldName="Sum ({SS_AP_INVOICE;1.Amount_Of_Taxable_Sales})"><FormattedValue>536,409,672.97</FormattedValue><Value>536409672.97</Value></Field>
-<Field Name="SumofAmountOfGrossSales1" FieldName="Sum ({SS_AP_INVOICE;1.Amount_Of_Gross_Sales})"><FormattedValue>872,151,711.42</FormattedValue><Value>872151711.42</Value></Field>
-<Text Name="Text12"><TextValue>Grand Total:</TextValue> */}
             }
 
             
