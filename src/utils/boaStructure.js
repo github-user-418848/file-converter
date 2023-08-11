@@ -161,12 +161,15 @@ export function createFormattedOutput(records, route) {
                 tblLabel: setCreditMemoTblBodyFormat('Date', "Customer's TIN", "Customer's Name", "Customer's Address", 'Description', 'Reference No.', 'Amount', 'Discount', 'VAT Amount', 'WT Amount', 'Net Sales'),
                 table: '',
             });
-
+            console.log(records)
             for (let row = 0; row < records.length - 1; row++) {
                 data.push({
                     table: setCreditMemoTblBodyFormat(records[row][1], records[row][10], records[row][2], records[row][3], records[row][4], records[row][5], records[row][9], records[row][8], records[row][7], records[row][11], records[row][6])
                 });
             }
+            data.push({
+                table: setCreditMemoTblBodyFormat('', '', '', '', '', records[records.length - 1][4], records[records.length - 1][0], records[records.length - 1][1], records[records.length - 1][2], records[records.length - 1][5], records[records.length - 1][3])
+            });
             break;
 
         case 'gjb':
@@ -206,7 +209,7 @@ export function createFormattedOutput(records, route) {
 
             let prevValue = null;
 
-            for (let row = 0; row < records.length - 1; row++) {
+            for (let row = 0; row <= records.length - 1; row++) {
 
                 if (records[row][5] !== prevValue) {
                     if (records[row][5] !== undefined) {
@@ -264,7 +267,7 @@ export function createFormattedOutput(records, route) {
                 table: '',
             });
 
-            for (let row = 0; row < records.length - 1; row++) {
+            for (let row = 0; row <= records.length - 1; row++) {
                 if (records[row][1] === 'Beginning Balance:') {
                     data.push({
                         table: setGeneralLedgerBookFormat(records[row][0], '', '', records[row][1], '', '', records[row][2])
@@ -286,7 +289,6 @@ export function createFormattedOutput(records, route) {
 
 
         case 'ij':
-            console.log(records);
             header =
                 `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
                 `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
@@ -321,7 +323,7 @@ export function createFormattedOutput(records, route) {
                 table: '',
             });
 
-            for (let row = 0; row < records.length - 1; row++) {
+            for (let row = 0; row <= records.length - 1; row++) {
                 if (records[row][0] === 'Beginning Balance:') {
                     data.push({
                         table: setInventoryJournalFormat(records[row][3], '', '', records[row][0], records[row][1], '', '', records[row][2])
@@ -357,7 +359,7 @@ export function createFormattedOutput(records, route) {
                 `Filename: Inventory Journal\n` +
                 `File Type: Text File\n` +
                 `Number of Records: ${records.length}\n` +
-                `Amount Field Control Total: ${records[records.length -1][2]}\n` +
+                `Amount Field Control Total: ${records[records.length - 1][2]}\n` +
                 `Period Covered: ${records[0][0]} - ${records[records.length - 2][0]}\n` +
                 `Transaction Cut-off Date & Time:\n` +
                 `\n` +
@@ -365,7 +367,7 @@ export function createFormattedOutput(records, route) {
                 `\n` +
                 `File Layout :\n` +
                 setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
-                
+
             data.push({
                 header,
                 date: setTblHeaderFormat('Date', '1', '10', '10', records[0][0]),
@@ -383,28 +385,28 @@ export function createFormattedOutput(records, route) {
                 netAmt: setTblHeaderFormat('Net Amount', '604', '623', '19', records[0][9]),
 
                 tblLabel: setPurchaseJournalForm(
-                    'Date', "Vendor's TIN", "Vendor's Name", "Vendor's Address", 'Description', 'Ref No.', 
-                    'Gross Amount', 'Vatable Sales', 'Vat Exempt Sales', 'Zero Rated Sales', 'Discount Amount', 
+                    'Date', "Vendor's TIN", "Vendor's Name", "Vendor's Address", 'Description', 'Ref No.',
+                    'Gross Amount', 'Vatable Sales', 'Vat Exempt Sales', 'Zero Rated Sales', 'Discount Amount',
                     'Vat Amount', 'Net Amount'),
                 table: '',
             });
 
-            
+
             for (let row = 0; row < records.length - 1; row++) {
                 data.push({
                     table: setPurchaseJournalForm(
-                        records[row][0], records[row][1], records[row][2], records[row][3], records[row][11], 
-                        records[row][4], records[row][10], records[row][5], records[row][7], records[row][6], 
+                        records[row][0], records[row][1], records[row][2], records[row][3], records[row][11],
+                        records[row][4], records[row][10], records[row][5], records[row][7], records[row][6],
                         records[row][12], records[row][8], records[row][9])
                 });
             }
 
-            
+
             data.push({
                 table: setPurchaseJournalForm(
                     '', '', '', '', '',
-                    records[records.length -1][6], records[records.length -1][5], records[records.length -1][4], records[records.length -1][3], records[records.length -1][2], 
-                    records[records.length -1][7], records[records.length -1][1], records[records.length -1][2])
+                    records[records.length - 1][6], records[records.length - 1][5], records[records.length - 1][4], records[records.length - 1][3], records[records.length - 1][2],
+                    records[records.length - 1][7], records[records.length - 1][1], records[records.length - 1][2])
             });
 
             break;
