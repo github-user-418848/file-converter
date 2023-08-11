@@ -345,8 +345,6 @@ export function createFormattedOutput(records, route) {
             break;
 
         case 'pj':
-            
-            console.log(records);
             header =
                 `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
                 `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
