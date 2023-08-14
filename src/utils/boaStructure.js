@@ -356,7 +356,7 @@ export function createFormattedOutput(records, route) {
                 `\n` +
                 `Accouting Books File Attributes/Layout Definition\n` +
                 `Extracted by: sample\n` +
-                `Filename: Inventory Journal\n` +
+                `Filename: Purchase Journal\n` +
                 `File Type: Text File\n` +
                 `Number of Records: ${records.length}\n` +
                 `Amount Field Control Total: ${records[records.length - 1][2]}\n` +
