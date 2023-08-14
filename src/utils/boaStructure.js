@@ -1,4 +1,4 @@
-import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat, setGeneralLedgerBookFormat, setInventoryJournalFormat, setPurchaseJournalForm } from './formatter.js'
+import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat, setGeneralLedgerBookFormat, setInventoryJournalFormat, setPurchaseJournalForm, setDebitMemoJournal } from './formatter.js'
 import { groupedRecords } from './helpers.js'
 
 export function createFormattedOutput(records, route) {
@@ -456,7 +456,7 @@ export function createFormattedOutput(records, route) {
                 table: '',
             });
 
-            
+
             for (let row = 0; row < records.length - 1; row++) {
                 data.push({
                     table: setPurchaseJournalForm(
@@ -473,6 +473,58 @@ export function createFormattedOutput(records, route) {
                     records[records.length - 1][6], records[records.length - 1][5], records[records.length - 1][4], records[records.length - 1][3], records[records.length - 1][2],
                     records[records.length - 1][7], records[records.length - 1][1], records[records.length - 1][2])
             });
+
+            break;
+
+        case 'dmj':
+            header =
+                `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
+                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
+                `VAT REG TIN : 008-290-765-0000\n` +
+                `Accounting System: SAP Business One Version 10\n` +
+                `Acknowledgement Certificate No.:\n` +
+                `\n` +
+                `Accouting Books File Attributes/Layout Definition\n` +
+                `Extracted by: sample\n` +
+                `Filename: Sales Journal\n` +
+                `File Type: Text File\n` +
+                `Number of Records: ${records.length}\n` +
+                `Amount Field Control Total: ${records[records.length - 1][0]}\n` +
+                `Period Covered: ${records[0][1]} - ${records[records.length - 2][1]}\n` +
+                `Transaction Cut-off Date & Time:\n` +
+                `\n` +
+                `Extracted by: sample\n` +
+                `\n` +
+                `File Layout :\n` +
+                setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
+
+            data.push({
+                header,
+                date: setTblHeaderFormat('Date', '1', '10', '10', records[0][1]),
+                vendorTIN: setTblHeaderFormat("Vendor's TIN", '11', '43', '32', records[0][10]),
+                vendorName: setTblHeaderFormat("Vendor's Name", '44', '144', '100', records[0][2]),
+                vendorAddress: setTblHeaderFormat("Vendor's Address", '145', '245', '100', records[0][3].replaceAll("\n", " ")),
+                description: setTblHeaderFormat('Description', '246', '491', '254', records[0][4]),
+                refNo: setTblHeaderFormat('Reference No.', '492', '507', '15', records[0][5]),
+                amount: setTblHeaderFormat('Amount', '503', '523', '15', records[0][9]),
+                discountAmt: setTblHeaderFormat('Discount Amount', '524', '583', '15', records[0][8]),
+                vatAmt: setTblHeaderFormat('Vatable Sales', '504', '555', '15', records[0][7]),
+                wtAmt: setTblHeaderFormat('WT Amount', '556', '571', '15', records[0][11]),
+                netSales: setTblHeaderFormat('Net Sales', '572', '587', '15', records[0][6]),
+                tblLabel: setDebitMemoJournal('Date', "Vendor's TIN", "Vendor's Name", "Vendor's Address", 'Description', 'Reference No.', 'Amount', 'Discount', 'Vat Amount', 'WT Amount', 'Net Sales'),
+                table: '',
+            });
+
+            for (let row = 0; row < records.length - 1; row++) {
+                data.push({
+                    table: setDebitMemoJournal(records[row][1], records[row][10], records[row][2], records[row][3], records[row][4], records[row][5], records[row][9], records[row][8], records[row][7], records[row][11], records[row][6])
+                });
+            }
+            
+            data.push({
+                table: setDebitMemoJournal('', '', '', '', '', records[records.length - 1][4], records[records.length - 1][0], records[records.length - 1][1], records[records.length - 1][2], records[records.length - 1][5], records[records.length - 1][3])
+            });
+
 
             break;
 
@@ -507,6 +559,9 @@ export function fileName(route) {
             break;
         case 'sj':
             fileNameData = 'Sales Journal.txt';
+            break;
+        case 'dmj':
+            fileNameData = 'Debit Memo Journal.txt';
             break;
     }
     return fileNameData

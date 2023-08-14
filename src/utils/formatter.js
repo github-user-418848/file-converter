@@ -94,3 +94,8 @@ export const setInventoryJournalFormat = (description, date, refNum, warehouse, 
 export const setPurchaseJournalForm = (date, tin, name, address, description, refNum, grossAmt, vatableSales, vatExemptSales, zeroRatedSales, discountAmt, vatAmt, netAmt) => {
     return `${date.padEnd(20)}${tin.padEnd(20)}${name.padEnd(20)}${address.toString().padEnd(30)}${description.padEnd(30)}${refNum.toString().padEnd(22)}${grossAmt.toString().padEnd(22)}${vatableSales.toString().padEnd(22)}${vatExemptSales.toString().padEnd(22)}${zeroRatedSales.toString().padEnd(22)}${discountAmt.toString().padEnd(22)}${vatAmt.toString().padEnd(22)}${netAmt.toString()}\n\n`;
 }
+
+export const setDebitMemoJournal = (date, tin, name, address, description, refNum, amt, discountAmt, vatAmt, wtAmt, netSales) => {
+    return `${date.padEnd(20)}${tin.padEnd(20)}${name.padEnd(20)}${address.toString().replaceAll("\n", " ").padEnd(30)}${description.replaceAll("\n", " ").padEnd(30)}${refNum.toString().padEnd(20)}${amt.toString().padEnd(22)}${discountAmt.toString().padEnd(22)}${vatAmt.toString().padEnd(22)}${wtAmt.toString().padEnd(22)}${netSales.toString().padEnd(22)}\n\n`;
+    
+}
