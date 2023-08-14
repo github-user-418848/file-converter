@@ -27,7 +27,7 @@ export const
         { id: 'glb', index: 'boa', name: 'General Ledger Book' },
         { id: 'ij', index: 'boa', name: 'Inventory Journal' },
         { id: 'pj', index: 'boa', name: 'Purchase Journal' },
-        // { id: 'sj', index: 'boa', name: 'Sales Journal' },
+        { id: 'sj', index: 'boa', name: 'Sales Journal' },
     ],
     formTypes = [
         { id: 1, index: 'map', name: '1601E' },

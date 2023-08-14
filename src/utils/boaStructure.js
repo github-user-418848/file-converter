@@ -411,6 +411,71 @@ export function createFormattedOutput(records, route) {
 
             break;
 
+        case 'sj':
+            header =
+                `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
+                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
+                `VAT REG TIN : 008-290-765-0000\n` +
+                `Accounting System: SAP Business One Version 10\n` +
+                `Acknowledgement Certificate No.:\n` +
+                `\n` +
+                `Accouting Books File Attributes/Layout Definition\n` +
+                `Extracted by: sample\n` +
+                `Filename: Sales Journal\n` +
+                `File Type: Text File\n` +
+                `Number of Records: ${records.length}\n` +
+                `Amount Field Control Total: ${records[records.length - 1][2]}\n` +
+                `Period Covered: ${records[0][0]} - ${records[records.length - 2][0]}\n` +
+                `Transaction Cut-off Date & Time:\n` +
+                `\n` +
+                `Extracted by: sample\n` +
+                `\n` +
+                `File Layout :\n` +
+                setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
+
+            data.push({
+                header,
+                date: setTblHeaderFormat('Date', '1', '10', '10', records[0][0]),
+                vendorTIN: setTblHeaderFormat("Customer's TIN", '11', '26', '15', records[0][1]),
+                vendorName: setTblHeaderFormat("Customer's Name", '27', '127', '100', records[0][2]),
+                vendorAddress: setTblHeaderFormat("Customer's Address", '128', '228', '100', records[0][3]),
+                description: setTblHeaderFormat('Description', '229', '474', '254', records[0][11]),
+                invoiceNo: setTblHeaderFormat('Invoice/CM No.', '475', '483', '8', records[0][4]),
+                grossAmt: setTblHeaderFormat('Gross Amount', '484', '503', '19', records[0][10]),
+                vatableSales: setTblHeaderFormat('Vatable Sales', '504', '523', '19', records[0][5]),
+                vatExemptSales: setTblHeaderFormat('Vat Exempt Sales', '524', '523', '19', records[0][7]),
+                zeroRatedSales: setTblHeaderFormat('Zero Rated Sales', '544', '563', '19', records[0][6]),
+                discountAmt: setTblHeaderFormat('Discount Amount', '564', '583', '19', records[0][12]),
+                vatAmt: setTblHeaderFormat('Vat Amount', '584', '603', '19', records[0][8]),
+                netAmt: setTblHeaderFormat('Net Amount', '604', '623', '19', records[0][9]),
+
+                tblLabel: setPurchaseJournalForm(
+                    'Date', "Customer's TIN", "Customer's Name", "Customer's Address", 'Description', 'Ref No.',
+                    'Gross Amount', 'Vatable Sales', 'Vat Exempt Sales', 'Zero Rated Sales', 'Discount Amount',
+                    'Vat Amount', 'Net Amount'),
+                table: '',
+            });
+
+            
+            for (let row = 0; row < records.length - 1; row++) {
+                data.push({
+                    table: setPurchaseJournalForm(
+                        records[row][0], records[row][1], records[row][2], records[row][3], records[row][11],
+                        records[row][4], records[row][10], records[row][5], records[row][7], records[row][6],
+                        records[row][12], records[row][8], records[row][9])
+                });
+            }
+
+
+            data.push({
+                table: setPurchaseJournalForm(
+                    '', '', '', '', '',
+                    records[records.length - 1][6], records[records.length - 1][5], records[records.length - 1][4], records[records.length - 1][3], records[records.length - 1][2],
+                    records[records.length - 1][7], records[records.length - 1][1], records[records.length - 1][2])
+            });
+
+            break;
+
     }
 
     return data
@@ -439,6 +504,9 @@ export function fileName(route) {
             break;
         case 'pj':
             fileNameData = 'Purchase Journal.txt';
+            break;
+        case 'sj':
+            fileNameData = 'Sales Journal.txt';
             break;
     }
     return fileNameData
