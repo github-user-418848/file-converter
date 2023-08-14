@@ -1,4 +1,4 @@
-import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat, setGeneralLedgerBookFormat, setInventoryJournalFormat, setPurchaseJournalForm, setDebitMemoJournal } from './formatter.js'
+import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat, setGeneralLedgerBookFormat, setInventoryJournalFormat, setPurchaseJournalForm, setDebitMemoJournal, setDisbursementJournal } from './formatter.js'
 import { groupedRecords } from './helpers.js'
 
 export function createFormattedOutput(records, route) {
@@ -520,10 +520,79 @@ export function createFormattedOutput(records, route) {
                     table: setDebitMemoJournal(records[row][1], records[row][10], records[row][2], records[row][3], records[row][4], records[row][5], records[row][9], records[row][8], records[row][7], records[row][11], records[row][6])
                 });
             }
-            
+
             data.push({
                 table: setDebitMemoJournal('', '', '', '', '', records[records.length - 1][4], records[records.length - 1][0], records[records.length - 1][1], records[records.length - 1][2], records[records.length - 1][5], records[records.length - 1][3])
             });
+
+
+            break;
+
+        case 'dj':
+            console.log(records);
+            groupedRec = groupedRecords(records);
+            header =
+                `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
+                `ADDRESS: 3RD FLR MACROLOGIC CORPORATE CENTRE 9054 MOLINO ROAD MOLINO III, BACOOR CITY PHILIPPINES\n` +
+                `VAT REG TIN : 008-290-765-0000\n` +
+                `Accounting System: SAP Business One Version 10\n` +
+                `Acknowledgement Certificate No.:\n` +
+                `\n` +
+                `Accouting Books File Attributes/Layout Definition\n` +
+                `Filename: Disbursement Journal\n` +
+                `\n` +
+                `File Type: Text File\n` +
+                `Number of Records: ${groupedRec.length}\n` +
+                `Amount Field Control Total: ${records[records.length - 1][1]}\n` +
+                `Period Covered:  ${groupedRec[0][0][3]} - ${groupedRec[groupedRec.length - 2][0][3]}\n` +
+                `Transaction Cut-off Date & Time:\n` +
+                `\n` +
+                `Extracted by: 1\n` +
+                `\n` +
+                `File Layout :\n` +
+                setTblHeaderFormat('Fieldname', 'From', 'To', 'Length', 'Example');
+
+            data.push({
+                header,
+                date: setTblHeaderFormat('Date', '1', '10', '10', records[0][3]),
+                suppliersName: setTblHeaderFormat("Supplier's Name", '11', '111', '100', records[0][2]),
+                refNum: setTblHeaderFormat('Reference No.', '112', '122', '10', records[0][1]),
+                journalEntryNum: setTblHeaderFormat('Journal Entry No.', '123', '133', '10', records[0][4]),
+                checkNum: setTblHeaderFormat('Check No.', '134', '149', '15', records[0][0]),
+                details: setTblHeaderFormat('Details', '150', '404', '254', records[1][0]),
+                gLAccount: setTblHeaderFormat('G/L Account', '405', '420', '15', records[1][1]),
+                accountName: setTblHeaderFormat('Account Name', '421', '521', '100', records[1][1]),
+                debit: setTblHeaderFormat('Debit', '522', '541', '19', records[1][2]),
+                credit: setTblHeaderFormat('Credit', '542', '561', '19', records[1][3]),
+                tblLabel: setDisbursementJournal('Date', 'Customer Name', 'Reference No.', 'Journal Entry No.', 'Check No.', 'Details', 'G/L Account', 'Account Name', 'Debit', 'Credit'),
+                table: '',
+            });
+
+            
+            for (let row = 0; row < groupedRec.length; row++) {
+                groupedRecords(records)[row].slice(1, -1).forEach((record, index) => {
+                    const isFirstChild = index === 0;
+                    const [glAccount, accountName, debit, credit] = record;
+
+                    const tableRow = isFirstChild
+                        ? setCashReceiptBookTblBodyFormat(
+                            groupedRecords(records)[row][0][3], // Date
+                            groupedRecords(records)[row][0][2], // Customer
+                            groupedRecords(records)[row][0][1], // Reference
+                            groupedRecords(records)[row][0][4], // Journal
+                            groupedRecords(records)[row][0][0], // Details
+                            glAccount,
+                            accountName,
+                            debit,
+                            credit
+                        )
+                        : setCashReceiptBookTblBodyFormat('', '', '', '', '', glAccount, accountName, debit, credit);
+
+                    console.log(`${debit} ${credit}`);
+
+                    data[data.length - 1].table += tableRow;
+                });
+            }
 
 
             break;
@@ -562,6 +631,9 @@ export function fileName(route) {
             break;
         case 'dmj':
             fileNameData = 'Debit Memo Journal.txt';
+            break;
+        case 'dj':
+            fileNameData = 'Disbursement Journal.txt';
             break;
     }
     return fileNameData

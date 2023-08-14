@@ -97,5 +97,8 @@ export const setPurchaseJournalForm = (date, tin, name, address, description, re
 
 export const setDebitMemoJournal = (date, tin, name, address, description, refNum, amt, discountAmt, vatAmt, wtAmt, netSales) => {
     return `${date.padEnd(20)}${tin.padEnd(20)}${name.padEnd(20)}${address.toString().replaceAll("\n", " ").padEnd(30)}${description.replaceAll("\n", " ").padEnd(30)}${refNum.toString().padEnd(20)}${amt.toString().padEnd(22)}${discountAmt.toString().padEnd(22)}${vatAmt.toString().padEnd(22)}${wtAmt.toString().padEnd(22)}${netSales.toString().padEnd(22)}\n\n`;
-    
 }
+
+export const setDisbursementJournal = (date, customer, referenceNo, journal, check, details, gLAccount, accountName, debit, credit) => {
+    return `${date.padEnd(15)}${customer.padEnd(50)}${referenceNo.toString().padEnd(15)}${journal.toString().padEnd(19)}${check.toString().padEnd(19)}${details.padEnd(60)}${gLAccount.padEnd(20)}${accountName.padEnd(50)}${debit.toString().padEnd(14)}${credit.toString()}\n\n`;
+};
