@@ -1,4 +1,4 @@
-import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat, setGeneralLedgerBookFormat, setInventoryJournalFormat, setPurchaseJournalForm, setDebitMemoJournal, setDisbursementJournal } from './formatter.js'
+import { setTblHeaderFormat, setAuditTrailTblBodyFormat, setCashReceiptBookTblBodyFormat, setCreditMemoTblBodyFormat, setGeneralJournalBookFormat, setGeneralLedgerBookFormat, setInventoryJournalFormat, setPurchaseJournalFormat, setDebitMemoJournal, setDisbursementJournal } from './formatter.js'
 import { groupedRecords } from './helpers.js'
 
 export function createFormattedOutput(records, route) {
@@ -384,9 +384,9 @@ export function createFormattedOutput(records, route) {
                 vatAmt: setTblHeaderFormat('Vat Amount', '584', '603', '19', records[0][8]),
                 netAmt: setTblHeaderFormat('Net Amount', '604', '623', '19', records[0][9]),
 
-                tblLabel: setPurchaseJournalForm(
+                tblLabel: setPurchaseJournalFormat(
                     'Date', "Vendor's TIN", "Vendor's Name", "Vendor's Address", 'Description', 'Ref No.',
-                    'Gross Amount', 'Vatable Sales', 'Vat Exempt Sales', 'Zero Rated Sales', 'Discount Amount',
+                    'Gross Amount', 'Vatable Sales', 'Vat Exempt Sales', 'Zero Rated Sales', 'Discount',
                     'Vat Amount', 'Net Amount'),
                 table: '',
             });
@@ -394,7 +394,7 @@ export function createFormattedOutput(records, route) {
 
             for (let row = 0; row < records.length - 1; row++) {
                 data.push({
-                    table: setPurchaseJournalForm(
+                    table: setPurchaseJournalFormat(
                         records[row][0], records[row][1], records[row][2], records[row][3], records[row][11],
                         records[row][4], records[row][10], records[row][5], records[row][7], records[row][6],
                         records[row][12], records[row][8], records[row][9])
@@ -403,7 +403,7 @@ export function createFormattedOutput(records, route) {
 
 
             data.push({
-                table: setPurchaseJournalForm(
+                table: setPurchaseJournalFormat(
                     '', '', '', '', '',
                     records[records.length - 1][6], records[records.length - 1][5], records[records.length - 1][4], records[records.length - 1][3], records[records.length - 1][2],
                     records[records.length - 1][7], records[records.length - 1][1], records[records.length - 1][2])
@@ -449,7 +449,7 @@ export function createFormattedOutput(records, route) {
                 vatAmt: setTblHeaderFormat('Vat Amount', '584', '603', '19', records[0][8]),
                 netAmt: setTblHeaderFormat('Net Amount', '604', '623', '19', records[0][9]),
 
-                tblLabel: setPurchaseJournalForm(
+                tblLabel: setPurchaseJournalFormat(
                     'Date', "Customer's TIN", "Customer's Name", "Customer's Address", 'Description', 'Ref No.',
                     'Gross Amount', 'Vatable Sales', 'Vat Exempt Sales', 'Zero Rated Sales', 'Discount Amount',
                     'Vat Amount', 'Net Amount'),
@@ -459,7 +459,7 @@ export function createFormattedOutput(records, route) {
 
             for (let row = 0; row < records.length - 1; row++) {
                 data.push({
-                    table: setPurchaseJournalForm(
+                    table: setPurchaseJournalFormat(
                         records[row][0], records[row][1], records[row][2], records[row][3], records[row][11],
                         records[row][4], records[row][10], records[row][5], records[row][7], records[row][6],
                         records[row][12], records[row][8], records[row][9])
@@ -468,7 +468,7 @@ export function createFormattedOutput(records, route) {
 
 
             data.push({
-                table: setPurchaseJournalForm(
+                table: setPurchaseJournalFormat(
                     '', '', '', '', '',
                     records[records.length - 1][6], records[records.length - 1][5], records[records.length - 1][4], records[records.length - 1][3], records[records.length - 1][2],
                     records[records.length - 1][7], records[records.length - 1][1], records[records.length - 1][2])
@@ -529,7 +529,6 @@ export function createFormattedOutput(records, route) {
             break;
 
         case 'dj':
-            console.log(records);
             groupedRec = groupedRecords(records);
             header =
                 `TAXPAYER'S NAME: MACROLOGIC DIVERSIFIED TECHNOLOGIES INC.\n` +
@@ -568,33 +567,64 @@ export function createFormattedOutput(records, route) {
                 table: '',
             });
 
-            
-            for (let row = 0; row < groupedRec.length; row++) {
-                groupedRecords(records)[row].slice(1, -1).forEach((record, index) => {
-                    const isFirstChild = index === 0;
-                    const [glAccount, accountName, debit, credit] = record;
+            for (let row = 0; row < records.length - 1; row++) {
+                const rowLength = records[row].length;
+                let prevRow = ''
+                if (rowLength === 6) {
+                    prevRow = records[row + 1][0]
+                    data.push({
+                        table: setDisbursementJournal(
+                            records[row][3],
+                            records[row][2],
+                            records[row][1],
+                            records[row][4],
+                            '',
+                            '',
 
-                    const tableRow = isFirstChild
-                        ? setCashReceiptBookTblBodyFormat(
-                            groupedRecords(records)[row][0][3], // Date
-                            groupedRecords(records)[row][0][2], // Customer
-                            groupedRecords(records)[row][0][1], // Reference
-                            groupedRecords(records)[row][0][4], // Journal
-                            groupedRecords(records)[row][0][0], // Details
-                            glAccount,
-                            accountName,
-                            debit,
-                            credit
+                            
+                            '',
+                            '',
+                            
+                            '',
+                            '',
+                            // records[row + 1][0],
+                            // records[row + 1][1],
+                            // records[row + 1][3],
+                            // records[row + 1][2]
                         )
-                        : setCashReceiptBookTblBodyFormat('', '', '', '', '', glAccount, accountName, debit, credit);
+                    });
 
-                    console.log(`${debit} ${credit}`);
-
-                    data[data.length - 1].table += tableRow;
-                });
+                }
+                if (rowLength === 4) {
+                    // if (row + 1 <= rowLength) {
+                        // row++;
+                        data.push({
+                            table: setDisbursementJournal('', '', '', '', '', '',
+                                records[row][0],
+                                records[row][1],
+                                records[row][3],
+                                records[row][2]
+                            )
+                        });
+                    // }
+                }
+                if (rowLength === 3) {
+                    data.push({
+                        table: setDisbursementJournal('', '', '', '', '', '', '',
+                            records[row][2],
+                            records[row][0],
+                            records[row][1],
+                        )
+                    });
+                }
             }
-
-
+            data.push({
+                table: setDisbursementJournal('', '', '', '', '', '', '',
+                    records[records.length - 1][0],
+                    records[records.length - 1][1],
+                    records[records.length - 1][2],
+                )
+            });
             break;
 
     }
