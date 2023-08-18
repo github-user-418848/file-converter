@@ -88,3 +88,7 @@ export function regexMatched(regexPattern, string) {
 export function regexTest(regexPattern, string) {
   return regexPattern.test(string)
 }
+
+export const findMaxStringLength = strings => {
+  return strings.reduce((max, str) => Math.max(max, str.length), 0);
+};
