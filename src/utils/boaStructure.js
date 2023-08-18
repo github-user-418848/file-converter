@@ -580,11 +580,8 @@ export function createFormattedOutput(records, route) {
                             records[row][4],
                             '',
                             '',
-
-                            
                             '',
                             '',
-                            
                             '',
                             '',
                             // records[row + 1][0],
@@ -596,17 +593,14 @@ export function createFormattedOutput(records, route) {
 
                 }
                 if (rowLength === 4) {
-                    // if (row + 1 <= rowLength) {
-                        // row++;
-                        data.push({
-                            table: setDisbursementJournal('', '', '', '', '', '',
-                                records[row][0],
-                                records[row][1],
-                                records[row][3],
-                                records[row][2]
-                            )
-                        });
-                    // }
+                    data.push({
+                        table: setDisbursementJournal('', '', '', '', '', '',
+                            records[row][0],
+                            records[row][1],
+                            records[row][3],
+                            records[row][2]
+                        )
+                    });
                 }
                 if (rowLength === 3) {
                     data.push({
