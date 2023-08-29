@@ -7,7 +7,7 @@ export const
     },
     
     allowedExtensions = ['xml',],
-    sizeLimit = 35_000_000,
+    sizeLimit = 1_000_000_000,
     
     minRdoCodeLength = 0,
     maxRdoCodeLength = 5,
