@@ -17,13 +17,17 @@
 
         <FormattingOptions />
 
-        <template v-for="(file, index) in dataFiles.originalFileName" :key="index">
+        <template v-if="isReadingFile">
+            <p>Converting...</p>
+        </template>
+        <template v-if="textData">
+            <DownloadCard v-if="!isReadingFile" :fileName="file.name" :textData="textData" :generatedFileName="generatedFileName" />
+        </template>
+
+
+        <!-- <template v-for="(file, index) in dataFiles.originalFileName" :key="index">
             <DownloadCard :fileName="file" :textData="dataFiles.textContent[index]"
                 :generatedFileName="dataFiles.generatedFileName[index]" />
-        </template>
-        <!-- </template>
-        <template v-else>
-            <h3 class="pointer-events-none">Drop your file here to start the conversion</h3>
         </template> -->
     </div>
 </template>
@@ -56,6 +60,7 @@ export default {
             generatedFileName: ref(""),
             errorMessage: ref(""),
             dataFiles: files,
+            isReadingFile: ref(false),
         }
     },
     methods: {
@@ -78,15 +83,18 @@ export default {
 
         async parseXmlFile(file) {
             try {
+                this.isReadingFile = true
                 await validateXmlFile(file)
                 const xmlDoc = await readXMLFile(file)
                 const records = await retrieveRecords(xmlDoc)
                 await this.createTextData(records)
                 this.records = records
-                await this.pushIntoFileData()
+                // await this.pushIntoFileData()
+                this.isReadingFile = false
             } catch (error) {
                 this.errorMessage = error.message
                 setTimeout(() => { this.errorMessage = "" }, 7000)
+                this.isReadingFile = false
             }
         },
 
